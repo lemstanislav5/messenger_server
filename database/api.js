@@ -4,12 +4,12 @@ const query = (file, req, sql, params = []) => {
         const db = new sqlite3.Database(file, (err) => {
             if (err) console.error(err.message);
         });
-        db.serialize(() => db[req](sql, params, 
+        db.serialize(() => db[req](sql, params,
             (err,res) => {
                 if(err) reject(err);
                 resolve(res);
             }
-        ));  
+        ));
         db.close((err) => {
             if (err) return console.error(err.message);
         });
@@ -19,29 +19,21 @@ const query = (file, req, sql, params = []) => {
 //? При использовании функции "query" в цикле "forEach" возникает указанная ошибка поътому в функциях "addOrganizations" и "addExtremistMaterial" осталась старая реализация
 
 module.exports = {
-    firsDatabaseInitialization: () => {   
-        return Promise.all([ 
-        // основные таблицы материалов
-            query('data.db3', 'run', "CREATE TABLE if not exists `extremist_materials` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `title` TEXT, `link` TEXT, `pubDate` TEXT, `content` TEXT, `contentSnippet` TEXT, `guid` TEXT, `isoDate` TEXT)"),
-            query('data.db3', 'run', "CREATE TABLE if not exists `extremist_organizations` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `content` TEXT)"),
-            query('data.db3', 'run', "CREATE TABLE if not exists `unwanted_organizations` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `content` TEXT)"),
-            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` TEXT, `first_name` TEXT, `last_name` TEXT, `access` INTEGER)"),
-            //таблица обновления материалов
-            query('data.db3', 'run', "CREATE TABLE if not exists `updates` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `material` TEXT, `time` INTEGER)"),
-
-            // таблица логирования сообщений
-            query('logs.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` TEXT, `first_name` TEXT, `last_name` TEXT, `username` TEXT, `date` INTEGER, `text` TEXT)"),
-            // таблица логирования событий
-            query('logs.db3', 'run', "CREATE TABLE if not exists `events` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT, `status` TEXT, `result` TEXT, `date` INTEGER)"),
+    firsDatabaseInitialization: () => {
+        return Promise.all([
+          query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `login` TEXT, `password` TEXT, `role` TEXT, `online` INTEGER)"),
+              query('data.db3', 'run', "CREATE TABLE if not exists `message` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `text` TEXT, `time` INTEGER, `user_id` INTEGER, `chat_id INTEGER)"),
+              query('data.db3', 'run', "CREATE TABLE if not exists `chat` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT)"),
+              query('data.db3', 'run', "CREATE TABLE if not exists `chat_users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `id_chat` INTEGER, `id_users` INTEGER,  `status` TEXT)"),
         ])
     },
-    messagesLogging: ({id, first_name, last_name, username, date, text}) => {  
-        return query('logs.db3', 'run', "INSERT INTO `messages` (`user_id`, `first_name`, `last_name`, `username`, `date`, `text`) VALUES('"+ 
+    messagesLogging: ({id, first_name, last_name, username, date, text}) => {
+        return query('logs.db3', 'run', "INSERT INTO `messages` (`user_id`, `first_name`, `last_name`, `username`, `date`, `text`) VALUES('"+
                 id +"', '"+ first_name +"', '"+ last_name +"', '"+ username +"', '"+ date +"', '"+ text +"')");
     },
     //! ИЗМЕНИТЬ ДАННЫЕ ФУНКЦИИ eventsLogging она скопирована с messagesLogging без изменения параметров
-    eventsLogging: ({id, first_name, last_name, username, date, text}) => { 
-        return query('logs.db3', 'run', "INSERT INTO `events` (`name`, `status`              , `result` TEXT, `date`) VALUES('"+ 
+    eventsLogging: ({id, first_name, last_name, username, date, text}) => {
+        return query('logs.db3', 'run', "INSERT INTO `events` (`name`, `status`              , `result` TEXT, `date`) VALUES('"+
                 id +"', '"+ first_name +"', '"+ last_name +"', '"+ username +"', '"+ date +"', '"+ text +"')");
     },
     latestUpdateTime: (material, updateTime) => {
@@ -54,7 +46,7 @@ module.exports = {
     updateTime: (material) => {
         const time = new Date().getTime();
         return query('data.db3', 'get', "INSERT INTO `updates`  (`material`, `time`) VALUES('"+ material +"', '"+ time +"')", [])
-            .then(res=>{ return true }); 
+            .then(res=>{ return true });
     },
     addExtremistMaterial: (items) => {
         //! Сократить функцию, убрать промис, задебажить ошибки
@@ -78,14 +70,14 @@ module.exports = {
                             isoDate === undefined? '' : isoDate
                           ],
                           (err,results) => {
-                            if (err) console.log('ошибка: ', err); 
+                            if (err) console.log('ошибка: ', err);
                             if(index === items.length-1){
                                 console.log(items.length + '/' + index);
                                 resolve(true);
                             }
                           });
-                      });  
-                }); 
+                      });
+                });
             } catch (error) {
                 console.log(`Error With Select ALL(): \r\n ${error}`)
                 reject();
@@ -105,43 +97,43 @@ module.exports = {
                             db.run('INSERT INTO `' + organizations + '` (`content`) VALUES (?)',
                             [currentValue.replaceAll('&nbsp;', ' ').replaceAll('&laquo;', ' ').replaceAll('&raquo;', ' ')],
                             (err,results) => {
-                                if (err) console.log('ошибка: ', err); 
+                                if (err) console.log('ошибка: ', err);
                                 if(index === items.length-1){
                                     console.log(items.length + '/' + index);
                                     resolve(true);
                                 }
                             });
                         }
-                      });  
-                }); 
+                      });
+                });
             } catch (error) {
                 reject(console.log(`Error With Select ALL(): \r\n ${error}`));
             }
         });
     },
-    findMaterials: (str) => { 
+    findMaterials: (str) => {
         //!'Badroom'.toLowerCase() === 'Badroom' ВОЗМОЖНО ПЕРЕДЕЛАТЬ ФУНКЦИЮ С ДОБАВЛЕНИЕМ ВТОРОГО ЗАПРОСА, УЧИТЫВАЮЩЕГО РЕГИСТР
         return query('data.db3', 'all', 'SELECT * FROM extremist_materials WHERE content LIKE ?', ['%' + str + '%'])
-            .then(res=>{ return res }); 
+            .then(res=>{ return res });
     },
-    authorization: (user_id) => { 
+    authorization: (user_id) => {
         return query('data.db3', 'get', 'SELECT * FROM users WHERE  user_id = "' + user_id + '"', [])
-            .then(res=>{ return res }); 
+            .then(res=>{ return res });
     },
-    addUser: (user_id, first_name, last_name, access) => { 
-        return query('data.db3', 'run', 'INSERT INTO users (user_id, first_name, last_name,access) values ("' + 
+    addUser: (user_id, first_name, last_name, access) => {
+        return query('data.db3', 'run', 'INSERT INTO users (user_id, first_name, last_name,access) values ("' +
             user_id + '","' + first_name + '","' + last_name + '",' + access + ')', []);
     },
-    getAccess: (user_id) => { 
+    getAccess: (user_id) => {
         return query('data.db3', 'run', 'UPDATE users SET access=? WHERE user_id=?', [1, user_id]);
     },
-    // delAccess: (user_id) => { 
+    // delAccess: (user_id) => {
     //     return query('data.db3', 'run', 'DELETE FROM users WHERE user_id = "' + user_id + '"', [])
     // },
-    findExtremistOrganizations: (str) => { 
+    findExtremistOrganizations: (str) => {
         return query('data.db3', 'all', 'SELECT * FROM extremist_organizations WHERE content LIKE ?', ['%' + str + '%']);
     },
-    findUnwanted_organizations: (str) => { 
+    findUnwanted_organizations: (str) => {
         return query('data.db3', 'all', 'SELECT * FROM unwanted_organizations WHERE content LIKE ?', ['%' + str + '%']);
     },
 }
