@@ -4,12 +4,12 @@ const express = require('express'),
     return console.log(e);
   }
 //require('../controllers/users.controller'),
-  { firsDatabaseInitialization } = require('../database/api')
+const { firsDatabaseInitialization } = require('../database/api')
 //controllers хранит классы, методы которого выступают обработчиками маршрутов
 //services также находятся классы, но их методы отвечают за поставку данных контроллерам
 
 router.use(async (req, res, next) => {
-  let data = await UsersService(req)
+  let data = false //await UsersService(req)
 
   if (data) {
     req.users = data
