@@ -1,17 +1,18 @@
 //ТУТОРИАЛ https://socket.io/docs/v3/emit-cheatsheet/
-const express = require('express'),
-      app = express(),
-      http = require('http').Server(app),
-      io = require('socket.io')(http),
-      routes = require('./routes/index');
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 
+// app.get('/', function(req, res) {
+//     res.sendFile(__dirname + '/index.html');
+//   })
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api', routes);
-app.use('/index.html', (req, res) => {
+app.use('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
+
 
 io.on('connection', socket => {
   console.log('A user connected');
