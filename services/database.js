@@ -21,7 +21,7 @@ const query = (file, req, sql, params = []) => {
 module.exports = {
     firsDatabaseInitialization: () => {
         return Promise.all([
-            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `login` TEXT, `code` TEXT, `online` INTEGER)"),
+            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `phone` TEXT, `user_name` TEXT,`code` TEXT, `online` INTEGER)"),
             query('data.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `text` TEXT, `time` INTEGER, `user_id` INTEGER, `chat_id` INTEGER)"),
             //Чат будет содержать как личные так и групповые сообщения. Возможно необходимо продумать функцию выдачи токенов конкретного чата.
             query('data.db3', 'run', "CREATE TABLE if not exists `chats` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` TEXT)"),

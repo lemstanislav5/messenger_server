@@ -9,15 +9,16 @@ const { firsDatabaseInitialization } = require('../services/database')
 router.use(async (req, res, next) => {
   firsDatabaseInitialization()
     .then(result => {
-      console.log(1)
+      req.test = 'success';
+      console.log(1);
       //! УКАЗАТЬ ОПИСАНИЕ ФУНКЦИИ
-      next()
+      next();
     })
     .catch(err => {
-      console.log(err)
+      console.log(err);
       return res
         .status(500)
-        .send({ message: 'Error while getting users' })
+        .send({ message: 'Error while getting users' });
     })
 })
 

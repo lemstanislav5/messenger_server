@@ -3,6 +3,7 @@
 class UsersController {
   getUsers(req, res) {
     console.log(req.body)
+    if(req.test !== undefined) console.log(req.test);
     return res
           .status(200)
           .send({ data: {res: true} })
