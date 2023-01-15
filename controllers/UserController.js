@@ -7,37 +7,37 @@ class UsersController {
   getUsers(req, res) {
     if(req.body !== undefined && req.body.type  === 'authentication'){
       getUsersService(req.body.phone)
-      .then(result => {
-        if(result === undefined){
-          addUserService(req.body.phone, getRandomInt(1000, 9999))
+        .then(result => {
+          if(result === undefined){
+            addUserService(req.body.phone, getRandomInt(1000, 9999))
+              .then(result => {
+                console.log(1)
+                return res
+                  .status(200)
+                  .send({ type: 'authentication', status: 'enter_code' })
+              })
+              .catch(err => {
+                console.log(2)
+                console.log(err)
+              })
+          } else {
+            updateUserService(req.body.phone, getRandomInt(1000, 9999))
             .then(result => {
-              console.log(1)
+              console.log(3)
               return res
                 .status(200)
                 .send({ type: 'authentication', status: 'enter_code' })
             })
             .catch(err => {
-              console.log(2)
+              console.log(4)
               console.log(err)
             })
-        } else {
-          updateUserService(req.body.phone, getRandomInt(1000, 9999))
-          .then(result => {
-            console.log(3)
-            return res
-              .status(200)
-              .send({ type: 'authentication', status: 'enter_code' })
-          })
-          .catch(err => {
-            console.log(4)
-            console.log(err)
-          })
-        }
-      })
-      .catch(err => {
-        console.log(5)
-        console.log(err)
-      })
+          }
+        })
+        .catch(err => {
+          console.log(5)
+          console.log(err)
+        })
     } else {
 
     }
