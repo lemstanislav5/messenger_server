@@ -1,3 +1,4 @@
+//!Шифрование Диффи-Хеллмана на JavaScript https://roscenzura.com/threads/1173/
 //ТУТОРИАЛ https://socket.io/docs/v3/emit-cheatsheet/
 const express = require('express'),
       app = express(),

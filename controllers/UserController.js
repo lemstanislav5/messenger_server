@@ -1,45 +1,43 @@
-const { getUsersService, addUserService, updateUserService } = require('../services/database')
+const { getUsersService, addUserService, updateUserService, conformCodeAuthentication } = require('../services/database')
 const getRandomInt = (min, max) => {
   return  Math.floor(Math.random() * (max - min)) + min;
 }
 class UsersController {
-  //!promise all, унифицировать запросы либо по url, либо по условным обозначениям в теле запроса
   getUsers(req, res) {
     if(req.body !== undefined && req.body.type  === 'authentication'){
       getUsersService(req.body.phone)
         .then(result => {
+          let code = 1000;// getRandomInt(1000, 9999);
           if(result === undefined){
-            addUserService(req.body.phone, getRandomInt(1000, 9999))
-              .then(result => {
-                console.log(1)
-                return res
-                  .status(200)
-                  .send({ type: 'authentication', status: 'enter_code' })
-              })
-              .catch(err => {
-                console.log(2)
-                console.log(err)
-              })
+            return addUserService(req.body.phone, code);
           } else {
-            updateUserService(req.body.phone, getRandomInt(1000, 9999))
-            .then(result => {
-              console.log(3)
-              return res
-                .status(200)
-                .send({ type: 'authentication', status: 'enter_code' })
-            })
-            .catch(err => {
-              console.log(4)
-              console.log(err)
-            })
+            return updateUserService(req.body.phone, code);
           }
         })
-        .catch(err => {
-          console.log(5)
-          console.log(err)
+        .then(result => {
+          return res
+            .status(200)
+            .send({ type: 'authentication', status: 'enter_code' })
         })
-    } else {
-
+        .catch(err => {
+          console.log(err);
+          return res
+            .status(404)
+            .send({ type:"error" })
+        })
+    } else if(req.body !== undefined && req.body.type  === 'conform'){
+      conformCodeAuthentication(req.body.phone, req.body.code)
+        .then(result => {
+          return res
+            .status(200)
+            .send({ type: 'conform', status: 'ok' })
+        })
+        .catch(err => {
+          console.log(err);
+          return res
+            .status(404)
+            .send({ type:"error" })
+        })
     }
     
     // if (req.query.id) {

@@ -32,7 +32,6 @@ module.exports = {
     getUsersService:(phone) => {
       return query('data.db3', 'get', 'SELECT * FROM users WHERE  phone = "' + phone + '"', [])
           .then(res=>{ return res });
-          //return true or false
     },
     addUserService: (phone, code) => {
         return query('data.db3', 'run', 'INSERT INTO users (phone, code) values ("' +
@@ -41,6 +40,12 @@ module.exports = {
     updateUserService: (phone, code) => {
         return query('data.db3', 'run', 'UPDATE users SET code = "' + code + '" WHERE phone = "' + phone + '"', []);
     },
+    conformCodeAuthentication: (phone, code) => {
+        return query('data.db3', 'get', 'SELECT * FROM users WHERE  phone = "' + phone + '" AND code = "' + code + '"', [])
+        .then(res=>{ return res });
+    },
+
+
     authorization: (user_id) => {
         return query('data.db3', 'get', 'SELECT * FROM users WHERE  user_id = "' + user_id + '"', [])
             .then(res=>{ return res });
