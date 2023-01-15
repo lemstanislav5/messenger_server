@@ -29,18 +29,21 @@ module.exports = {
             query('data.db3', 'run', "CREATE TABLE if not exists `contacts` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` INTEGER, `contacts_id` INTEGER,  `contacts_name` TEXT)"),
         ])
     },
-    checkFreeLogin:(login) => {
-      return query('data.db3', 'get', 'SELECT * FROM users WHERE  login = "' + login + '"', [])
+    getUsersService:(phone) => {
+      return query('data.db3', 'get', 'SELECT * FROM users WHERE  phone = "' + phone + '"', [])
           .then(res=>{ return res });
           //return true or false
+    },
+    addUserService: (phone, code) => {
+        return query('data.db3', 'run', 'INSERT INTO users (phone, code) values ("' +
+        phone + '","' + code + '")', []);
+    },
+    updateUserService: (phone, code) => {
+        return query('data.db3', 'run', 'UPDATE users SET code = "' + code + '" WHERE phone = "' + phone + '"', []);
     },
     authorization: (user_id) => {
         return query('data.db3', 'get', 'SELECT * FROM users WHERE  user_id = "' + user_id + '"', [])
             .then(res=>{ return res });
-    },
-    addUser: (user_id, login, password) => {
-        return query('data.db3', 'run', 'INSERT INTO users (user_id, first_name, last_name,access) values ("' +
-            user_id + '","' + first_name + '","' + last_name + '",' + access + ')', []);
     },
     getMessages: (user_id) => {
         return query('data.db3', 'run', 'INSERT INTO users (user_id, first_name, last_name,access) values ("' +

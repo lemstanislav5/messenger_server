@@ -1,12 +1,47 @@
-// const UsersService = require('../services/users.service')
-
+const { getUsersService, addUserService, updateUserService } = require('../services/database')
+const getRandomInt = (min, max) => {
+  return  Math.floor(Math.random() * (max - min)) + min;
+}
 class UsersController {
+  //!promise all, унифицировать запросы либо по url, либо по условным обозначениям в теле запроса
   getUsers(req, res) {
-    console.log(req.body)
-    if(req.test !== undefined) console.log(req.test);
-    return res
-          .status(200)
-          .send({ data: {res: true} })
+    if(req.body !== undefined && req.body.type  === 'authentication'){
+      getUsersService(req.body.phone)
+      .then(result => {
+        if(result === undefined){
+          addUserService(req.body.phone, getRandomInt(1000, 9999))
+            .then(result => {
+              console.log(1)
+              return res
+                .status(200)
+                .send({ type: 'authentication', status: 'enter_code' })
+            })
+            .catch(err => {
+              console.log(2)
+              console.log(err)
+            })
+        } else {
+          updateUserService(req.body.phone, getRandomInt(1000, 9999))
+          .then(result => {
+            console.log(3)
+            return res
+              .status(200)
+              .send({ type: 'authentication', status: 'enter_code' })
+          })
+          .catch(err => {
+            console.log(4)
+            console.log(err)
+          })
+        }
+      })
+      .catch(err => {
+        console.log(5)
+        console.log(err)
+      })
+    } else {
+
+    }
+    
     // if (req.query.id) {
     //   if (req.users.hasOwnProperty(req.query.id))
     //     return res
