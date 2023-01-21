@@ -1,5 +1,6 @@
 //!Шифрование Диффи-Хеллмана на JavaScript https://roscenzura.com/threads/1173/
 //ТУТОРИАЛ https://socket.io/docs/v3/emit-cheatsheet/
+const PORT = 4000;
 const express = require('express'),
       app = express(),
       http = require('http').Server(app),
@@ -13,6 +14,9 @@ app.use('/api', routes);
 app.use('/index.html', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
+app.get('/', (req, res) => {    
+  res.send('Тест'); 
+});
 
 io.on('connection', socket => {
   console.log('A user connected');
@@ -33,6 +37,6 @@ io.on('connection', socket => {
   })
 })
 
-http.listen(3000, function() {
-  console.log('listening on *:3000');
+http.listen(PORT, function() {
+  console.log('listening on *:' + PORT);
 });
