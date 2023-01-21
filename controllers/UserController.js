@@ -4,6 +4,7 @@ const getRandomInt = (min, max) => {
 }
 class UsersController {
   getUsers(req, res) {
+    console.log(req.body)
     if(req.body !== undefined && req.body.type  === 'authentication'){
       getUsersService(req.body.phone)
         .then(result => {
