@@ -1,6 +1,6 @@
 //!Шифрование Диффи-Хеллмана на JavaScript https://roscenzura.com/threads/1173/
 //ТУТОРИАЛ https://socket.io/docs/v3/emit-cheatsheet/
-const PORT = 5000;
+const PORT = 4000;
 const express = require('express'),
       app = express(),
       http = require('http').Server(app),
