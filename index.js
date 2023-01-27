@@ -9,13 +9,14 @@ const express = require('express'),
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(express.static('static'));
 
 app.use('/api', routes);
 app.use('/index.html', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 })
-app.get('/', (req, res) => {    
-  res.send('Тест'); 
+app.get('/', (req, res) => {
+  res.send('Тест');
 });
 
 
@@ -36,4 +37,3 @@ io.on('connection', socket => {
 http.listen(port, () => {
   console.log('listening on *:' + port);
 });
-
