@@ -1,9 +1,19 @@
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
-console.log(URL, TELEGRAM_API_TOKEN, PASSWORD);
-
+let SOCKET = null;
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 const localStorage = require('./modules/localStorage')();
+
+const dateMessage = () => {
+  let date = new Date();
+  return date.getDate() +'-'+ date.getMonth() +'-'+ date.getFullYear() +','+ date.getHours()+':'+date.getMinutes();
+} 
+
+//localStorage.getItem(id)
+// firsDatabaseInitialization()
+//     .then(res => {
+      
+//     })
 
 const express = require('express'),
       app = express(),
@@ -28,15 +38,27 @@ http.listen(PORT, () => {
 });
 
 io.on('connection', socket => {
+  SOCKET = socket;
   console.log('A user connected');
-  socket.on('disconnect', function () {
-      console.log('A user disconnected');
-  });
-  socket.on('message', message => {
-    console.log(message)
-    console.log(socket.id)
-    // socket.send(socket.id, 'Sent a message 4seconds after connection!');
-    // socket.emit(`[${socket.id}]: ${message}`)
-    // socket.broadcast.emit(`[${socket.id}]: ${message}`)
-  })
+})
+
+SOCKET.on('disconnect', function () {
+  console.log('A user disconnected');
+});
+SOCKET.on('message', message => {
+localStorage.setItem('current_visitor_id', socket.id);
+console.log(message)
+console.log(socket.id)
+//!bot.sendMessage(chatId, 'Received your message'); откуда взять chatId??
+// socket.send(socket.id, 'Sent a message 4seconds after connection!');
+// socket.emit(`[${socket.id}]: ${message}`)
+// socket.broadcast.emit(`[${socket.id}]: ${message}`)
+})
+
+bot.on('message', (message) => {
+  const {chat, date, text} = message;
+  const {first_name, last_name, username}  = chat;
+  const id = localStorage.setItem('current_visitor_id');
+  const messages = JSON.stringify({ id, type: 'to', text: message, date: dateMessage(), serverAccepted: false, botAccepted: false });
+  SOCKET.send(id, messages);
 })
