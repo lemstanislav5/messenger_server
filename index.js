@@ -1,5 +1,9 @@
-// //!Шифрование Диффи-Хеллмана на JavaScript https://roscenzura.com/threads/1173/
-// //ТУТОРИАЛ https://socket.io/docs/v3/emit-cheatsheet/
+const TelegramBot = require('node-telegram-bot-api');
+const TELEGRAM_API_TOKEN = '5125888850:AAEmdLUNHNSFWahk6G1xZRuF1apv9lfcGIY';
+const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
+const localStorage = require('./modules/localStorage')();
+const PASSWORD = '555666';
+
 const port = 4000;
 const express = require('express'),
       app = express(),
