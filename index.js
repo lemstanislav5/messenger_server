@@ -1,8 +1,8 @@
 const TelegramBot = require('node-telegram-bot-api');
-const TELEGRAM_API_TOKEN = '5125888850:AAEmdLUNHNSFWahk6G1xZRuF1apv9lfcGIY';
+const TELEGRAM_API_TOKEN = '';
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 const localStorage = require('./modules/localStorage')();
-const PASSWORD = '555666';
+const PASSWORD = '';
 
 const port = 4000;
 const express = require('express'),
