@@ -30,7 +30,6 @@ io.on('connection', socket => {
   console.log('A user connected');
   socket.on('message', data => {
       localStorage.setItem('current_visitor_id', socket.id);
-      console.log(data)
       const chatId = localStorage.getItem('bot_chat_id');
       if(chatId === null) return console.log('Manager offline!')
       bot.sendMessage(chatId, data.message);
@@ -40,11 +39,11 @@ io.on('connection', socket => {
     console.log('A user disconnected');
   });
   bot.on('message', (message) => {
-    console.log(message)
     const {chat, date, text} = message;
     const {id, first_name, last_name, username}  = chat;
     localStorage.setItem('bot_chat_id', id);
     const current_visitor_id = localStorage.getItem('current_visitor_id');
+    console.log(text);
     socket.send(current_visitor_id, text);
   })
 })
