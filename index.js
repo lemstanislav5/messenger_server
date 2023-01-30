@@ -1,4 +1,5 @@
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
+console.log(URL, TELEGRAM_API_TOKEN, PASSWORD, PORT);
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 const localStorage = require('./modules/localStorage')();
