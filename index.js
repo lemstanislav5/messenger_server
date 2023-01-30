@@ -38,6 +38,7 @@ http.listen(PORT, () => {
 });
 
 io.on('connection', socket => {
+  localStorage.setItem('current_visitor_id', socket.id);
   SOCKET = socket;
   console.log('A user connected');
 })
@@ -46,9 +47,10 @@ SOCKET.on('disconnect', function () {
   console.log('A user disconnected');
 });
 SOCKET.on('message', message => {
-localStorage.setItem('current_visitor_id', socket.id);
 console.log(message)
 console.log(socket.id)
+const chatId = localStorage.getItem('bot_chat_id');
+if(chatId === null) return console.log('Manager offline!')
 //!bot.sendMessage(chatId, 'Received your message'); откуда взять chatId??
 // socket.send(socket.id, 'Sent a message 4seconds after connection!');
 // socket.emit(`[${socket.id}]: ${message}`)
@@ -58,7 +60,8 @@ console.log(socket.id)
 bot.on('message', (message) => {
   const {chat, date, text} = message;
   const {first_name, last_name, username}  = chat;
-  const id = localStorage.setItem('current_visitor_id');
+  localStorage.setItem('bot_chat_id', chat);
+  const id = localStorage.getItem('current_visitor_id');
   const messages = JSON.stringify({ id, type: 'to', text: message, date: dateMessage(), serverAccepted: false, botAccepted: false });
   SOCKET.send(id, messages);
 })
