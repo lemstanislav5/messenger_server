@@ -33,7 +33,7 @@ io.on('connection', socket => {
       console.log(data)
       const chatId = localStorage.getItem('bot_chat_id');
       if(chatId === null) return console.log('Manager offline!')
-      bot.sendMessage(chatId, data.message);
+      bot.sendMessage(chatId, data.text);
       // socket.send(socket.id, 'Sent a message 4seconds after connection!');
       // socket.emit(`[${socket.id}]: ${message}`)
       // socket.broadcast.emit(`[${socket.id}]: ${message}`)
