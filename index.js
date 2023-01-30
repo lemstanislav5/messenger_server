@@ -34,9 +34,7 @@ io.on('connection', socket => {
       const chatId = localStorage.getItem('bot_chat_id');
       if(chatId === null) return console.log('Manager offline!')
       bot.sendMessage(chatId, data.text);
-      // socket.send(socket.id, 'Sent a message 4seconds after connection!');
-      // socket.emit(`[${socket.id}]: ${message}`)
-      // socket.broadcast.emit(`[${socket.id}]: ${message}`)
+      // socket.emit(`[${socket.id}]: ${message}`) OR socket.broadcast.emit(`[${socket.id}]: ${message}`)
   });
   socket.on('disconnect', () => {
     console.log('A user disconnected');
