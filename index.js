@@ -28,7 +28,7 @@ http.listen(PORT, () => {
 
 io.on('connection', socket => {
   console.log('A user connected');
-  socket.on('message', data => {
+  socket.on('new message', data => {
       localStorage.setItem('current_visitor_id', socket.id);
       const chatId = localStorage.getItem('bot_chat_id');
       if(chatId === null) return console.log('Manager offline!')
@@ -38,7 +38,7 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
-  bot.on('message', (message) => {
+  bot.on('new message', (message) => {
     const {chat, date, text} = message;
     const {id, first_name, last_name, username}  = chat;
     localStorage.setItem('bot_chat_id', id);
