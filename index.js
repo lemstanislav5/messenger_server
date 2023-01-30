@@ -44,6 +44,6 @@ io.on('connection', socket => {
     localStorage.setItem('bot_chat_id', id);
     const current_visitor_id = localStorage.getItem('current_visitor_id');
     console.log(text);
-    socket.send(current_visitor_id, text);
+    socket.send(current_visitor_id, 'text');
   })
 })
