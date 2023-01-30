@@ -15,10 +15,10 @@ app.use(express.json())
    .use(express.urlencoded({ extended: true }))
    .use(express.static('static'))
    .use('/api', routes)
-   .use('/index.html', (req, res) => res.sendFile(__dirname + '/index.html'))
-   .get('/', (req, res) => res.send('<h2>Тестовый сайт на node js</h2>'));
+   .use('/index.html', (req, res) => {res.sendFile(__dirname + '/index.html')})
+   .get('/', (req, res) => {res.send('<h2>Тестовый сайт на node js</h2>')});
 
-http.listen(PORT, () => console.log('listening on *:' + PORT));
+http.listen(PORT, () => {console.log('listening on *:' + PORT)});
 
 io.on('connection', socket => {
   let user = users.find(item => item.id === socket);
