@@ -19,23 +19,21 @@ app.use('/api', routes);
 app.use('/index.html', (req, res) => {
     res.sendFile(__dirname + '/index.html');//!BUILD CLIENT
 })
-app.get('/', (req, res) => {
-  res.send('Тест');
-});
+app.get('/', (req, res) => { res.send('Тест') });
 
 http.listen(PORT, () => {
   console.log('listening on *:' + PORT);
 });
 
 io.on('connection', socket => {
-  let user = users.find(item => item.id === socket);
-  if(user === undefined) [...users, {id:'test_hash', name: '', email: ''}];
+  let user = users.find(item => item.socketId === socket);
+  if(user === undefined) [...users, {socketId: socket.id, name: '', email: ''}];
   console.log('A user connected');
   socket.on('new message', data => {
     localStorage.setItem('socketId', socket.id);
     const chatId = localStorage.getItem('bot_chat_id');
     if(chatId === null) return console.log('Manager offline!')
-    bot.sendMessage(chatId, data.message);
+    bot.sendMessage(chatId, socket.id + '\n' + data.message);
   });
   socket.on('disconnect', () => console.log('A user disconnected'));
 });
@@ -44,5 +42,5 @@ bot.on('message', (message) => {
   const {id, first_name, last_name, username}  = chat;
   localStorage.setItem('bot_chat_id', id);
   const socketId = localStorage.getItem('socketId');
-  io.to(socketId).emit('new message', socketId + '\n' + text);
+  io.to(socketId).emit('new message', text);
 });
