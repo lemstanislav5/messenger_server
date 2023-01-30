@@ -42,10 +42,8 @@ io.on('connection', socket => {
     const {chat, date, text} = message;
     const {id, first_name, last_name, username}  = chat;
     localStorage.setItem('bot_chat_id', id);
-    const to = localStorage.getItem('current_visitor_id');
-    console.log(text, current_visitor_id);
-    socket.emit('new message', text);
-    console.log(socket)
+    const socketId = localStorage.getItem('current_visitor_id');
+    io.to(socketId).emit('new message', 'text');
     //socket.send(current_visitor_id);
   })
 })
