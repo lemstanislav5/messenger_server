@@ -17,9 +17,9 @@ app.use(express.static('static'));
 
 app.use('/api', routes);
 app.use('/index.html', (req, res) => {
-    res.sendFile(__dirname + '/index.html');//!BUILD CLIENT
+    res.sendFile(__dirname + '/index.html');
 })
-app.get('/', (req, res) => { res.send('Тест') });
+app.get('/', (req, res) => { res.send('Тестовый сайт на node js') });
 
 http.listen(PORT, () => {
   console.log('listening on *:' + PORT);
@@ -30,10 +30,12 @@ io.on('connection', socket => {
   if(user === undefined) [...users, {socketId: socket.id, name: '', email: ''}];
   console.log('A user connected');
   socket.on('new message', data => {
+    let user = users.find(item => item.socketId === socket);
+    let name = (user.name === '') ? 'user[' + users.indexOf(res) + 1 + ']: ' : user.name:
     localStorage.setItem('socketId', socket.id);
     const chatId = localStorage.getItem('bot_chat_id');
     if(chatId === null) return console.log('Manager offline!')
-    bot.sendMessage(chatId, socket.id + '\n' + data.message);
+    bot.sendMessage(chatId, name + '\n' + data.message);
   });
   socket.on('disconnect', () => console.log('A user disconnected'));
 });
