@@ -30,7 +30,7 @@ io.on('connection', socket => {
   console.log('A user connected');
   socket.on('message', data => {
       localStorage.setItem('current_visitor_id', socket.id);
-      console.log(socket.id)
+      console.log(data)
       const chatId = localStorage.getItem('bot_chat_id');
       if(chatId === null) return console.log('Manager offline!')
       bot.sendMessage(chatId, data.message);
