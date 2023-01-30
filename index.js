@@ -34,7 +34,7 @@ io.on('connection', socket => {
     //Ищем пользователя по socketId в массиве users
     let user = users.find(item => item.socketId === socket.id);
     //Если пользователь предтставился указываем его имя, в противном случае идентификатор сокета
-    let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : '`user unknown`\n[socketId' + socket.id + ']';
+    let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'user unknown\n[socketId' + socket.id + ']';
     localStorage.setItem('socketId', socket.id);
     const chatId = localStorage.getItem('bot_chat_id');
     if(chatId === null) return console.log('Manager offline!')
