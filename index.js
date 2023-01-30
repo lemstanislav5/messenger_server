@@ -19,7 +19,7 @@ app.use('/index.html', (req, res) => {
     res.sendFile(__dirname + '/index.html');//!BUILD CLIENT
 })
 app.get('/', (req, res) => {
-  res.send('Тест');
+  res.send('<h2>Тестовый сайт на node js</h2>');
 });
 
 http.listen(PORT, () => {
