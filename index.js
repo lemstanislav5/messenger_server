@@ -18,32 +18,24 @@ app.use('/api', routes);
 app.use('/index.html', (req, res) => {
     res.sendFile(__dirname + '/index.html');//!BUILD CLIENT
 })
-app.get('/', (req, res) => {
-  res.send('<h2>Тестовый сайт на node js</h2>');
-});
+app.get('/', (req, res) => res.send('<h2>Тестовый сайт на node js</h2>'));
 
-http.listen(PORT, () => {
-  console.log('listening on *:' + PORT);
-});
+http.listen(PORT, () => console.log('listening on *:' + PORT));
 
 io.on('connection', socket => {
   console.log('A user connected');
   socket.on('new message', data => {
-      localStorage.setItem('current_visitor_id', socket.id);
-      const chatId = localStorage.getItem('bot_chat_id');
-      if(chatId === null) return console.log('Manager offline!')
-      bot.sendMessage(chatId, data.message);
-      // socket.emit(`[${socket.id}]: ${message}`) OR socket.broadcast.emit(`[${socket.id}]: ${message}`)
+    localStorage.setItem('current_visitor_id', socket.id);
+    const chatId = localStorage.getItem('bot_chat_id');
+    if(chatId === null) return console.log('Manager offline!')
+    bot.sendMessage(chatId, data.message);
   });
-  socket.on('disconnect', () => {
-    console.log('A user disconnected');
-  });
-  bot.on('message', (message) => {
-    const {chat, date, text} = message;
-    const {id, first_name, last_name, username}  = chat;
-    localStorage.setItem('bot_chat_id', id);
-    const socketId = localStorage.getItem('current_visitor_id');
-    io.to(socketId).emit('new message', 'text');
-    //socket.send(current_visitor_id);
-  })
+  socket.on('disconnect', () => console.log('A user disconnected'));
+});
+bot.on('message', (message) => {
+  const {chat, date, text} = message;
+  const {id, first_name, last_name, username}  = chat;
+  localStorage.setItem('bot_chat_id', id);
+  const socketId = localStorage.getItem('current_visitor_id');
+  io.to(socketId).emit('new message', text);
 })
