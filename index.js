@@ -31,6 +31,7 @@ io.on('connection', socket => {
   console.log('A user connected');
   socket.on('new message', data => {
     let user = users.find(item => item.socketId === socket);
+        debugger
     let name = (user.name === '') ? 'user[' + users.indexOf(res) + 1 + ']: ' : user.name;
     localStorage.setItem('socketId', socket.id);
     const chatId = localStorage.getItem('bot_chat_id');
