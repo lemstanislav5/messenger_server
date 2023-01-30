@@ -38,12 +38,12 @@ io.on('connection', socket => {
   socket.on('disconnect', () => {
     console.log('A user disconnected');
   });
-  bot.on('new message', (message) => {
+  bot.on('message', (message) => {
     const {chat, date, text} = message;
     const {id, first_name, last_name, username}  = chat;
     localStorage.setItem('bot_chat_id', id);
     const current_visitor_id = localStorage.getItem('current_visitor_id');
     console.log(text);
-    socket.send(current_visitor_id, 'text');
+    socket.send('new message', text);
   })
 })
