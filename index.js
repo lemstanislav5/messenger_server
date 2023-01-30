@@ -10,14 +10,21 @@ const express = require('express'),
       routes = require('./routes/index'),
       users = [];
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(express.static('static'));
-app.use('/api', routes);
-app.use('/index.html', (req, res) => {res.sendFile(__dirname + '/index.html')});
-app.get('/', (req, res) => {res.send('<h2>Тестовый сайт на node js</h2>')});
 
-http.listen(PORT, () => {console.log('listening on *:' + PORT)});
+app.use('/api', routes);
+app.use('/index.html', (req, res) => {
+    res.sendFile(__dirname + '/index.html');//!BUILD CLIENT
+})
+app.get('/', (req, res) => {
+  res.send('Тест');
+});
+
+http.listen(PORT, () => {
+  console.log('listening on *:' + PORT);
+});
 
 io.on('connection', socket => {
   let user = users.find(item => item.id === socket);
