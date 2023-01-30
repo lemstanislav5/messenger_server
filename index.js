@@ -55,12 +55,12 @@ io.on('connection', socket => {
   });
   bot.on('message', (message) => {
     console.log(message)
-//     const {chat, date, text} = message;
-//     const {id, first_name, last_name, username}  = chat;
-//     localStorage.setItem('bot_chat_id', chat);
-//     const current_visitor_id = localStorage.getItem('current_visitor_id');
-//     console.log(id, current_visitor_id);
-//     const messages = JSON.stringify({ current_visitor_id, type: 'to', text: text, date: dateMessage(), serverAccepted: false, botAccepted: false });
-//     socket.send(id, messages);
+    const {chat, date, text} = message;
+    const {id, first_name, last_name, username}  = chat;
+    localStorage.setItem('bot_chat_id', id);
+    const current_visitor_id = localStorage.getItem('current_visitor_id');
+    console.log(id, current_visitor_id);
+    const messages = JSON.stringify({ current_visitor_id, type: 'to', text: text, date: dateMessage(), serverAccepted: false, botAccepted: false });
+    socket.send(id, messages);
   })
 })
