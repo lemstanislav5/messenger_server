@@ -11,15 +11,15 @@ const express = require('express'),
       routes = require('./routes/index');
 
 let users = [];
-
+bot.setMyCommands([
+  {command: '/start', description: 'Старт/Меню'},
+  {command: '/visitor list', description: 'Список посетителей'}, //!ЗАПРОСЫ НА ПОЛУЧЕНИЕ СООБЩЕНИЙ
+  {command: '/options', description: 'Настройки'}, //!ЗАПРОСЫ НА ПОЛУЧЕНИЕ СООБЩЕНИЙ
+]);
 app.use(express.json())
    .use(express.urlencoded({ extended: true }))
    .use(express.static('static'))
-   .use('/api', routes)
-   .use('/index.html', (req, res) => {
-     res.sendFile(__dirname + '/index.html');
-   })
-   .get('/', (req, res) => { res.send('Тестовый сайт на node js') });
+   .use('/api', routes); //!ЗАПРОСЫ НА ПОЛУЧЕНИЕ СООБЩЕНИЙ
 
 http.listen(PORT, () => {
   console.log('listening on *:' + PORT);
@@ -28,7 +28,7 @@ http.listen(PORT, () => {
 io.on('connection', socket => {
   //Ищем пользователя по socketId в массиве users
   let user = users.find(item => item.socketId === socket.id);
-  // Добавить пользователя в массив 
+  // Добавить пользователя в массив
   if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
   console.log('A user connected');
   socket.on('new message', data => {
