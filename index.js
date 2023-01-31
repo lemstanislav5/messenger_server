@@ -8,8 +8,9 @@ const express = require('express'),
       app = express(),
       http = require('http').Server(app),
       io = require('socket.io')(http),
-      routes = require('./routes/index'),
-      users = [];
+      routes = require('./routes/index');
+
+let users = [];
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
