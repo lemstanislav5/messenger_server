@@ -44,10 +44,9 @@ io.on('connection', socket => {
   // Добавить пользователя в массив
   if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
   console.log('A user connected');
-  console.log(user);
   socket.on('new message', data => {
     let user = users.find(item => item.socketId === socket.id);
-    console.log(user);
+    console.log(user, data);
     let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'USER\n[' + users.indexOf(user) + ']';
     localStorage.setItem('socketId', socket.id);
     const chatId = localStorage.getItem('bot_chat_id');
