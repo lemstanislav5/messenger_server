@@ -22,17 +22,17 @@ const express = require('express'),
       routes = require('./routes/index');
 
 let users = [];
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static('static'));
+// app.use(express.json())
+// app.use(express.urlencoded({ extended: true }))
+// app.use(express.static('static'));
 
-app.use('/api', routes);
-app.use('/index.html', (req, res) => {
-    res.sendFile(__dirname + '/index.html');//!BUILD CLIENT
-})
-app.get('/', (req, res) => {
-  res.send('Тест');
-});
+// app.use('/api', routes);
+// app.use('/index.html', (req, res) => {
+//     res.sendFile(__dirname + '/index.html');//!BUILD CLIENT
+// })
+// app.get('/', (req, res) => {
+//   res.send('Тест');
+// });
 
 http.listen(PORT, () => {
   console.log('listening on *:' + PORT);
