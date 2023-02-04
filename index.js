@@ -15,10 +15,10 @@ bot.setMyCommands([
   {command: '/start', description: 'Старт/Меню'},
   {command: '/visitor list', description: 'Список посетителей'}, 
 ]);
-// app.use(express.json())
-//    .use(express.urlencoded({ extended: true }))
-//    .use(express.static('static'))
-//    .use('/api', routes); 
+app.use(express.json())
+   .use(express.urlencoded({ extended: true }))
+   .use(express.static('static'))
+   .use('/api', routes); 
 
 http.listen(PORT, () => {
   console.log('listening on *:' + PORT);
