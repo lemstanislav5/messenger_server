@@ -13,13 +13,12 @@ const express = require('express'),
 let users = [];
 bot.setMyCommands([
   {command: '/start', description: 'Старт/Меню'},
-  {command: '/visitor list', description: 'Список посетителей'}, //!ЗАПРОСЫ НА ПОЛУЧЕНИЕ СООБЩЕНИЙ
-  {command: '/options', description: 'Настройки'}, //!ЗАПРОСЫ НА ПОЛУЧЕНИЕ СООБЩЕНИЙ
+  {command: '/visitor list', description: 'Список посетителей'}, 
 ]);
-app.use(express.json())
-   .use(express.urlencoded({ extended: true }))
-   .use(express.static('static'))
-   .use('/api', routes); //!ЗАПРОСЫ НА ПОЛУЧЕНИЕ СООБЩЕНИЙ
+// app.use(express.json())
+//    .use(express.urlencoded({ extended: true }))
+//    .use(express.static('static'))
+//    .use('/api', routes); 
 
 http.listen(PORT, () => {
   console.log('listening on *:' + PORT);
@@ -35,7 +34,7 @@ io.on('connection', socket => {
     //Ищем пользователя по socketId в массиве users
     let user = users.find(item => item.socketId === socket.id);
     //Если пользователь предтставился указываем его имя, в противном случае идентификатор сокета
-    let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'user unknown\n[socketId' + socket.id + ']';
+    let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'UESR\n[' + users.indexOf(user) + ']';
     localStorage.setItem('socketId', socket.id);
     const chatId = localStorage.getItem('bot_chat_id');
     if(chatId === null) return console.log('Manager offline!')
@@ -52,9 +51,12 @@ io.on('connection', socket => {
   });
 });
 bot.on('message', (message) => {
-  const {chat, date, text} = message;
-  const {id, first_name, last_name, username}  = chat;
+  const {chat, text} = message;
+  const {id}  = chat;
   localStorage.setItem('bot_chat_id', id);
   const socketId = localStorage.getItem('socketId');
   io.to(socketId).emit('new message', text);
 });
+//! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
+
+//! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
