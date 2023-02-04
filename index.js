@@ -21,6 +21,7 @@ const express = require('express'),
       io = require('socket.io')(http),
       routes = require('./routes/index');
 
+let users = [];
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('static'));
@@ -38,27 +39,36 @@ http.listen(PORT, () => {
 });
 
 io.on('connection', socket => {
-  SOCKET = socket;
+  //Ищем пользователя по socketId в массиве users
+  let user = users.find(item => item.socketId === socket.id);
+  // Добавить пользователя в массив 
+  // Добавить пользователя в массив
+  if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
   console.log('A user connected');
-})
+  socket.on('new message', message => {
+    let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'UESR\n[' + users.indexOf(user) + ']';
+    localStorage.setItem('socketId', socket.id);
+    const chatId = localStorage.getItem('bot_chat_id');
+    if(chatId === null) return console.log('Manager offline!')
+    bot.sendMessage(chatId, name + '\n' + data.message);
+  });
+  socket.on('disconnect', () => {
+    //Ищем пользователя по socketId в массиве users
+    let user = users.find(item => item.socketId === socket.id);
+    //Определям индекс пользователя
+    let index = users.indexOf(user);
+    //Удаляем пользователя из массива
+    users.splice(1, index);
+    console.log('A user disconnected')
+  });
+    
 
-SOCKET.on('disconnect', function () {
-  console.log('A user disconnected');
-});
-SOCKET.on('message', message => {
-localStorage.setItem('current_visitor_id', socket.id);
-console.log(message)
-console.log(socket.id)
-//!bot.sendMessage(chatId, 'Received your message'); откуда взять chatId??
-// socket.send(socket.id, 'Sent a message 4seconds after connection!');
-// socket.emit(`[${socket.id}]: ${message}`)
-// socket.broadcast.emit(`[${socket.id}]: ${message}`)
 })
 
 bot.on('message', (message) => {
   const {chat, date, text} = message;
-  const {first_name, last_name, username}  = chat;
-  const id = localStorage.setItem('current_visitor_id');
-  const messages = JSON.stringify({ id, type: 'to', text: message, date: dateMessage(), serverAccepted: false, botAccepted: false });
-  SOCKET.send(id, messages);
-})
+  const {id, first_name, last_name, username}  = chat;
+  localStorage.setItem('bot_chat_id', id);
+  const socketId = localStorage.getItem('socketId');
+  io.to(socketId).emit('new message', text);
+});
