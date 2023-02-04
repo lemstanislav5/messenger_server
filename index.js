@@ -9,12 +9,6 @@ const dateMessage = () => {
   return date.getDate() +'-'+ date.getMonth() +'-'+ date.getFullYear() +','+ date.getHours()+':'+date.getMinutes();
 } 
 
-//localStorage.getItem(id)
-// firsDatabaseInitialization()
-//     .then(res => {
-      
-//     })
-
 const express = require('express'),
       app = express(),
       http = require('http').Server(app),
@@ -22,29 +16,16 @@ const express = require('express'),
       routes = require('./routes/index');
 
 let users = [];
-// app.use(express.json())
-// app.use(express.urlencoded({ extended: true }))
-// app.use(express.static('static'));
-
-// app.use('/api', routes);
-// app.use('/index.html', (req, res) => {
-//     res.sendFile(__dirname + '/index.html');//!BUILD CLIENT
-// })
-// app.get('/', (req, res) => {
-//   res.send('Тест');
-// });
-
-http.listen(PORT, () => {
-  console.log('listening on *:' + PORT);
-});
-
+http.listen(PORT, () => console.log('listening on *:' + PORT));
+//------------------------------------------ ВЫДЕЛЕННЫЕ ФРАГМЕНТЫ ЗАМЕНИТЬ НА SQLITE 3
 io.on('connection', socket => {
-  //Ищем пользователя по socketId в массиве users
+  //!Ищем пользователя по socketId в массиве users
   let user = users.find(item => item.socketId === socket.id);
-  // Добавить пользователя в массив
+  //!Добавить пользователя в массив
   if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
   console.log('A user connected');
   socket.on('new message', data => {
+    //!Ищем пользователя по socketId в массиве users
     let user = users.find(item => item.socketId === socket.id);
     console.log(user, data);
     let name = (user === undefined || user.name !== undefined || user.name !== '') ? 'USER\n[' + users.indexOf(user) + ']' : user.name;
@@ -54,11 +35,11 @@ io.on('connection', socket => {
     bot.sendMessage(chatId, name + '\n' + data.message);
   });
   socket.on('disconnect', () => {
-    //Ищем пользователя по socketId в массиве users
+    //!Ищем пользователя по socketId в массиве users
     let user = users.find(item => item.socketId === socket.id);
-    //Определям индекс пользователя
+    //!Определям индекс пользователя
     let index = users.indexOf(user);
-    //Удаляем пользователя из массива
+    //!Удаляем пользователя из массива
     users.splice(1, index);
     console.log('A user disconnected')
   });
@@ -73,3 +54,5 @@ bot.on('message', (message) => {
   const socketId = localStorage.getItem('socketId');
   io.to(socketId).emit('new message', text);
 });
+//! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
+//! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
