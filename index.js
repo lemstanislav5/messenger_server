@@ -45,7 +45,7 @@ io.on('connection', socket => {
   if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
   console.log('A user connected');
   console.log(user);
-  socket.on('new message', message => {
+  socket.on('new message', data => {
     let user = users.find(item => item.socketId === socket.id);
     console.log(user);
     let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'USER\n[' + users.indexOf(user) + ']';
