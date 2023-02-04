@@ -46,6 +46,7 @@ io.on('connection', socket => {
   console.log('A user connected');
   console.log(user);
   socket.on('new message', message => {
+    let user = users.find(item => item.socketId === socket.id);
     console.log(user);
     let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'USER\n[' + users.indexOf(user) + ']';
     localStorage.setItem('socketId', socket.id);
