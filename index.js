@@ -41,12 +41,13 @@ http.listen(PORT, () => {
 io.on('connection', socket => {
   //Ищем пользователя по socketId в массиве users
   let user = users.find(item => item.socketId === socket.id);
-  // Добавить пользователя в массив 
   // Добавить пользователя в массив
   if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
   console.log('A user connected');
+  console.log(user);
   socket.on('new message', message => {
-    let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'UESR\n[' + users.indexOf(user) + ']';
+    console.log(user);
+    let name = (user === undefined && user.name !== undefined && user.name !== '') ? user.name : 'USER\n[' + users.indexOf(user) + ']';
     localStorage.setItem('socketId', socket.id);
     const chatId = localStorage.getItem('bot_chat_id');
     if(chatId === null) return console.log('Manager offline!')
