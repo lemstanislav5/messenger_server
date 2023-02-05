@@ -4,7 +4,7 @@ const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 
 const localStorage = require('./modules/localStorage')();
-const { databaseInitialization, addUser, findUser, addMessage, updateSocketId } = require('./database/api');
+const { databaseInitialization, addUser, findUser, addMessage, updateSocketId, addManager } = require('./database/api');
 databaseInitialization()
   .then(() => console.log('databse is created'))
   .catch(err =>  console.log(err));
@@ -69,8 +69,13 @@ io.on('connection', socket => {
 
 bot.on('message', (message) => {
   console.log(message)
-  // const {chat, date, text} = message;
-  // const {id, first_name, last_name, username}  = chat;
+  const {chat, date, text} = message;
+  const {id, first_name, last_name, username}  = chat;
+  if(text === '/start'){
+    addManager(managerId = id)
+      .then(() => console.log('Add manager'))
+      .catch(err => console.log(err));
+  }
   // localStorage.setItem('bot_chat_id', id);
   // const socketId = localStorage.getItem('socketId');
   // io.to(socketId).emit('new message', text);
