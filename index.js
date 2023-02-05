@@ -12,8 +12,7 @@ const dateMessage = () => {
 const express = require('express'),
       app = express(),
       http = require('http').Server(app),
-      io = require('socket.io')(http),
-      routes = require('./routes/index');
+      io = require('socket.io')(http);
 
 let users = [];
 http.listen(PORT, () => console.log('listening on *:' + PORT));
