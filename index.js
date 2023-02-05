@@ -3,6 +3,10 @@ let SOCKET = null;
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 const localStorage = require('./modules/localStorage')();
+const { databaseInitialization } = require('./database/api');
+databaseInitialization()
+  .then(res => console.log(8, res))
+  .catch(err =  console.log(9, err));
 
 const dateMessage = () => {
   let date = new Date();
