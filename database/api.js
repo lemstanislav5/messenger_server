@@ -23,16 +23,8 @@ module.exports = {
             query('logs.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT,`socketId` TEXT, `messageId` TEXT, `text` TEXT, `time`  INTEGER)"),
         ])
     },
-    // БЕЗ IP-адреса и времени соединения
-    addUser: (chatId, socketId) => {
-        return query('data.db3', 'run', 'INSERT INTO users (chatId, socketId) values ("' + chatId + '","' + socketId + '")', []);
-    },
-    addMessage: (chatId, socketId, messageId, text, time) => {
-        return query('data.db3', 'run', 'INSERT INTO users (chatId, socketId, messageId, text, time) values ("' +
-        chatId + '","' + socketId + '","' + messageId + '","' + text + '","' + time + '")', []);
-    },
-    findUser: (chatId) => {
-        return query('data.db3', 'all', 'SELECT * FROM users WHERE chatId = "' + chatId + '"', [])
-            .then(res=>{ return res });
-    }
+    addUser: (chatId, socketId) => (query('data.db3', 'run', 'INSERT INTO users (chatId, socketId) values ("' + chatId + '","' + socketId + '")', [])),
+    addMessage: (chatId, socketId, messageId, text, time) => (query('data.db3', 'run', 'INSERT INTO users (chatId, socketId, messageId, text, time) values ("' +
+    chatId + '","' + socketId + '","' + messageId + '","' + text + '","' + time + '")', [])),
+    findUser: (chatId) => (query('data.db3', 'all', 'SELECT * FROM users WHERE chatId = "' + chatId + '"', []))
 }

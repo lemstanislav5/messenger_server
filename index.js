@@ -32,6 +32,9 @@ io.on('connection', socket => {
     findUser(chatId)
       .then(res => {
         console.log(res);
+        if(res.length === 0) return addUser(chatId, socketId)
+      }).then(res => {
+        console.log(res);
       })
       .catch(err =>  console.log(err));
     //!Ищем пользователя по socketId в массиве users
