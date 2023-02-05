@@ -15,23 +15,32 @@ const query = (file, req, sql, params = []) => {
         });
     });
 }
-//! ошибка:  Error: SQLITE_BUSY: database is locked
-//? При использовании функции "query" в цикле "forEach" возникает указанная ошибка поътому в функциях "addOrganizations" и "addExtremistMaterial" осталась старая реализация
 
 module.exports = {
     firsDatabaseInitialization: () => {
         return Promise.all([
             // таблица пользователей
-            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` TEXT, `name` TEXT, `email` TEXT, `phone` TEXT, `access` INTEGER)"),
+            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `socketId` TEXT, `name` TEXT, `email` TEXT, `phone` TEXT)"),
             // таблица сообщений
-            query('logs.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `user_id` TEXT, `message_id` TEXT, `text` TEXT, `time`  INTEGER)"),
+            query('logs.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `socketId` TEXT,, `message_id` TEXT, `text` TEXT, `time`  INTEGER)"),
         ])
+    },
+    addUser: (user_id, first_name, last_name, access) => {
+        return query('data.db3', 'run', 'INSERT INTO users (user_id, first_name, last_name,access) values ("' +
+            user_id + '","' + first_name + '","' + last_name + '",' + access + ')', []);
+    },
+    addMessage: (user_id, first_name, last_name, access) => {
+        return query('data.db3', 'run', 'INSERT INTO users (user_id, first_name, last_name,access) values ("' +
+            user_id + '","' + first_name + '","' + last_name + '",' + access + ')', []);
+    },
+    findUser: (user) => {
+        return query('data.db3', 'all', 'SELECT * FROM users WHERE content LIKE ?', ['%' + str + '%'])
+            .then(res=>{ return res });
     },
     messagesLogging: ({id, first_name, last_name, username, date, text}) => {
         return query('logs.db3', 'run', "INSERT INTO `messages` (`user_id`, `first_name`, `last_name`, `username`, `date`, `text`) VALUES('"+
                 id +"', '"+ first_name +"', '"+ last_name +"', '"+ username +"', '"+ date +"', '"+ text +"')");
     },
-    //! ИЗМЕНИТЬ ДАННЫЕ ФУНКЦИИ eventsLogging она скопирована с messagesLogging без изменения параметров
     eventsLogging: ({id, first_name, last_name, username, date, text}) => {
         return query('logs.db3', 'run', "INSERT INTO `events` (`name`, `status`, `result` TEXT, `date`) VALUES('"+
                 id +"', '"+ first_name +"', '"+ last_name +"', '"+ username +"', '"+ date +"', '"+ text +"')");
@@ -48,69 +57,7 @@ module.exports = {
         return query('data.db3', 'get', "INSERT INTO `updates`  (`material`, `time`) VALUES('"+ material +"', '"+ time +"')", [])
             .then(res=>{ return true });
     },
-    addExtremistMaterial: (items) => {
-        //! Сократить функцию, убрать промис, задебажить ошибки
-        const db = new sqlite3.Database('data.db3');
-        return new Promise((resolve, reject) => {
-            try {
-                db.run('DELETE FROM `extremist_materials`', (err) => {
-                    if(err) return;
-                    console.log("DELETE FROM `extremist_materials`is done");
-
-                    items.forEach((currentValue, index) => {
-                        let { title, link, pubDate, content, contentSnippet, guid, isoDate } = currentValue;
-                        db.run('INSERT INTO `extremist_materials` (`title`, `link`, `pubDate`, `content`, `contentSnippet`, `guid`, `isoDate`) VALUES (?,?,?,?,?,?,?)',
-                          [
-                            title === undefined? '' : title,
-                            link === undefined? '' : link,
-                            pubDate === undefined? '' : pubDate,
-                            content === undefined? '' : content,
-                            contentSnippet === undefined? '' : contentSnippet,
-                            guid === undefined? '' : guid,
-                            isoDate === undefined? '' : isoDate
-                          ],
-                          (err,results) => {
-                            if (err) console.log('ошибка: ', err);
-                            if(index === items.length-1){
-                                console.log(items.length + '/' + index);
-                                resolve(true);
-                            }
-                          });
-                      });
-                });
-            } catch (error) {
-                console.log(`Error With Select ALL(): \r\n ${error}`)
-                reject();
-            }
-        });
-    },
-    addOrganizations: (items, organizations) => {
-        //! Сократить функцию, убрать промис, задебажить ошибки
-        const db = new sqlite3.Database('data.db3');
-        return new Promise((resolve, reject) => {
-            try {
-                db.run('DELETE FROM `' + organizations + '`', (err) => {
-                    if(err) return;
-                    console.log('DELETE FROM `' + organizations + '`is done');
-                    items.forEach((currentValue, index) => {
-                        if(currentValue !== undefined){
-                            db.run('INSERT INTO `' + organizations + '` (`content`) VALUES (?)',
-                            [currentValue.replaceAll('&nbsp;', ' ').replaceAll('&laquo;', ' ').replaceAll('&raquo;', ' ')],
-                            (err,results) => {
-                                if (err) console.log('ошибка: ', err);
-                                if(index === items.length-1){
-                                    console.log(items.length + '/' + index);
-                                    resolve(true);
-                                }
-                            });
-                        }
-                      });
-                });
-            } catch (error) {
-                reject(console.log(`Error With Select ALL(): \r\n ${error}`));
-            }
-        });
-    },
+    
     findMaterials: (str) => {
         //!'Badroom'.toLowerCase() === 'Badroom' ВОЗМОЖНО ПЕРЕДЕЛАТЬ ФУНКЦИЮ С ДОБАВЛЕНИЕМ ВТОРОГО ЗАПРОСА, УЧИТЫВАЮЩЕГО РЕГИСТР
         return query('data.db3', 'all', 'SELECT * FROM extremist_materials WHERE content LIKE ?', ['%' + str + '%'])
