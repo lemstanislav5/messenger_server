@@ -32,7 +32,7 @@ module.exports = {
         chatId + '","' + socketId + '","' + messageId + '","' + text + '","' + time + '")', []);
     },
     findUser: (chatId) => {
-        return query('data.db3', 'all', 'SELECT * FROM users WHERE WHERE chatId = "' + chatId + '"', [])
+        return query('data.db3', 'all', 'SELECT * FROM users WHERE chatId = "' + chatId + '"', [])
             .then(res=>{ return res });
     }
 }
