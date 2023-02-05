@@ -32,7 +32,7 @@ io.on('connection', socket => {
     findUser(chatId)
       .then(res => {
         console.log(res);
-        if(res.length === 0) return addUser(chatId, socketId)
+        if(res.length === 0) return addUser(chatId, socket.id)
       }).then(res => {
         console.log(res);
       })
