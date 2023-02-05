@@ -26,5 +26,6 @@ module.exports = {
     addUser: (chatId, socketId) => (query('data.db3', 'run', 'INSERT INTO users (chatId, socketId) values ("' + chatId + '","' + socketId + '")', [])),
     addMessage: (chatId, socketId, messageId, text, time) => (query('data.db3', 'run', 'INSERT INTO users (chatId, socketId, messageId, text, time) values ("' +
     chatId + '","' + socketId + '","' + messageId + '","' + text + '","' + time + '")', [])),
-    findUser: (chatId) => (query('data.db3', 'all', 'SELECT * FROM users WHERE chatId = "' + chatId + '"', []))
+    findUser: (chatId) => (query('data.db3', 'all', 'SELECT * FROM users WHERE chatId = "' + chatId + '"', [])),
+    updateSocketId: (chatId, socketId) => (query('data.db3', 'run', 'UPDATE users SET socketId=? WHERE chatId=?', [socketId, chatId])),
 }

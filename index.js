@@ -3,15 +3,10 @@ let SOCKET = null;
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 const localStorage = require('./modules/localStorage')();
-const { databaseInitialization, addUser, findUser, addMessage } = require('./database/api');
+const { databaseInitialization, addUser, findUser, addMessage, updateSocketId } = require('./database/api');
 databaseInitialization()
   .then(() => console.log('databse is created'))
   .catch(err =>  console.log(err));
-
-const dateMessage = () => {
-  let date = new Date();
-  return date.getDate() +'-'+ date.getMonth() +'-'+ date.getFullYear() +','+ date.getHours()+':'+date.getMinutes();
-} 
 
 const express = require('express'),
       app = express(),
@@ -29,19 +24,22 @@ io.on('connection', socket => {
   console.log('A user connected');
   socket.on('new message', message => {
     const { id, text, chatId } = message;
-    //Ищем пользователя по chatId в базе users
+    // Ищем пользователя по chatId в базе users
     findUser(chatId)
       .then(res => {
         console.log(res);
         if(res.length === 0) {
           // Если пользователя нет добавляем
-          return addUser(chatId, socket.id)
+          console.log('User added');
+          return addUser(chatId, socket.id);
         } else {
           // Если пользователь есть меням socketId
+          console.log('User socket changed');
+          return updateSocketId(chatId, socket.id);
         }
       }).then(res => {
         console.log(res);
-        return addMessage(chatId, socket.id, id, text, dateMessage())
+        return addMessage(chatId, socket.id, id, text, new Date().getTime())
       }).then(res => {
        
       })
@@ -69,11 +67,12 @@ io.on('connection', socket => {
 })
 
 bot.on('message', (message) => {
-  const {chat, date, text} = message;
-  const {id, first_name, last_name, username}  = chat;
-  localStorage.setItem('bot_chat_id', id);
-  const socketId = localStorage.getItem('socketId');
-  io.to(socketId).emit('new message', text);
+  console.log(message)
+  // const {chat, date, text} = message;
+  // const {id, first_name, last_name, username}  = chat;
+  // localStorage.setItem('bot_chat_id', id);
+  // const socketId = localStorage.getItem('socketId');
+  // io.to(socketId).emit('new message', text);
 });
 //! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
 //! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
