@@ -3,9 +3,9 @@ let SOCKET = null;
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 const localStorage = require('./modules/localStorage')();
-const { databaseInitialization, addUser, findUser } = require('./database/api');
+const { databaseInitialization, addUser, findUser, addMessage } = require('./database/api');
 databaseInitialization()
-  .then(res => console.log('databse is created'))
+  .then(() => console.log('databse is created'))
   .catch(err =>  console.log(err));
 
 const dateMessage = () => {
@@ -29,12 +29,21 @@ io.on('connection', socket => {
   console.log('A user connected');
   socket.on('new message', message => {
     const { id, text, chatId } = message;
+    //Ищем пользователя по chatId в базе users
     findUser(chatId)
       .then(res => {
         console.log(res);
-        if(res.length === 0) return addUser(chatId, socket.id)
+        if(res.length === 0) {
+          // Если пользователя нет добавляем
+          return addUser(chatId, socket.id)
+        } else {
+          // Если пользователь есть меням socketId
+        }
       }).then(res => {
         console.log(res);
+        return addMessage(chatId, socket.id, id, text, dateMessage())
+      }).then(res => {
+       
       })
       .catch(err =>  console.log(err));
     //!Ищем пользователя по socketId в массиве users
