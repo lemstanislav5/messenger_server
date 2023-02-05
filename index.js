@@ -3,7 +3,7 @@ let SOCKET = null;
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 const localStorage = require('./modules/localStorage')();
-const { databaseInitialization, addUser } = require('./database/api');
+const { databaseInitialization, addUser, findUser } = require('./database/api');
 databaseInitialization()
   .then(res => console.log('databse is created'))
   .catch(err =>  console.log(err));
