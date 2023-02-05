@@ -40,7 +40,7 @@ io.on('connection', socket => {
     //!Ищем пользователя по socketId в массиве users
     // let user = users.find(item => item.socketId === socket.id);
     // console.log(user, message);
-    // let name = (user === undefined || user.name !== undefined || user.name !== '') ? 'USER\n[' + users.indexOf(user) + ']' : user.name;
+    // let name = (user === undefined || user.name !== undefined || user.name !== '') ? 'USER [' + users.indexOf(user) + ']' : user.name;
     // localStorage.setItem('socketId', socket.id);
     // // const chatId = localStorage.getItem('bot_chat_id');
     // if(chatId === null) return console.log('Manager offline!')
