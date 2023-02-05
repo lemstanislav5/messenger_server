@@ -31,8 +31,8 @@ module.exports = {
         return query('data.db3', 'run', 'INSERT INTO users (chatId, socketId, messageId, text, time) values ("' +
         chatId + '","' + socketId + '","' + messageId + '","' + text + '","' + time + '")', []);
     },
-    findUser: (user) => {
-        return query('data.db3', 'all', 'SELECT * FROM users WHERE content LIKE ?', ['%' + str + '%'])
+    findUser: (chatId) => {
+        return query('data.db3', 'all', 'SELECT * FROM users WHERE WHERE chatId = "' + chatId + '"', [])
             .then(res=>{ return res });
     }
 }

@@ -3,10 +3,10 @@ let SOCKET = null;
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 const localStorage = require('./modules/localStorage')();
-const { databaseInitialization } = require('./database/api');
+const { databaseInitialization, addUser } = require('./database/api');
 databaseInitialization()
-  .then(res => console.log(8, res))
-  .catch(err =  console.log(9, err));
+  .then(res => console.log('databse is created'))
+  .catch(err =>  console.log(err));
 
 const dateMessage = () => {
   let date = new Date();
@@ -22,29 +22,35 @@ let users = [];
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 //------------------------------------------ ВЫДЕЛЕННЫЕ ФРАГМЕНТЫ ЗАМЕНИТЬ НА SQLITE 3
 io.on('connection', socket => {
-  //!Ищем пользователя по socketId в массиве users
-  let user = users.find(item => item.socketId === socket.id);
-  //!Добавить пользователя в массив
-  if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
+  // //!Ищем пользователя по socketId в массиве users
+  // let user = users.find(item => item.socketId === socket.id);
+  // //!Добавить пользователя в массив
+  // if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
   console.log('A user connected');
   socket.on('new message', message => {
+    const { id, text, chatId } = message;
+    findUser(chatId)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err =>  console.log(err));
     //!Ищем пользователя по socketId в массиве users
-    let user = users.find(item => item.socketId === socket.id);
-    console.log(user, message);
-    let name = (user === undefined || user.name !== undefined || user.name !== '') ? 'USER\n[' + users.indexOf(user) + ']' : user.name;
-    localStorage.setItem('socketId', socket.id);
-    const chatId = localStorage.getItem('bot_chat_id');
-    if(chatId === null) return console.log('Manager offline!')
-    bot.sendMessage(chatId, name + '\n' + message.text);
+    // let user = users.find(item => item.socketId === socket.id);
+    // console.log(user, message);
+    // let name = (user === undefined || user.name !== undefined || user.name !== '') ? 'USER\n[' + users.indexOf(user) + ']' : user.name;
+    // localStorage.setItem('socketId', socket.id);
+    // // const chatId = localStorage.getItem('bot_chat_id');
+    // if(chatId === null) return console.log('Manager offline!')
+    // bot.sendMessage(chatId, name + '\n' + message.text);
   });
   socket.on('disconnect', () => {
-    //!Ищем пользователя по socketId в массиве users
-    let user = users.find(item => item.socketId === socket.id);
-    //!Определям индекс пользователя
-    let index = users.indexOf(user);
-    //!Удаляем пользователя из массива
-    users.splice(1, index);
-    console.log('A user disconnected')
+    // //!Ищем пользователя по socketId в массиве users
+    // let user = users.find(item => item.socketId === socket.id);
+    // //!Определям индекс пользователя
+    // let index = users.indexOf(user);
+    // //!Удаляем пользователя из массива
+    // users.splice(1, index);
+    // console.log('A user disconnected')
   });
     
 
