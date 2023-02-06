@@ -71,6 +71,7 @@ bot.on('message', (message) => {
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
   if(text === '/start'){
+    //! ДОБАВЛЯЕТСЯ КАЖДЫЙ РАЗ НУЖНО ИСПРАВИТЬ
     addManager(id)
       .then(() => console.log('Add manager'))
       .catch(err => console.log(err));
