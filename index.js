@@ -71,7 +71,7 @@ bot.on('message', (message) => {
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
   if(text === '/start'){
-    addManager(managerId = id)
+    addManager(id)
       .then(() => console.log('Add manager'))
       .catch(err => console.log(err));
       //! ВЫДАТЬ МЕНЮ
