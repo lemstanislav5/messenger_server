@@ -68,7 +68,6 @@ io.on('connection', socket => {
 })
 
 bot.on('message', (message) => {
-  console.log(message)
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
   if(text === '/start'){
@@ -77,7 +76,10 @@ bot.on('message', (message) => {
       .catch(err => console.log(err));
       //! ВЫДАТЬ МЕНЮ
   } else {
-    console.log(findUser(chatId))
+    findUser(chatId)
+      .then(res => {
+        console.log(res);
+      })
   }
   // localStorage.setItem('bot_chat_id', id);
   // const socketId = localStorage.getItem('socketId');
