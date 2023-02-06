@@ -75,6 +75,9 @@ bot.on('message', (message) => {
     addManager(managerId = id)
       .then(() => console.log('Add manager'))
       .catch(err => console.log(err));
+      //! ВЫДАТЬ МЕНЮ
+  } else {
+    console.log(findUser(chatId))
   }
   // localStorage.setItem('bot_chat_id', id);
   // const socketId = localStorage.getItem('socketId');
