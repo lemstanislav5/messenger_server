@@ -30,4 +30,5 @@ module.exports = {
     findUser: (chatId) => (query('data.db3', 'all', 'SELECT * FROM users WHERE chatId = "' + chatId + '"', [])),
     updateSocketId: (chatId, socketId) => (query('data.db3', 'run', 'UPDATE users SET socketId=? WHERE chatId=?', [socketId, chatId])),
     addManager: (managerId, accest = 0) => (query('data.db3', 'run', 'INSERT INTO manager (managerId, accest) values ("' + managerId + '","' + accest + '")', [])),
+    findManager: (managerId) => (query('data.db3', 'all', 'SELECT * FROM users WHERE managerId = "' + managerId + '"', [])),
 }
