@@ -76,7 +76,7 @@ bot.on('message', (message) => {
       .catch(err => console.log(err));
       //! ВЫДАТЬ МЕНЮ
   } else {
-    findUser(chatId)
+    findUser(id)
       .then(res => {
         console.log(res);
       })
