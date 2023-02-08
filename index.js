@@ -67,20 +67,22 @@ io.on('connection', socket => {
 
 })
 
-bot.on('message', (message) => {
+bot.on('message', async (message) => {
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
-  if(text === '/start'){
-    //! ДОБАВЛЯЕТСЯ КАЖДЫЙ РАЗ НУЖНО ИСПРАВИТЬ
+  const manager = await findManager(id);
+  if(manager.length === 0) {
     addManager(id)
       .then(() => console.log('Add manager'))
       .catch(err => console.log(err));
-      //! ВЫДАТЬ МЕНЮ
+  }
+  if(text === '/start'){
+    console.log('Выдать меню и показать список активных чатов с возможность выбора переписки');
+    // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
+  } else if(text === PASSWORD) {
+    // updateManagerAccest(id);
   } else {
-    findManager(id)
-      .then(res => {
-        console.log(res);
-      })
+    if(manager.accest === 0) return bot.sendMessage(id, 'Введите пароль:');
   }
   // localStorage.setItem('bot_chat_id', id);
   // const socketId = localStorage.getItem('socketId');
