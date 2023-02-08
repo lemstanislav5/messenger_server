@@ -4,7 +4,15 @@ const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 
 const localStorage = require('./modules/localStorage')();
-const { databaseInitialization, addUser, findUser, addMessage, updateSocketId, addManager, findManager } = require('./database/api');
+const { 
+  databaseInitialization, 
+  addUser, findUser, 
+  addMessage, 
+  updateSocketId, 
+  addManager, 
+  findManager, 
+  updateManagerAccest 
+} = require('./database/api');
 databaseInitialization()
   .then(() => console.log('databse is created'))
   .catch(err =>  console.log(err));
@@ -82,7 +90,8 @@ bot.on('message', async (message) => {
     console.log('Выдать меню и показать список активных чатов с возможность выбора переписки');
     // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
   } else if(text === PASSWORD) {
-    // updateManagerAccest(id);
+    console.log('Доступ открыт!');
+    updateManagerAccest(id);
   } else {
     if(manager.accest === 0) return bot.sendMessage(id, 'Введите пароль:');
   }
