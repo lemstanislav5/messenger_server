@@ -36,7 +36,7 @@ io.on('connection', socket => {
     // Ищем пользователя по chatId в базе users
     findUser(chatId)
       .then(res => {
-        console.log(res);
+        console.log('findUser:', res);
         if(res.length === 0) {
           // Если пользователя нет добавляем
           console.log('User added');
