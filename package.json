@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "dep": "git add . &&  git commit -m 'fix' && git push",
+    "dow": "git add . &&  git commit -m 'old fix' && git pull"
   },
   "author": "",
   "license": "ISC",
