@@ -19,7 +19,7 @@ const query = (file, req, sql, params = []) => {
 module.exports = {
     databaseInitialization: () => {
         return Promise.all([
-            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT, `socketId` TEXT, `name` TEXT, `email` TEXT, `phone` TEXT)"),
+            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT, `socketId` TEXT, `messageId` TEXT, `name` TEXT, `email` TEXT, `phone` TEXT)"),
             query('data.db3', 'run', "CREATE TABLE if not exists `manager` (`managerId` TEXT, `accest` INTEGER)"),
             query('data.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT,`socketId` TEXT, `messageId` TEXT, `text` TEXT, `time`  INTEGER)"),
         ])
