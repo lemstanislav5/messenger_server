@@ -21,11 +21,11 @@ module.exports = {
         return Promise.all([
             query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT, `socketId` TEXT, `name` TEXT, `email` TEXT, `phone` TEXT)"),
             query('data.db3', 'run', "CREATE TABLE if not exists `manager` (`managerId` TEXT, `accest` INTEGER)"),
-            query('logs.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT,`socketId` TEXT, `messageId` TEXT, `text` TEXT, `time`  INTEGER)"),
+            query('data.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT,`socketId` TEXT, `messageId` TEXT, `text` TEXT, `time`  INTEGER)"),
         ])
     },
     addUser: (chatId, socketId) => (query('data.db3', 'run', 'INSERT INTO users (chatId, socketId) values ("' + chatId + '","' + socketId + '")', [])),
-    addMessage: (chatId, socketId, messageId, text, time) => (query('data.db3', 'run', 'INSERT INTO users (chatId, socketId, messageId, text, time) values ("' +
+    addMessage: (chatId, socketId, messageId, text, time) => (query('data.db3', 'run', 'INSERT INTO messages (chatId, socketId, messageId, text, time) values ("' +
     chatId + '","' + socketId + '","' + messageId + '","' + text + '","' + time + '")', [])),
     findUser: (chatId) => (query('data.db3', 'all', 'SELECT * FROM users WHERE chatId = "' + chatId + '"', [])),
     updateSocketId: (chatId, socketId) => (query('data.db3', 'run', 'UPDATE users SET socketId=? WHERE chatId=?', [socketId, chatId])),
