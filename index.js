@@ -93,6 +93,7 @@ bot.on('message', async (message) => {
     console.log('Доступ открыт!');
     updateManagerAccest(id);
   } else {
+    console.log('----------');
     if(manager.accest === 0) return bot.sendMessage(id, 'Введите пароль:');
   }
   // localStorage.setItem('bot_chat_id', id);
