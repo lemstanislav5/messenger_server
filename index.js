@@ -34,8 +34,9 @@ io.on('connection', socket => {
           console.log('User added');
           return addUser(chatId, socket.id);
         } else {
+          if(res.socketId === socket.id) return ('Сокет не изменен!')
           // Если пользователь есть меням socketId
-          console.log('User socket changed');
+          console.log('Сокет пользователя обнавлен!');
           return updateSocketId(chatId, socket.id);
         }
       }).then(res => {
