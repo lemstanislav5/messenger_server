@@ -52,7 +52,7 @@ io.on('connection', socket => {
     console.log('Сообщение добавлено в базу.');
     const managerId = getIdManager()
       .then(res => {
-        console.log(res[0]);
+        console.log(res[0]['managerId']);
         return res[0].managerId
       })
       .catch(err => console.log(err))
