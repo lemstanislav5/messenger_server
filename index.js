@@ -38,6 +38,7 @@ io.on('connection', socket => {
     const user = findUser(chatId)
       .then(user => (user))
       .catch(err => console.log(err))
+      console.log(user)
     // В зависимости от результата поиска добовляем или обновляем socketId
     if(user.length === 0) {
       await addUser(chatId, socket.id);
@@ -51,9 +52,9 @@ io.on('connection', socket => {
     await addMessage(chatId, socket.id, id, text, new Date().getTime());
     console.log('Сообщение добавлено в базу.');
     const managerId = getIdManager()
-      .then(res => (res[0].managerId))
+      .then(res => {return res[0].managerId})
       .catch(err => console.log(err));
-      console.log(managerId)
+    console.log(managerId)
     if (managerId === undefined) return console.log('Менеджкер не подключен!');
     const name = findUser(chatId)
       .then(user => {
