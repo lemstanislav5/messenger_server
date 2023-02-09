@@ -34,7 +34,7 @@ io.on('connection', socket => {
   socket.on('new message', async message => {
     const { id, text, chatId } = message;
     // Ищем пользователя по chatId в базе users
-    const user = await findUser(chatId)
+    const user = findUser(chatId)
       .then(res => (res))
       .catch(err => console.log(err))
     // В зависимости от результата поиска добовляем или обновляем socketId
@@ -49,7 +49,7 @@ io.on('connection', socket => {
     }
     await addMessage(chatId, socket.id, id, text, new Date().getTime());
     console.log('Сообщение добавлено в базу.');
-    const manager = await getIdManager()
+    const manager = getIdManager()
       .then(res => (res))
       .catch(err => console.log(err))
       console.log(manager)
