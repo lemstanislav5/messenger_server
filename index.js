@@ -51,9 +51,11 @@ io.on('connection', socket => {
     await addMessage(chatId, socket.id, id, text, new Date().getTime());
     console.log('Сообщение добавлено в базу.');
     const manager = getIdManager()
-      .then(res => (console.log(res)))
+      .then(res => (res[0].managerId))
       .catch(err => console.log(err))
-      
+    if (manager === undefined) 
+      return console.log('Менеджкер не подключен!');
+    bot.sendMessage(chatId, name + '\n' + message.text);
     // if(managerId)
     // let user = users.find(item => item.socketId === socket.id);
     // console.log(user, message);
