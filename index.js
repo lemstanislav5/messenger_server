@@ -53,11 +53,11 @@ io.on('connection', socket => {
     const managerId = getIdManager()
       .then(res => (res[0].managerId))
       .catch(err => console.log(err))
-    if (managerId === undefined) 
-      return console.log('Менеджкер не подключен!');
+    if (managerId === undefined) return console.log('Менеджкер не подключен!');
     const name = findUser(chatId)
       .then(user => {
-        console.log(user)
+        if (user.name === null)  return 'user['+user.id+']'; 
+        return user.name + '['+user.id+']'; 
       })
       .catch(err => console.log(err))
     bot.sendMessage(managerId, name + '\n' + message.text);
