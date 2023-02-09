@@ -60,6 +60,7 @@ io.on('connection', socket => {
         return user.name + '['+user.id+']'; 
       })
       .catch(err => console.log(err))
+    console.log(managerId)
     bot.sendMessage(managerId, name + '\n' + message.text);
     // if(managerId)
     // let user = users.find(item => item.socketId === socket.id);
