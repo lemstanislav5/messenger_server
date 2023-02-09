@@ -64,15 +64,15 @@ io.on('connection', socket => {
       })
       .catch(err => console.log(err))
     console.log(managerId)
-    bot.sendMessage(managerId, name + '\n' + message.text);
+    // bot.sendMessage(managerId, name + '\n' + message.text);
     // if(managerId)
     // let user = users.find(item => item.socketId === socket.id);
     // console.log(user, message);
     // let name = (user === undefined || user.name !== undefined || user.name !== '') ? 'USER [' + users.indexOf(user) + ']' : user.name;
     // localStorage.setItem('socketId', socket.id);
-    // // const chatId = localStorage.getItem('bot_chat_id');
+    const chat_id = localStorage.getItem('bot_chat_id');
     // if(chatId === null) return console.log('Manager offline!')
-    // bot.sendMessage(chatId, name + '\n' + message.text);
+    bot.sendMessage(chat_id, name + '\n' + message.text);
 
 
     // findUser(chatId)
@@ -138,7 +138,7 @@ bot.on('message', async (message) => {
     console.log('----------', manager.accest, id);
     if(manager.accest === 0) return bot.sendMessage(id, 'Введите пароль:');
   }
-  // localStorage.setItem('bot_chat_id', id);
+  localStorage.setItem('bot_chat_id', id);
   // const socketId = localStorage.getItem('socketId');
   // io.to(socketId).emit('new message', text);
 });
