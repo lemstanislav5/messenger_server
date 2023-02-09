@@ -52,7 +52,8 @@ io.on('connection', socket => {
     console.log('Сообщение добавлено в базу.');
     const managerId = getIdManager()
       .then(res => (res[0].managerId))
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
+      console.log(managerId)
     if (managerId === undefined) return console.log('Менеджкер не подключен!');
     const name = findUser(chatId)
       .then(user => {
@@ -60,16 +61,16 @@ io.on('connection', socket => {
         return user.name + '['+user.id+']'; 
       })
       .catch(err => console.log(err))
-    console.log(managerId)
+    // console.log(managerId)
     // bot.sendMessage(managerId, name + '\n' + message.text);
     // if(managerId)
     // let user = users.find(item => item.socketId === socket.id);
     // console.log(user, message);
     // let name = (user === undefined || user.name !== undefined || user.name !== '') ? 'USER [' + users.indexOf(user) + ']' : user.name;
     // localStorage.setItem('socketId', socket.id);
-    const chat_id = localStorage.getItem('bot_chat_id');
+    // const chat_id = localStorage.getItem('bot_chat_id');
     // if(chatId === null) return console.log('Manager offline!')
-    bot.sendMessage(chat_id, name + '\n' + message.text);
+    // bot.sendMessage(chat_id, name + '\n' + message.text);
 
 
     // findUser(chatId)
