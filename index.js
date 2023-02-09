@@ -34,18 +34,34 @@ io.on('connection', socket => {
   socket.on('new message', async message => {
     const { id, text, chatId } = message;
     // Ищем пользователя по chatId в базе users
-    const user = await findUser(chatId);
+    const user = await findUser(chatId)
+      .then(res => (res))
+      .catch(err => console.log(err))
     // В зависимости от результата поиска добовляем или обновляем socketId
     if(user.length === 0) {
       await addUser(chatId, socket.id);
-      console.log('Пользователь добавлен!');
+      console.log('Пользователь добавлен.');
     } else if(user.length > 0 && user.socketId !== socket.id){
       await updateSocketId(chatId, socket.id);
-      console.log('Сокет обновлен!', user.socketId, socket.id);
+      console.log('Сокет обновлен.', user.socketId, socket.id);
     } else {
-      console.log('Сокет не изменен!')
+      console.log('Сокет не изменен.');
     }
     await addMessage(chatId, socket.id, id, text, new Date().getTime());
+    console.log('Сообщение добавлено в базу.');
+    const manager = await getIdManager()
+      .then(res => (res))
+      .catch(err => console.log(err))
+      console.log(manager)
+    // if(managerId)
+    // let user = users.find(item => item.socketId === socket.id);
+    // console.log(user, message);
+    // let name = (user === undefined || user.name !== undefined || user.name !== '') ? 'USER [' + users.indexOf(user) + ']' : user.name;
+    // localStorage.setItem('socketId', socket.id);
+    // // const chatId = localStorage.getItem('bot_chat_id');
+    // if(chatId === null) return console.log('Manager offline!')
+    // bot.sendMessage(chatId, name + '\n' + message.text);
+
 
     // findUser(chatId)
     //   .then(res => {
