@@ -11,7 +11,8 @@ const {
   updateSocketId, 
   addManager, 
   findManager, 
-  updateManagerAccest 
+  updateManagerAccest,
+  getIdManager, 
 } = require('./database/api');
 databaseInitialization()
   .then(() => console.log('databse is created'))
