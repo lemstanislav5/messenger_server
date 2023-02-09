@@ -35,9 +35,10 @@ io.on('connection', socket => {
   socket.on('new message', async message => {
     const { id, text, chatId } = message;
     // Ищем пользователя по chatId в базе users
-    const user = findUser(chatId)
-      .then(user => (user))
-      .catch(err => console.log(err))
+    const user = await findUser(chatId)
+    // const user = findUser(chatId)
+    //   .then(user => (user))
+    //   .catch(err => console.log(err))
       console.log(user)
     // В зависимости от результата поиска добовляем или обновляем socketId
     if(user.length === 0) {
