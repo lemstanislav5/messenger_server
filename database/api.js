@@ -6,7 +6,7 @@ const query = (file, req, sql, params = []) => {
         });
         db.serialize(() => db[req](sql, params,
             (err,res) => {
-                if(err) reject(err);
+                if(err) return reject(err);
                 resolve(res);
             }
         ));

@@ -31,30 +31,44 @@ io.on('connection', socket => {
   // //!Добавить пользователя в массив
   // if(user === undefined) users.push({socketId: socket.id, name: '', email: ''});
   console.log('A user connected');
-  socket.on('new message', message => {
+  socket.on('new message', async message => {
     const { id, text, chatId } = message;
     // Ищем пользователя по chatId в базе users
-    findUser(chatId)
-      .then(res => {
-        console.log('findUser:', res);
-        if(res.length === 0) {
-          // Если пользователя нет добавляем
-          console.log('User added');
-          return addUser(chatId, socket.id);
-        } else {
-          if(res.socketId === socket.id) return ('Сокет не изменен!')
-          console.log(res.socketId, socket.id);
-          // Если пользователь есть меням socketId
-          console.log('Сокет пользователя обновлен!');
-          return updateSocketId(chatId, socket.id);
-        }
-      }).then(res => {
-        console.log(res);
-        return addMessage(chatId, socket.id, id, text, new Date().getTime())
-      }).then(res => {
-       
-      })
-      .catch(err =>  console.log(err));
+    const user = await findUser(chatId);
+    // В зависимости от результата поиска добовляем или обновляем socketId
+    if(user.length === 0) {
+      await addUser(chatId, socket.id);
+      console.log('Пользователь добавлен!');
+    } else if(user.length > 0 && user.socketId !== socket.id){
+      await updateSocketId(chatId, socket.id);
+      console.log('Сокет обновлен!');
+    } else {
+      console.log('Сокет не изменен!')
+    }
+    await addMessage(chatId, socket.id, id, text, new Date().getTime());
+
+    // findUser(chatId)
+    //   .then(res => {
+    //     console.log('findUser:', res);
+    //     if(res.length === 0) {
+    //       // Если пользователя нет добавляем
+    //       console.log('addUser');
+    //       return addUser(chatId, socket.id);
+    //     } else {
+    //       if(res.socketId === socket.id) return console.log('Сокет не изменен!')
+    //       console.log(res.socketId, socket.id);
+    //       // Если пользователь есть меням socketId
+    //       console.log('updateSocketId');
+    //       return updateSocketId(chatId, socket.id);
+    //     }
+    //   }).then(res => {
+    //     console.log('addMessage');
+    //     return addMessage(chatId, socket.id, id, text, new Date().getTime())
+    //   }).then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(err =>  console.log(err));
+      
     //!Ищем пользователя по socketId в массиве users
     // let user = users.find(item => item.socketId === socket.id);
     // console.log(user, message);
