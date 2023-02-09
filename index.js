@@ -52,7 +52,7 @@ io.on('connection', socket => {
     const userData = await findUser(chatId);
     const userName = (userData.name === null)? 'user['+user.id+']' : '['+user.id+']';
     if (manager.length !== 0) 
-      return bot.sendMessage(manager[0].manager, userName + '\n' + message.text);
+    return bot.sendMessage(manager[0].managerId, userName + '\n' + message.text);
 
     // console.log(managerId)
     // bot.sendMessage(res[0].manager, name + '\n' + message.text);
