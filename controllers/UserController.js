@@ -10,7 +10,7 @@ const {
   setCurrentUser,
   getCurrentUser,
   getUsers,
-} = require('./database/api');
+} = require('../database/api');
 
 
 
