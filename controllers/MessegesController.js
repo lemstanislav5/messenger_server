@@ -36,6 +36,7 @@ class MessegesController {
       let status = (current.online === 0)? 'OFF' : 'ON';
       console.log(current.chatId);
       let messeges = await getUserMesseges(current.chatId);
+      console.log({ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId })
       return [{ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }];
     })
     console.log(arr)
