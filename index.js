@@ -39,7 +39,7 @@ io.on('connection', socket => {
     // Ищем пользователя по chatId в базе users
     const user = await findUser(chatId);
     // В зависимости от результата поиска добовляем или обновляем socketId
-    UsersController.addOrUpdateUser(user, chatId, socket.id);
+    UsersController.addOrUpdateUser(user, socket, chatId);
     // if (user.length === 0) {
     //   await addUser(chatId, socket.id);
     //   console.log('Пользователь добавлен.');
