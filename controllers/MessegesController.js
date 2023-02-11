@@ -31,7 +31,7 @@ class MessegesController {
   // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
   async sendListMailsToBot(bot, id){
     const users = await getUsers();
-    const arr = users.map(async current => {
+    const arr = await users.map(async current => {
       let name = (current.name === null)? 'U['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'OFF' : 'ON';
       console.log(current.chatId);
