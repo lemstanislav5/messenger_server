@@ -6,18 +6,15 @@ bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }])
 const localStorage = require('./modules/localStorage')();
 const { 
   databaseInitialization, 
-  addUser, findUser, 
-  addMessage, 
-  updateSocketId, 
+  findUser, 
+  addMessage,  
   addManager, 
   findManager, 
   updateManagerAccest,
   getIdManager, 
-  setCurrentUser,
-  getCurrentUser,
-  getUsers,
 } = require('./database/api');
 const UsersController = require('./controllers/UserController');
+const MessegesController = require('./controllers/MessegesController');
 databaseInitialization()
   .then(() => console.log('databse is created'))
   .catch(err =>  console.log(err));
@@ -36,19 +33,8 @@ io.on('connection', socket => {
     // const users = await getUsers();
     // if(users)
     const { id, text, chatId } = message;
-    // Ищем пользователя по chatId в базе users
-    const user = await findUser(chatId);
-    // В зависимости от результата поиска добовляем или обновляем socketId
-    UsersController.addOrUpdateUser(user, socket, chatId);
-    // if (user.length === 0) {
-    //   await addUser(chatId, socket.id);
-    //   console.log('Пользователь добавлен.');
-    // } else if (user.length > 0 && user[0].socketId !== socket.id) {
-    //   await updateSocketId(chatId, socket.id); 
-    //   console.log('Сокет обновлен.');
-    // } 
-    await addMessage(chatId, socket.id, id, text, new Date().getTime());
-    console.log('Сообщение добавлено в базу.');
+    UsersController.addOrUpdateUser(socket, chatId);
+    MessegesController.addMessage(chatId, socket.id, id, text, new Date().getTime());
     const manager = await getIdManager();
     // Повторный вызов функции для получения id 
     const userData = await findUser(chatId);

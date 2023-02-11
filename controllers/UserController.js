@@ -15,7 +15,10 @@ const {
 
 
 class UsersController {
-  async addOrUpdateUser(user, socket, chatId) {
+  // В зависимости от результата поиска добовляем или обновляем socketId
+  async addOrUpdateUser(socket, chatId) {
+    // Ищем пользователя по chatId в базе users
+    const user = await findUser(chatId);
     if (user.length === 0) {
       await addUser(chatId, socket.id);
       console.log('Пользователь добавлен.');
