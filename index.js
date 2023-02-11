@@ -37,9 +37,9 @@ io.on('connection', socket => {
     if(user.length === 0) {
       await addUser(chatId, socket.id);
       console.log('Пользователь добавлен.');
-    } else if(user.length > 0 && user.socketId !== socket.id){
+    } else if(user.length > 0 && user[0].socketId !== socket.id){
       await updateSocketId(chatId, socket.id);
-      console.log('Сокет обновлен.', user.socketId, socket.id);
+      console.log('Сокет обновлен.', user[0].socketId, socket.id);
     } else {
       console.log('Сокет не изменен.');
     }
