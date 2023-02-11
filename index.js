@@ -56,16 +56,18 @@ bot.on('message', async (message) => {
   const manager = await findManager(id);
   if(manager.length === 0) {
     addManager(id)
-      .then(() => console.log('Add manager'))
+      .then(() => console.log('Менеджер добавлен!'))
       .catch(err => console.log(err));
   }
   if(text === '/start'){
-    console.log('Выдать меню и показать список активных чатов с возможность выбора переписки');
     // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
+    MessegesController.sendListMailsToBot()
+    console.log('Выдать меню и показать список активных чатов с возможность выбора переписки');
   } else if(text === PASSWORD) {
     console.log('Доступ открыт!');
     updateManagerAccest(id);
   } else {
+    //! Добавляем сообщения в базу
     console.log('----------', manager.accest, id);
     if(manager.accest === 0) return bot.sendMessage(id, 'Введите пароль:');
   }
@@ -75,3 +77,16 @@ bot.on('message', async (message) => {
 });
 //! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
 //! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
+
+
+// module.exports = {
+//   sections: {
+//      reply_markup: JSON.stringify({
+//          inline_keyboard: [
+//              [{text: 'Посетители онлайн', callback_data: '/online visitors'}],
+//              [{text: 'Список чатов', callback_data: '/сhat List'}],
+//              [{text: 'Настройки', callback_data: '/settings'}]
+//          ]
+//      })
+//  }
+// }
