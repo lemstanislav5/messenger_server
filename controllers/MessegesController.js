@@ -34,9 +34,9 @@ class MessegesController {
     const users = await getUsers();
     const messages = await getMesseges();
     const arr = users.map(current => {
+      console.log('current', current);
       let name = (current.name === null)? 'User['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'offline' : 'online';
-      console.log(current.chatId);
       let userMesseges = messages.reduce((result, message) => {
         if(message.chatId === current.chatId){
           return [...result, message];
