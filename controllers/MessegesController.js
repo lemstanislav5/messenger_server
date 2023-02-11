@@ -39,6 +39,8 @@ class MessegesController {
       let userMesseges = messages.reduce((result, message) => {
         if(message.chatId === current.chatId){
           return [...result, message]
+        } else {
+          return result;
         }
       }, [])
       console.log(userMesseges)
