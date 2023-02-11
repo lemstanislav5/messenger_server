@@ -41,7 +41,9 @@ class MessegesController {
         console.log(message.chatId, current.chatId)
         if(message.chatId === current.chatId){
           return [...result, message];
-        } 
+        } else {
+          return result;
+        }
       }, [])
       return [{ text: name + ' ' + status + ': ' + (userMesseges === undefined) ? 0 : userMesseges.length, callback_data: '/' + current.chatId }];
     })
