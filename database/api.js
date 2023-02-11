@@ -19,9 +19,10 @@ const query = (file, req, sql, params = []) => {
 module.exports = {
     databaseInitialization: () => {
         return Promise.all([
-            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT, `socketId` TEXT, `name` TEXT, `email` TEXT, `phone` TEXT)"),
+            query('data.db3', 'run', "CREATE TABLE if not exists `users` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT, `socketId` TEXT, `name` TEXT, `email` TEXT, `phone` TEXT, `online` INTEGER)"),
             query('data.db3', 'run', "CREATE TABLE if not exists `manager` (`managerId` TEXT, `accest` INTEGER)"),
             query('data.db3', 'run', "CREATE TABLE if not exists `messages` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `chatId` TEXT,`socketId` TEXT, `messageId` TEXT, `text` TEXT, `time`  INTEGER)"),
+            query('data.db3', 'run', "CREATE TABLE if not exists `currentUser` (`chatId` TEXT)"),
         ])
     },
     addUser: (chatId, socketId) => (query('data.db3', 'run', 'INSERT INTO users (chatId, socketId) values ("' + chatId + '","' + socketId + '")', [])),
@@ -33,4 +34,7 @@ module.exports = {
     findManager: (managerId) => (query('data.db3', 'all', 'SELECT * FROM manager WHERE managerId = "' + managerId + '"', [])),
     updateManagerAccest: (managerId, accest = 1) => (query('data.db3', 'run', 'UPDATE manager SET accest=? WHERE accest=?', [socketId, managerId])),
     getIdManager: () => (query('data.db3', 'all', 'SELECT * FROM manager', [])),
+    setCurrentUser: (chatId) => (query('data.db3', 'run', 'INSERT INTO currentUser (chatId) values ("' + chatId + '")', [])),
+    getCurrentUser: () => (query('data.db3', 'all', 'SELECT * FROM currentUser', [])),
+    getUsers: () => (query('data.db3', 'all', 'SELECT * FROM users', [])),
 }

@@ -13,7 +13,11 @@ const {
   findManager, 
   updateManagerAccest,
   getIdManager, 
+  setCurrentUser,
+  getCurrentUser,
+  getUsers,
 } = require('./database/api');
+const UsersController = require('./controllers/UserController');
 databaseInitialization()
   .then(() => console.log('databse is created'))
   .catch(err =>  console.log(err));
@@ -27,39 +31,39 @@ let users = [];
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 //------------------------------------------ ВЫДЕЛЕННЫЕ ФРАГМЕНТЫ ЗАМЕНИТЬ НА SQLITE 3
 io.on('connection', socket => {
-  console.log('A user connected');
+  console.log('Пользователь подключился!');
   socket.on('new message', async message => {
+    // const users = await getUsers();
+    // if(users)
     const { id, text, chatId } = message;
     // Ищем пользователя по chatId в базе users
     const user = await findUser(chatId);
-    console.log(user)
     // В зависимости от результата поиска добовляем или обновляем socketId
-    if(user.length === 0) {
-      await addUser(chatId, socket.id);
-      console.log('Пользователь добавлен.');
-    } else if(user.length > 0 && user[0].socketId !== socket.id){
-      await updateSocketId(chatId, socket.id);
-      console.log('Сокет обновлен.', user[0].socketId, socket.id);
-    } else {
-      console.log('Сокет не изменен.');
-    }
+    UsersController.addOrUpdateUser(chatId, socket.id);
+    // if (user.length === 0) {
+    //   await addUser(chatId, socket.id);
+    //   console.log('Пользователь добавлен.');
+    // } else if (user.length > 0 && user[0].socketId !== socket.id) {
+    //   await updateSocketId(chatId, socket.id); 
+    //   console.log('Сокет обновлен.');
+    // } 
     await addMessage(chatId, socket.id, id, text, new Date().getTime());
     console.log('Сообщение добавлено в базу.');
     const manager = await getIdManager();
-    //повторный вызов функции 
+    // Повторный вызов функции для получения id 
     const userData = await findUser(chatId);
-    console.log('userData', userData[0])
-    console.log('userData', userData[0].name)
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : '['+userData[0].id+']';
     if (manager.length !== 0) 
     return bot.sendMessage(manager[0].managerId, userName + '\n' + message.text);
+    //! Впоследствии заменить на notification  с разработкой функционала отображения на стороне клиента шапке окна
+    return io.to(socket.id).emit('new message', 'Менеджер offline!'); 
   });
   socket.on('disconnect', () => {
-    // //!Ищем пользователя по socketId в массиве users
+    // !Ищем пользователя по socketId в массиве users
     // let user = users.find(item => item.socketId === socket.id);
-    // //!Определям индекс пользователя
+    // !Определям индекс пользователя
     // let index = users.indexOf(user);
-    // //!Удаляем пользователя из массива
+    // !Удаляем пользователя из массива
     // users.splice(1, index);
     // console.log('A user disconnected')
   });
