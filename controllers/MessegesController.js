@@ -11,12 +11,12 @@ class MessegesController {
     await addMessage(chatId, socketId, messageId, text, time);
     console.log('Сообщение добавлено в базу.');
   }
-  async sendMessegesToBot(bot, io, message){
+  async sendMessegesToBot(bot, io, text, chatId){
     const manager = await getIdManager();
     const userData = await findUser(chatId);
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : '['+userData[0].id+']';
     if (manager.length !== 0) {
-      bot.sendMessage(manager[0].managerId, userName + '\n' + message.text);
+      bot.sendMessage(manager[0].managerId, userName + '\n' + text);
       console.log('Сообщение добавлено в базу.');
     } else {
       //! Впоследствии заменить на "notification"  с разработкой функционала отображения на стороне клиента шапке окна
