@@ -33,10 +33,10 @@ class UsersController {
     const users = await getUsers();
     if(users.length === 0 || required === 1) {
       await setCurrentUser(chatId);
-      conaole.log('Текущим пользователем выбран: ' + chatId);
+      console.log('Текущим пользователем выбран: ' + chatId);
     } else {
       await delCurrentUser(chatId);
-      conaole.log('Статус "текущий" у пользователя ' + chatId + ' удален в разъединением связи!');
+      console.log('Статус "текущий" у пользователя ' + chatId + ' удален в разъединением связи!');
     }
   }
 }
