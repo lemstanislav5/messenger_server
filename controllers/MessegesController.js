@@ -38,10 +38,14 @@ class MessegesController {
       let name = (current.name === null)? 'User['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'offline' : 'online';
       let userMesseges = messages.reduce((result, message) => {
+        console.log(message.chatId, current.chatId)
         if(message.chatId === current.chatId){
           return [...result, message];
-        } 
+        } else {
+          return result;
+        }
       }, [])
+      console.log(name + ' ' + status + ': ' + (userMesseges === undefined) ? 0 : userMesseges.length)
       return [{ text: name + ' ' + status + ': ' + (userMesseges === undefined) ? 0 : userMesseges.length, callback_data: '/' + current.chatId }];
     })
     const sections = {
