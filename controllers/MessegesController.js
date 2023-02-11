@@ -32,7 +32,7 @@ class MessegesController {
     const users = await getUsers();
     const arr = users.map(current => {
       let name = (current.name === null)? 'U['+current.id+']' : current.name + '['+current.id+']';
-      let status = (urrent.online === 0)? 'OFF' : 'ON';
+      let status = (current.online === 0)? 'OFF' : 'ON';
       let messeges = getUserMesseges(current.chatId)
       console.log(name, status, messeges);
     })
