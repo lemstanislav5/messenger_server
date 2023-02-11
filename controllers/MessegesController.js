@@ -40,17 +40,13 @@ class MessegesController {
         if(message.chatId === current.chatId){
           return [...result, message]
         }
-        
       }, [])
-      console.log(userMesseges)
-      // console.log({ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId })
-      // return [{ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }];
+      return [{ text: name + ' ' + status + ': ' + userMesseges.length, callback_data: '/' + current.chatId }];
     })
-    console.log(arr)
-    // const sections = {
-    //   reply_markup: JSON.stringify({ inline_keyboard: arr })
-    // }
-    // bot.sendMessage(id, 'Выберите раздел: ', sections);
+    const sections = {
+      reply_markup: JSON.stringify({ inline_keyboard: arr })
+    }
+    bot.sendMessage(id, 'Выберите раздел: ', sections);
   }
 }
 
