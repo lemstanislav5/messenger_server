@@ -38,6 +38,7 @@ class MessegesController {
       let status = (current.online === 0)? 'offline' : 'online';
       console.log(current.chatId);
       let userMesseges = messages.reduce((result, message) => {
+        console.log(message.chatId, current.chatId)
         if(message.chatId === current.chatId){
           return [...result, message];
         } 
