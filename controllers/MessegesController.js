@@ -29,25 +29,19 @@ class MessegesController {
     }
   }
   // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
-  async sendListMailsToBot(){
+  async sendListMailsToBot(bot, id){
     const users = await getUsers();
     const arr = users.map(async current => {
       let name = (current.name === null)? 'U['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'OFF' : 'ON';
       console.log(current.chatId);
-      let messeges = await getUserMesseges(current.chatId)
-      console.log(name, status, messeges.length);
+      let messeges = await getUserMesseges(current.chatId);
+      return { text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }
     })
-    // const sections = {
-    //   reply_markup: JSON.stringify({
-    //       inline_keyboard: [
-    //           [{text: 'Посетители онлайн', callback_data: '/online visitors'}],
-    //           [{text: 'Список чатов', callback_data: '/сhat List'}],
-    //           [{text: 'Настройки', callback_data: '/settings'}]
-    //       ]
-    //   })
-    // }
-    // bot.sendMessage(id, 'Выберите раздел: ', sections)
+    const sections = {
+      reply_markup: JSON.stringify({ inline_keyboard: arr })
+    }
+    bot.sendMessage(id, 'Выберите раздел: ', sections);
   }
 }
 

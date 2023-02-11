@@ -61,7 +61,7 @@ bot.on('message', async (message) => {
   }
   if(text === '/start'){
     // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
-    MessegesController.sendListMailsToBot()
+    MessegesController.sendListMailsToBot(bot, id)
     console.log('Выдать меню и показать список активных чатов с возможность выбора переписки');
   } else if(text === PASSWORD) {
     console.log('Доступ открыт!');
