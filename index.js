@@ -47,10 +47,10 @@ io.on('connection', socket => {
     console.log('Сообщение добавлено в базу.');
     const manager = await getIdManager();
     //повторный вызов функции 
-    const userData = await findUser(chatId)[0];
-    console.log('userData', userData)
-    console.log('userData', userData.name)
-    const userName = (userData.name === null)? 'user['+userData.id+']' : '['+userData.id+']';
+    const userData = await findUser(chatId);
+    console.log('userData', userData[0])
+    console.log('userData', userData[0].name)
+    const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : '['+userData[0].id+']';
     if (manager.length !== 0) 
     return bot.sendMessage(manager[0].managerId, userName + '\n' + message.text);
   });
