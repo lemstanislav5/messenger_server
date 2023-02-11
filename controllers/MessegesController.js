@@ -38,7 +38,7 @@ class MessegesController {
       console.log(current.chatId);
       let userMesseges = messages.reduce((result, message) => {
         console.log(messages.chatId === current.chatId)
-        if(messages.chatId === current.chatId){
+        if(messages.chatId, current.chatId){
           return [...result, message]
         }
         
