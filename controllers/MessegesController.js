@@ -2,6 +2,7 @@ const {
   addMessage, 
   getIdManager,
   findUser,
+  getUsers,
 } = require('../database/api');
 
 
