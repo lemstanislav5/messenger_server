@@ -31,14 +31,15 @@ class MessegesController {
   // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
   async sendListMailsToBot(bot, id){
     const users = await getUsers();
-    const arr = await users.map(async current => {
+    const arr = users.map(async current => {
       let name = (current.name === null)? 'U['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'OFF' : 'ON';
       console.log(current.chatId);
       let messeges = await getUserMesseges(current.chatId);
       return [{ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }];
     })
-    console.log(arr)
+    arr.then(res => console.log(res))
+    // console.log(arr)
     // const sections = {
     //   reply_markup: JSON.stringify({ inline_keyboard: arr })
     // }
