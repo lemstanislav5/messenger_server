@@ -38,10 +38,11 @@ class MessegesController {
       let messeges = await getUserMesseges(current.chatId);
       return [{ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }];
     })
-    const sections = {
-      reply_markup: JSON.stringify({ inline_keyboard: arr })
-    }
-    bot.sendMessage(id, 'Выберите раздел: ', sections);
+    console.log(arr)
+    // const sections = {
+    //   reply_markup: JSON.stringify({ inline_keyboard: arr })
+    // }
+    // bot.sendMessage(id, 'Выберите раздел: ', sections);
   }
 }
 
