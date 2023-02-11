@@ -45,6 +45,7 @@ class MessegesController {
           return result;
         }
       }, [])
+      console.log(text: name + ' ' + status + ': ' + (userMesseges === undefined) ? 0 : userMesseges.length)
       return [{ text: name + ' ' + status + ': ' + (userMesseges === undefined) ? 0 : userMesseges.length, callback_data: '/' + current.chatId }];
     })
     const sections = {
