@@ -11,7 +11,7 @@ class MessegesController {
     await addMessage(chatId, socketId, messageId, text, time);
     console.log('Сообщение добавлено в базу.');
   }
-  async sendMessegesToBot(bot, io, text, chatId){
+  async sendMessegesToBot(bot, io, text, chatId, socket){
     const manager = await getIdManager();
     const userData = await findUser(chatId);
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : '['+userData[0].id+']';

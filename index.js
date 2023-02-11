@@ -35,7 +35,7 @@ io.on('connection', socket => {
     //! Добавляем сообщения пользователя в базу to/from нужно добавить
     MessegesController.addMessage(chatId, socket.id, id, text, new Date().getTime());
     // Передаем сообщение боту
-    MessegesController.sendMessegesToBot(bot, io, text, chatId); 
+    MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
   });
   socket.on('disconnect', () => {
     // !Ищем пользователя по socketId в массиве users
