@@ -10,12 +10,12 @@ const {
   setCurrentUser,
   getCurrentUser,
   getUsers,
+  delCurrentUser,
 } = require('../database/api');
 
 
 
 class UsersController {
-  // В зависимости от результата поиска добовляем или обновляем socketId
   async addOrUpdateUser(socket, chatId) {
     // Ищем пользователя по chatId в базе users
     const user = await findUser(chatId);
@@ -29,6 +29,16 @@ class UsersController {
       console.log('Сокет не нуждается в обновлении.');
     }
   }
+  async currentUser(chatId, required){
+    const users = await getUsers();
+    if(users.length === 0 || required === 1) {
+      await setCurrentUser(chatId);
+      conaole.log('Текущим пользователем выбран: ' + chatId);
+    } else {
+      await delCurrentUser(chatId);
+      conaole.log('Статус "текущий" у пользователя ' + chatId + ' удален в разъединением связи!');
+    }
+  }
 }
 
-module.exports = new UsersController()
+module.exports = new UsersController();

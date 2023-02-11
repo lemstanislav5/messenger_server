@@ -37,4 +37,5 @@ module.exports = {
     setCurrentUser: (chatId) => (query('data.db3', 'run', 'INSERT INTO currentUser (chatId) values ("' + chatId + '")', [])),
     getCurrentUser: () => (query('data.db3', 'all', 'SELECT * FROM currentUser', [])),
     getUsers: () => (query('data.db3', 'all', 'SELECT * FROM users', [])),
+    delCurrentUser: (chatId) => (query('data.db3', 'run', 'DELETE FROM currentUser WHERE chatId=?', [chatId])),
 }

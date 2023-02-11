@@ -7,7 +7,6 @@ const localStorage = require('./modules/localStorage')();
 const { 
   databaseInitialization, 
   findUser, 
-  addMessage,  
   addManager, 
   findManager, 
   updateManagerAccest,
@@ -15,35 +14,27 @@ const {
 } = require('./database/api');
 const UsersController = require('./controllers/UserController');
 const MessegesController = require('./controllers/MessegesController');
-databaseInitialization()
-  .then(() => console.log('databse is created'))
-  .catch(err =>  console.log(err));
+const InitializationController = require('./controllers/InitializationController');
 
 const express = require('express'),
       app = express(),
       http = require('http').Server(app),
       io = require('socket.io')(http);
 
-let users = [];
 http.listen(PORT, () => console.log('listening on *:' + PORT));
+InitializationController.initialization();
 //------------------------------------------ ВЫДЕЛЕННЫЕ ФРАГМЕНТЫ ЗАМЕНИТЬ НА SQLITE 3
 io.on('connection', socket => {
   console.log('Пользователь подключился!');
   socket.on('new message', async message => {
-    // const users = await getUsers();
-    // if(users)
     const { id, text, chatId } = message;
+    // Устаналиваем chatId текущего пользователя если он не выбран
+    UsersController.currentUser(chatId);
+    // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
+    //! Добавляем сообщения пользователя в базу to/from нужно добавить
     MessegesController.addMessage(chatId, socket.id, id, text, new Date().getTime());
-    const manager = await getIdManager();
-    // Повторный вызов функции для получения id 
-    const userData = await findUser(chatId);
-    console.log(userData)
-    const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : '['+userData[0].id+']';
-    if (manager.length !== 0) 
-    return bot.sendMessage(manager[0].managerId, userName + '\n' + message.text);
-    //! Впоследствии заменить на notification  с разработкой функционала отображения на стороне клиента шапке окна
-    return io.to(socket.id).emit('new message', 'Менеджер offline!'); 
+    MessegesController.sendMessegesToBot(bot, io, message); 
   });
   socket.on('disconnect', () => {
     // !Ищем пользователя по socketId в массиве users
