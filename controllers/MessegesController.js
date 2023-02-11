@@ -13,6 +13,7 @@ class MessegesController {
   }
   async sendMessegesToBot(bot, io, text, chatId, socket){
     const manager = await getIdManager();
+    console.log(manager)
     const userData = await findUser(chatId);
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : '['+userData[0].id+']';
     if (manager.length !== 0) {
