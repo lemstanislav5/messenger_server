@@ -40,7 +40,7 @@ class MessegesController {
         console.log(res);
       })
       .catch(err => console.log(err));
-      console.log(name, status, messeges);
+      // console.log(name, status, messeges);
     })
     // bot.sendMessage(id, 'Выберите раздел: ', sections)
   }
