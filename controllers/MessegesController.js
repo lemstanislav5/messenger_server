@@ -36,7 +36,7 @@ class MessegesController {
       let status = (current.online === 0)? 'OFF' : 'ON';
       console.log(current.chatId);
       let messeges = await getUserMesseges(current.chatId);
-      return { text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }
+      return [{ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }];
     })
     const sections = {
       reply_markup: JSON.stringify({ inline_keyboard: arr })
