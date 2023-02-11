@@ -52,6 +52,7 @@ io.on('connection', socket => {
     const manager = await getIdManager();
     // Повторный вызов функции для получения id 
     const userData = await findUser(chatId);
+    console.log(userData)
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : '['+userData[0].id+']';
     if (manager.length !== 0) 
     return bot.sendMessage(manager[0].managerId, userName + '\n' + message.text);
