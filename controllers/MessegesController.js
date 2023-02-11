@@ -3,7 +3,7 @@ const {
   getIdManager,
   findUser,
   getUsers,
-  getUserMesseges,
+  getMesseges,
 } = require('../database/api');
 
 
@@ -31,13 +31,20 @@ class MessegesController {
   // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
   async sendListMailsToBot(bot, id){
     const users = await getUsers();
-    const arr = await users.map(async current => {
+    const messages = await getMesseges();
+    const arr = users.map(current => {
       let name = (current.name === null)? 'U['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'OFF' : 'ON';
       console.log(current.chatId);
-      let messeges = await getUserMesseges(current.chatId);
-      console.log({ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId })
-      return [{ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }];
+      let userMesseges = messages.reduce((result, message) => {
+        if(messages.chatId === current.chatId){
+          return [...result, message]
+        }
+        
+      }, [])
+      console.log(userMesseges)
+      // console.log({ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId })
+      // return [{ text: name + ' ' + status + ': ' + messeges.length, callback_data: '/' + current.chatId }];
     })
     console.log(arr)
     // const sections = {
@@ -48,3 +55,16 @@ class MessegesController {
 }
 
 module.exports = new MessegesController();
+// const users = [
+//   { id: '123', name: 'John' },
+//   { id: '345', name: 'Anna' },
+//   { id: '567', name: 'Kate' },
+//   { id: '789', name: 'Jane' }
+// ]
+
+// function groupNameById(result, user) {
+//   return {
+//     ...result,
+//     [user.id]: user.name
+//   }
+// }
