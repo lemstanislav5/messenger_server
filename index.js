@@ -33,7 +33,7 @@ io.on('connection', socket => {
     // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
     //! Добавляем сообщения пользователя в базу to/from нужно добавить
-    MessegesController.addMessage(chatId, socket.id, id, text, new Date().getTime());
+    MessegesController.add(chatId, socket.id, id, text, new Date().getTime());
     // Передаем сообщение боту
     MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
   });
