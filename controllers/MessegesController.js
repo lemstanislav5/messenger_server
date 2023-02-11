@@ -41,12 +41,13 @@ class MessegesController {
           return [...result, message]
         }
       }, [])
+      console.log(userMesseges)
       return [{ text: name + ' ' + status + ': ' + userMesseges.length, callback_data: '/' + current.chatId }];
     })
     const sections = {
       reply_markup: JSON.stringify({ inline_keyboard: arr })
     }
-    bot.sendMessage(id, 'Выберите раздел: ', sections);
+    bot.sendMessage(id, 'Список посетителей: ', sections);
   }
 }
 
