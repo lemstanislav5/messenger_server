@@ -10,6 +10,7 @@ const {
 
 class MessegesController {
   async add(chatId, socketId, messageId, text, time){
+    console.log(chatId, socketId, messageId, text, time)
     await addMessage(chatId, socketId, messageId, text, time);
     console.log('Сообщение добавлено в базу.');
   }
@@ -33,18 +34,15 @@ class MessegesController {
     const users = await getUsers();
     const messages = await getMesseges();
     const arr = users.map(current => {
-      let name = (current.name === null)? 'U['+current.id+']' : current.name + '['+current.id+']';
-      let status = (current.online === 0)? 'OFF' : 'ON';
+      let name = (current.name === null)? 'User['+current.id+']' : current.name + '['+current.id+']';
+      let status = (current.online === 0)? 'offline' : 'online';
       console.log(current.chatId);
       let userMesseges = messages.reduce((result, message) => {
         if(message.chatId === current.chatId){
-          return [...result, message]
-        } else {
-          return result;
-        }
+          return [...result, message];
+        } 
       }, [])
-      console.log(userMesseges)
-      return [{ text: name + ' ' + status + ': ' + userMesseges.length, callback_data: '/' + current.chatId }];
+      return [{ text: name + ' ' + status + ': ' + (userMesseges === undefined) ? 0 : userMesseges.length, callback_data: '/' + current.chatId }];
     })
     const sections = {
       reply_markup: JSON.stringify({ inline_keyboard: arr })
@@ -54,16 +52,3 @@ class MessegesController {
 }
 
 module.exports = new MessegesController();
-// const users = [
-//   { id: '123', name: 'John' },
-//   { id: '345', name: 'Anna' },
-//   { id: '567', name: 'Kate' },
-//   { id: '789', name: 'Jane' }
-// ]
-
-// function groupNameById(result, user) {
-//   return {
-//     ...result,
-//     [user.id]: user.name
-//   }
-// }
