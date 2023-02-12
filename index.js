@@ -52,7 +52,6 @@ bot.on('message', async (message) => {
     console.log('----------', manager.accest, id);
     if(manager.accest === 0) return bot.sendMessage(id, 'Введите пароль:');
   }
-  localStorage.setItem('bot_chat_id', id);
   // const socketId = localStorage.getItem('socketId');
   // io.to(socketId).emit('new message', text);
 });
