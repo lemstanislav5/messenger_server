@@ -2,7 +2,7 @@ const {
   addMessage, 
   getIdManager,
   findUser,
-  getUsers,
+  getAllUsers,
   getMesseges,
 } = require('../database/api');
 
@@ -34,7 +34,7 @@ class MessegesController {
     bot.sendMessage(managerId, text);
   }
   async sendListMailsToBot(bot, id){
-    const users = await getUsers();
+    const users = await getAllUsers();
     const messages = await getMesseges();
     const arr = users.map(current => {
       let name = (current.name === null)? 'User['+current.id+']' : current.name + '['+current.id+']';
