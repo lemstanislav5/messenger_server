@@ -30,8 +30,13 @@ io.on('connection', socket => {
     UsersController.addOrUpdateUser(socket, chatId);
     //! Добавляем сообщения пользователя в базу to/from нужно добавить
     MessegesController.add(chatId, socket.id, id, text, new Date().getTime());
-    // Передаем сообщение боту
-    MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
+    const manager = await ManagerController.get(id);
+    if(manager.accest === 1) {
+      // Передаем сообщение боту
+      MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
+    } else {
+      io.to(socket.id).emit('new message', 'Менеджера, приходите попозже!');
+    }
   });
   socket.on('disconnect', () => UsersController.setCurrent(chatId, 0));
 })
