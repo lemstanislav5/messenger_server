@@ -11,7 +11,6 @@ const {
   getCurrentUser,
   getUsers,
   delCurrentUser,
-  getCurrentUser,
 } = require('../database/api');
 
 
