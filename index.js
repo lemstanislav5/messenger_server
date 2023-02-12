@@ -28,7 +28,7 @@ io.on('connection', socket => {
     MessegesController.add(chatId, socket.id, id, text, new Date().getTime());
     const manager = await ManagerController.get(id);
     console.log(manager)
-    if(manager.accest === 1) {
+    if(manager[0].accest === 1) {
       // Передаем сообщение боту
       MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
     } else {
