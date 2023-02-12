@@ -64,6 +64,7 @@ bot.on('message', async (message) => {
         MessegesController.sendListMailsToBot(bot, id);
       } else {
         let currentUser = await UsersController.getCurrent();
+        console.log('currentUser', currentUser)
         if (currentUser.length === 0) {
           return MessegesController.sendBotNotification(bot, id, 'Адресат вашего сообщения не выбран!');
         } else {
