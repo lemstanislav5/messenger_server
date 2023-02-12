@@ -39,7 +39,7 @@ io.on('connection', socket => {
 bot.on('message', async (message) => {
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
-  const manager = ManagerController.get(id);
+  const manager = await ManagerController.get(id);
   console.log(manager)
   if(manager.length === 0) ManagerController.add(id);
   // Выдатьсписок активных пользователей и число непрочитанных сообщений

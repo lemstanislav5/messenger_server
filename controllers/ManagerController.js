@@ -13,10 +13,9 @@ class ManagerController {
     await addManager(id);
     console.log('Менеджер добавлен!');
   }
-  async get(id){
-    const manager = await findManager(id);
-    return manager;
-    console.log('Ищем менеджера!')
+  get(id){
+    console.log('Ищем менеджера!');
+    return findManager(id);
   }
 }
 
