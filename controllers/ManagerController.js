@@ -2,6 +2,7 @@ const {
   updateManagerAccest, 
   addManager, 
   findManager,
+  getManager,
  } = require('../database/api');
 
 class ManagerController {
@@ -13,9 +14,13 @@ class ManagerController {
     await addManager(id);
     console.log('Менеджер добавлен!');
   }
-  get(id){
+  find(id){
     console.log('Получаем менеджера!');
     return findManager(id);
+  }
+  get(){
+    console.log('Получаем менеджера!');
+    return getManager(id);
   }
 }
 
