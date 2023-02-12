@@ -1,4 +1,8 @@
-const { updateManagerAccest, addManager } = require('../database/api');
+const { 
+  updateManagerAccest, 
+  addManager, 
+  findManager,
+ } = require('../database/api');
 
 class ManagerController {
   async accest(id) {
