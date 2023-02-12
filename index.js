@@ -36,7 +36,10 @@ io.on('connection', socket => {
       io.to(socket.id).emit('new message', 'Менеджер offline!');
     }
   });
-  socket.on('disconnect', () => {UsersController.setCurrent(chatId, 0)});
+  socket.on('disconnect', () => {
+    //UsersController.setCurrent(chatId, 0)
+    console.log('Пользователь отсоединился!')
+  });
 })
 
 bot.on('message', async (message) => {
