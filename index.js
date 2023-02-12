@@ -44,16 +44,13 @@ io.on('connection', socket => {
 bot.on('message', async (message) => {
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
-  const manager = await ManagerController.get(id);
+  const manager = await ManagerController.get(id)[0];
   console.log(manager)
-  // Если нет доступа введите пароль
-
   if (manager.length === 0) {
     // Менеджер добавляется один раз, при условии, что запись в базе отсутствует
     ManagerController.add(id);
     return MessegesController.sendBotNotification(bot, id, 'Введите пароль:');
   } else {
-    console.log(manager.accest, text, PASSWORD)
     if (manager.accest === 0) {
       if (text === PASSWORD) {
         ManagerController.accest(id);
