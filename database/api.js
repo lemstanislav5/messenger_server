@@ -36,7 +36,7 @@ module.exports = {
     getIdManager: () => (query('data.db3', 'all', 'SELECT * FROM manager', [])),
     setCurrentUser: (chatId) => (query('data.db3', 'run', 'INSERT INTO currentUser (chatId) values ("' + chatId + '")', [])),
     getCurrentUser: () => (query('data.db3', 'all', 'SELECT * FROM currentUser', [])),
-    getUsers: () => (query('data.db3', 'all', 'SELECT * FROM users', [])),
+    getAllUsers: () => (query('data.db3', 'all', 'SELECT * FROM users', [])),
     delCurrentUser: (chatId) => (query('data.db3', 'run', 'DELETE FROM currentUser WHERE chatId=?', [chatId])),
     //! Выбор число непрочитанных сообщений
     getMesseges: () => (query('data.db3', 'all', 'SELECT * FROM messeges', [])),

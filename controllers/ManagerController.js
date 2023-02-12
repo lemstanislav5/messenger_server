@@ -14,7 +14,7 @@ class ManagerController {
     console.log('Менеджер добавлен!');
   }
   get(id){
-    console.log('Ищем менеджера!');
+    console.log('Получаем менеджера!');
     return findManager(id);
   }
 }

@@ -58,19 +58,24 @@ bot.on('message', async (message) => {
       } else {
         return MessegesController.sendBotNotification(bot, id, 'Введите пароль:');
       }
-    } else if (manager[0].accest === 1){
+    } else if (manager[0].accest === 1) {
       if (text === '/start') {
         MessegesController.sendListMailsToBot(bot, id);
       } else {
         let currentUser = await UsersController.getCurrent();
+        if (currentUser.length === 0) {
+          return MessegesController.sendBotNotification(bot, id, 'Адресат вашего сообщения не выбран!');
+        } else {
+          console.log(currentUser[0].chatId)
+          const socketId = UsersController.getSocketCurrentUser(currentUser[0].chatId);
+          if (!socketId) return MessegesController.sendBotNotification(bot, id, 'Адресат не найден в базе!');
+          io.to(socketId).emit('new message', text);
+        }
         console.log('currentUser', currentUser);
       }
     }
   
   }
-  
-  // const socketId = localStorage.getItem('socketId');
-  // io.to(socketId).emit('new message', text);
 });
 //! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
 //! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');

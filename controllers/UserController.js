@@ -1,6 +1,7 @@
 const { 
   databaseInitialization, 
-  addUser, findUser, 
+  addUser, 
+  findUser, 
   addMessage, 
   updateSocketId, 
   addManager, 
@@ -17,9 +18,7 @@ const {
 
 class UsersController {
   async addOrUpdateUser(socket, chatId) {
-    // Ищем пользователя по chatId в базе users
     const user = await findUser(chatId);
-    console.log(user)
     if (user.length === 0) {
       await addUser(chatId, socket.id);
       console.log('Пользователь добавлен.');
@@ -31,7 +30,7 @@ class UsersController {
     }
   }
   async setCurrent(chatId, required){
-    const users = await getUsers();
+    const users = await getAllUsers();
     console.log('users', users)
     if(users.length === 0 || required === 1) {
       await setCurrentUser(chatId);
@@ -43,6 +42,12 @@ class UsersController {
   }
   getCurrent(){
     return getCurrentUser();
+  }
+  getSocketCurrentUser(chatId){
+    console.log('Получаем пользовтаеля!');
+    const user = findUser(chatId);
+    if (user.length === 0) return false;
+    return user[0].socketId;
   }
 }
 
