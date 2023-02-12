@@ -25,7 +25,7 @@ io.on('connection', socket => {
   socket.on('new message', async message => {
     const { id, text, chatId } = message;
     // Устаналиваем chatId текущего пользователя если он не выбран
-    UsersController.currentUser(chatId);
+    UsersController.setCurrent(chatId);
     // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
     //! Добавляем сообщения пользователя в базу to/from нужно добавить
@@ -33,7 +33,7 @@ io.on('connection', socket => {
     // Передаем сообщение боту
     MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
   });
-  socket.on('disconnect', () => UsersController.currentUser(chatId, 0));
+  socket.on('disconnect', () => UsersController.setCurrent(chatId, 0));
 })
 
 bot.on('message', async (message) => {
@@ -55,7 +55,7 @@ bot.on('message', async (message) => {
       //! Выдать список активных пользователей и число непрочитанных сообщений
       MessegesController.sendListMailsToBot(bot, id)
     } else {
-      let currentUser = UsersController.getCurrentUser();
+      let currentUser = UsersController.getCurrent();
       console.log('currentUser', currentUser);
       //! Добавляем сообщения пользователя в базу to/from нужно добавить
       // MessegesController.add(chatId, socket.id, id, text, new Date().getTime());

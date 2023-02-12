@@ -31,7 +31,7 @@ class UsersController {
       console.log('Сокет не нуждается в обновлении.');
     }
   }
-  async currentUser(chatId, required){
+  async setCurrent(chatId, required){
     const users = await getUsers();
     if(users.length === 0 || required === 1) {
       await setCurrentUser(chatId);
@@ -41,7 +41,7 @@ class UsersController {
       console.log('Статус "текущий" у пользователя ' + chatId + ' удален в разъединением связи!');
     }
   }
-  getCurrentUser(){
+  getCurrent(){
     return getCurrentUser();
   }
 }
