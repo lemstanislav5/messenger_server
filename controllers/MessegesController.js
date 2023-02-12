@@ -29,7 +29,7 @@ class MessegesController {
       console.log('Пользователю сообщил, что менеджера нет в сети.');
     }
   }
-  // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
+
   async sendListMailsToBot(bot, id){
     const users = await getUsers();
     const messages = await getMesseges();

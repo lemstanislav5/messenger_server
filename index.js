@@ -5,16 +5,13 @@ bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }])
 
 const localStorage = require('./modules/localStorage')();
 const { 
-  databaseInitialization, 
-  findUser, 
   addManager, 
   findManager, 
-  updateManagerAccest,
-  getIdManager, 
 } = require('./database/api');
 const UsersController = require('./controllers/UserController');
 const MessegesController = require('./controllers/MessegesController');
 const InitializationController = require('./controllers/InitializationController');
+const ManagerController = require('./controllers/ManagerController');
 
 const express = require('express'),
       app = express(),
@@ -37,35 +34,20 @@ io.on('connection', socket => {
     // Передаем сообщение боту
     MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
   });
-  socket.on('disconnect', () => {
-    // !Ищем пользователя по socketId в массиве users
-    // let user = users.find(item => item.socketId === socket.id);
-    // !Определям индекс пользователя
-    // let index = users.indexOf(user);
-    // !Удаляем пользователя из массива
-    // users.splice(1, index);
-    // console.log('A user disconnected')
-  });
-    
-
+  socket.on('disconnect', () => UsersController.currentUser(chatId, 0));
 })
 
 bot.on('message', async (message) => {
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
-  const manager = await findManager(id);
-  if(manager.length === 0) {
-    addManager(id)
-      .then(() => console.log('Менеджер добавлен!'))
-      .catch(err => console.log(err));
-  }
-  if(text === '/start'){
-    // |U1 ON: 2| |U2 OFF:12| |U3 ON: 2| |Viktor3 OFF:12|
+  const manager = ManagerController.get(id);
+  console.log(manager)
+  if(manager.length === 0) ManagerController.add(id);
+  // Выдатьсписок активных пользователей и число непрочитанных сообщений
+  if(text === '/start') MessegesController.sendListMailsToBot(bot, id);
     MessegesController.sendListMailsToBot(bot, id)
-    console.log('Выдать меню и показать список активных чатов с возможность выбора переписки');
-  } else if(text === PASSWORD) {
-    console.log('Доступ открыт!');
-    updateManagerAccest(id);
+  if(text === PASSWORD) {
+    ManagerController.accest(id);
   } else {
     //! Добавляем сообщения в базу
     console.log('----------', manager.accest, id);
