@@ -44,21 +44,21 @@ io.on('connection', socket => {
 bot.on('message', async (message) => {
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
-  const manager = await ManagerController.get(id)[0];
-  console.log(manager)
+  const manager = await ManagerController.get(id);
+  console.log(manager[0])
   if (manager.length === 0) {
     // Менеджер добавляется один раз, при условии, что запись в базе отсутствует
     ManagerController.add(id);
     return MessegesController.sendBotNotification(bot, id, 'Введите пароль:');
   } else {
-    if (manager.accest === 0) {
+    if (manager[0].accest === 0) {
       if (text === PASSWORD) {
         ManagerController.accest(id);
         return MessegesController.sendBotNotification(bot, id, 'Доступ получен!');
       } else {
         return MessegesController.sendBotNotification(bot, id, 'Введите пароль:');
       }
-    } else if (manager.accest === 1){
+    } else if (manager[0].accest === 1){
       if (text === '/start') {
         MessegesController.sendListMailsToBot(bot, id);
       } else {
