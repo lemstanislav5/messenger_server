@@ -22,10 +22,10 @@ InitializationController.initialization();
 //------------------------------------------ ВЫДЕЛЕННЫЕ ФРАГМЕНТЫ ЗАМЕНИТЬ НА SQLITE 3
 io.on('connection', socket => {
   console.log('Пользователь подключился!');
+  // Устаналиваем chatId текущего пользователя если он не выбран
+  UsersController.setCurrent(chatId);
   socket.on('new message', async message => {
     const { id, text, chatId } = message;
-    // Устаналиваем chatId текущего пользователя если он не выбран
-    UsersController.setCurrent(chatId);
     // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
     //! Добавляем сообщения пользователя в базу to/from нужно добавить
