@@ -10,7 +10,7 @@ const {
   getIdManager, 
   setCurrentUser,
   getCurrentUser,
-  getUsers,
+  getAllUsers,
   delCurrentUser,
 } = require('../database/api');
 
