@@ -53,8 +53,8 @@ bot.on('message', async (message) => {
     ManagerController.add(id);
     return MessegesController.sendBotNotification(bot, id, 'Введите пароль:');
   } else {
+    console.log(manager.accest, text, PASSWORD)
     if (manager.accest === 0) {
-      console.log(text === PASSWORD)
       if (text === PASSWORD) {
         ManagerController.accest(id);
         return MessegesController.sendBotNotification(bot, id, 'Доступ получен!');
