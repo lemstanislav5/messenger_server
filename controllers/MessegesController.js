@@ -34,7 +34,6 @@ class MessegesController {
     const users = await getUsers();
     const messages = await getMesseges();
     const arr = users.map(current => {
-      console.log('current', current);
       let name = (current.name === null)? 'User['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'offline' : 'online';
       let userMesseges = messages.reduce((result, message) => {

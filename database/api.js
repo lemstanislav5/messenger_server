@@ -40,4 +40,5 @@ module.exports = {
     delCurrentUser: (chatId) => (query('data.db3', 'run', 'DELETE FROM currentUser WHERE chatId=?', [chatId])),
     //! Выбор число непрочитанных сообщений
     getMesseges: () => (query('data.db3', 'all', 'SELECT * FROM messeges', [])),
+
 }
