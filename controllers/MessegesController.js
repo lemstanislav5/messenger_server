@@ -30,6 +30,7 @@ class MessegesController {
     }
   }
   sendBotNotification(bot, managerId, text){
+    console.log(managerId, text)
     bot.sendMessage(managerId, text);
   }
   async sendListMailsToBot(bot, id){
