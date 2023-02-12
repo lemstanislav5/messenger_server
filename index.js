@@ -55,7 +55,7 @@ bot.on('message', async (message) => {
       //! Выдать список активных пользователей и число непрочитанных сообщений
       MessegesController.sendListMailsToBot(bot, id)
     } else {
-      let currentUser = UsersController.getCurrent();
+      let currentUser = await UsersController.getCurrent();
       console.log('currentUser', currentUser);
       //! Добавляем сообщения пользователя в базу to/from нужно добавить
       // MessegesController.add(chatId, socket.id, id, text, new Date().getTime());
