@@ -3,7 +3,6 @@ const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 
-const localStorage = require('./modules/localStorage')();
 const { 
   addManager, 
   findManager, 
