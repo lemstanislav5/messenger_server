@@ -3,10 +3,6 @@ const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 
-const { 
-  addManager, 
-  findManager, 
-} = require('./database/api');
 const UsersController = require('./controllers/UserController');
 const MessegesController = require('./controllers/MessegesController');
 const InitializationController = require('./controllers/InitializationController');
@@ -19,7 +15,7 @@ const express = require('express'),
 
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
-//------------------------------------------ ВЫДЕЛЕННЫЕ ФРАГМЕНТЫ ЗАМЕНИТЬ НА SQLITE 3
+
 io.on('connection', socket => {
   console.log('Пользователь подключился!');
   socket.on('new message', async message => {
@@ -38,7 +34,7 @@ io.on('connection', socket => {
       io.to(socket.id).emit('new message', 'Менеджер offline!');
     }
   });
-  socket.on('disconnect', () => UsersController.setCurrent(chatId, 0));
+  socket.on('disconnect', () => {UsersController.setCurrent(chatId, 0)});
 })
 
 bot.on('message', async (message) => {
