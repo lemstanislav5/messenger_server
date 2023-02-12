@@ -35,7 +35,7 @@ io.on('connection', socket => {
       // Передаем сообщение боту
       MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
     } else {
-      io.to(socket.id).emit('new message', 'Менеджера, приходите попозже!');
+      io.to(socket.id).emit('new message', 'Менеджер offline!');
     }
   });
   socket.on('disconnect', () => UsersController.setCurrent(chatId, 0));
@@ -48,24 +48,27 @@ bot.on('message', async (message) => {
   console.log(manager)
   // Если нет доступа введите пароль
 
-  if(manager.length === 0) {
+  if (manager.length === 0) {
+    // Менеджер добавляется один раз, при условии, что запись в базе отсутствует
     ManagerController.add(id);
-    return bot.sendMessage(id, 'Введите пароль:');
+    return MessegesController.sendBotNotification(bot, id, 'Введите пароль:');
   } else {
-    if(manager.accest === 0 && text !== PASSWORD) {
-      return bot.sendMessage(id, 'Введите пароль:');
-    } else if (text === PASSWORD) {
-      ManagerController.accest(id)
-    } else if (manager.accest === 1 && text === '/start') {
-      //! Выдать список активных пользователей и число непрочитанных сообщений
-      MessegesController.sendListMailsToBot(bot, id)
-    } else {
-      let currentUser = await UsersController.getCurrent();
-      console.log('currentUser', currentUser);
-      //! Добавляем сообщения пользователя в базу to/from нужно добавить
-      // MessegesController.add(chatId, socket.id, id, text, new Date().getTime());
-      // io.to(socketId).emit('new message', text);
+    if (manager.accest === 0) {
+      if (text === PASSWORD) {
+        ManagerController.accest(id);
+        return MessegesController.sendBotNotification(bot, id, 'Доступ получен!');
+      } else {
+        return MessegesController.sendBotNotification(bot, id, 'Введите пароль:');
+      }
+    } else if (manager.accest === 1){
+      if (text === '/start') {
+        MessegesController.sendListMailsToBot(bot, id);
+      } else {
+        let currentUser = await UsersController.getCurrent();
+        console.log('currentUser', currentUser);
+      }
     }
+  
   }
   
   // const socketId = localStorage.getItem('socketId');

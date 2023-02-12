@@ -29,7 +29,9 @@ class MessegesController {
       console.log('Пользователю сообщил, что менеджера нет в сети.');
     }
   }
-
+  sendBotNotification(bot, managerId, text){
+    bot.sendMessage(managerId, text);
+  }
   async sendListMailsToBot(bot, id){
     const users = await getUsers();
     const messages = await getMesseges();
