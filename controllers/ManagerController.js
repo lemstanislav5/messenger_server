@@ -20,7 +20,7 @@ class ManagerController {
   }
   get(){
     console.log('Получаем менеджера!');
-    return getManager(id);
+    return getManager();
   }
 }
 
