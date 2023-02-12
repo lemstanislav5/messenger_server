@@ -11,6 +11,7 @@ const {
   getCurrentUser,
   getUsers,
   delCurrentUser,
+  getCurrentUser,
 } = require('../database/api');
 
 
@@ -39,6 +40,9 @@ class UsersController {
       await delCurrentUser(chatId);
       console.log('Статус "текущий" у пользователя ' + chatId + ' удален в разъединением связи!');
     }
+  }
+  getCurrentUser(){
+    return getCurrentUser();
   }
 }
 

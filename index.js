@@ -41,17 +41,28 @@ bot.on('message', async (message) => {
   const {id, first_name, last_name, username}  = chat;
   const manager = await ManagerController.get(id);
   console.log(manager)
-  if(manager.length === 0) ManagerController.add(id);
-  // Выдатьсписок активных пользователей и число непрочитанных сообщений
-  if(text === '/start') MessegesController.sendListMailsToBot(bot, id);
-    MessegesController.sendListMailsToBot(bot, id)
-  if(text === PASSWORD) {
-    ManagerController.accest(id);
+  // Если нет доступа введите пароль
+
+  if(manager.length === 0) {
+    ManagerController.add(id);
+    return bot.sendMessage(id, 'Введите пароль:');
   } else {
-    //! Добавляем сообщения в базу
-    console.log('----------', manager.accest, id);
-    if(manager.accest === 0) return bot.sendMessage(id, 'Введите пароль:');
+    if(manager.accest === 0 && text !== PASSWORD) {
+      return bot.sendMessage(id, 'Введите пароль:');
+    } else if (text === PASSWORD) {
+      ManagerController.accest(id)
+    } else if (manager.accest === 1 && text === '/start') {
+      //! Выдать список активных пользователей и число непрочитанных сообщений
+      MessegesController.sendListMailsToBot(bot, id)
+    } else {
+      let currentUser = UsersController.getCurrentUser();
+      console.log('currentUser', currentUser);
+      //! Добавляем сообщения пользователя в базу to/from нужно добавить
+      // MessegesController.add(chatId, socket.id, id, text, new Date().getTime());
+      // io.to(socketId).emit('new message', text);
+    }
   }
+  
   // const socketId = localStorage.getItem('socketId');
   // io.to(socketId).emit('new message', text);
 });
