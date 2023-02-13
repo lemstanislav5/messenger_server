@@ -81,16 +81,3 @@ bot.on('message', async (message) => {
 });
 //! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
 //! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
-
-
-// module.exports = {
-//   sections: {
-//      reply_markup: JSON.stringify({
-//          inline_keyboard: [
-//              [{text: 'Посетители онлайн', callback_data: '/online visitors'}],
-//              [{text: 'Список чатов', callback_data: '/сhat List'}],
-//              [{text: 'Настройки', callback_data: '/settings'}]
-//          ]
-//      })
-//  }
-// }
