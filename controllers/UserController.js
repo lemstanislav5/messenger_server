@@ -29,7 +29,8 @@ class UsersController {
       console.log('Текущим пользователем выбран: ' + chatId);
     } 
   }
-  async delCurrent(chatId) {
+  async delCurrent() {
+    const chatId = await getCurrentUser().chatId;
     await delCurrentUser(chatId);
     console.log('Статус "текущий" у пользователя ' + chatId + ' удален в разъединением связи!');
   }

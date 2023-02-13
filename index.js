@@ -36,7 +36,7 @@ io.on('connection', socket => {
     }
   });
   socket.on('disconnect', () => {
-    UsersController.delCurrent(chatId)
+    UsersController.delCurrent();
     console.log('Пользователь отсоединился!')
   });
 })
