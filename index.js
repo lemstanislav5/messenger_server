@@ -32,7 +32,9 @@ io.on('connection', socket => {
     console.log('UsersController.get')
     if(manager[0].accest === 1) {
       // Передаем сообщение боту
+      console.log('start')
       MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
+      console.log('stop')
     } else {
       // Сообщаем пользователю об отсутствии менеджера
       io.to(socket.id).emit('new message', 'Менеджер offline!');
