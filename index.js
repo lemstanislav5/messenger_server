@@ -82,7 +82,7 @@ bot.on('callback_query', async msg => {
   const chatId = msg.data;
   //! При выводе сообщений подьзователя обновляю данные сообщения как прочитанные
   //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0); 
-  UsersController.setCurrent(chatId);
+  UsersController.setCurrent(chatId, 1);
 });
 //! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
 //! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
