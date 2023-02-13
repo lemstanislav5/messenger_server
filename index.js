@@ -27,13 +27,12 @@ io.on('connection', socket => {
     MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0); 
     const manager = await ManagerController.get(id);
     console.log('UsersController.get', manager)
-    if(manager[0].accest === 1) {
-      // Передаем сообщение боту
-      MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
-    } else {
-      // Сообщаем пользователю об отсутствии менеджера
-      io.to(socket.id).emit('new message', 'Менеджер offline!');
-    }
+    // Сообщаем пользователю об отсутствии менеджера
+    if (manager.length === 0 || manager[0].accest === 1) 
+      return io.to(socket.id).emit('new message', 'Менеджер offline!');
+    // Передаем сообщение боту
+    MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
+
   });
   socket.on('disconnect', () => {
     UsersController.delCurrent();
