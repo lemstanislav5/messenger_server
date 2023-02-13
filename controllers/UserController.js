@@ -30,8 +30,9 @@ class UsersController {
     }
   }
   async setCurrent(chatId, required){
-    const users = await getAllUsers();
+    const users = await getCurrentUser();
     console.log('users', users)
+    console.log(users.length, required)
     if(users.length === 0 || required === 1) {
       await setCurrentUser(chatId);
       console.log('Текущим пользователем выбран: ' + chatId);
