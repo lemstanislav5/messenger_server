@@ -27,7 +27,6 @@ io.on('connection', socket => {
     //! Добавляем сообщения пользователя в базу to/from нужно добавить
     MessegesController.add(chatId, socket.id, id, text, new Date().getTime());
     const manager = await ManagerController.get(id);
-    console.log(manager)
     if(manager[0].accest === 1) {
       // Передаем сообщение боту
       MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
@@ -64,16 +63,13 @@ bot.on('message', async (message) => {
         MessegesController.sendListMailsToBot(bot, id);
       } else {
         let currentUser = await UsersController.getCurrent();
-        console.log('currentUser', currentUser)
         if (currentUser.length === 0) {
           return MessegesController.sendBotNotification(bot, id, 'Адресат вашего сообщения не выбран!');
         } else {
-          console.log('chatId', currentUser[0].chatId)
           const socketId = await UsersController.getSocketCurrentUser(currentUser[0].chatId);
           if (!socketId) return MessegesController.sendBotNotification(bot, id, 'Адресат не найден в базе!');
           io.to(socketId).emit('new message', text);
         }
-        console.log('currentUser', currentUser);
       }
     }
   

@@ -1,16 +1,9 @@
 const { 
-  databaseInitialization, 
   addUser, 
   findUser, 
-  addMessage, 
   updateSocketId, 
-  addManager, 
-  findManager, 
-  updateManagerAccest,
-  getIdManager, 
   setCurrentUser,
   getCurrentUser,
-  getAllUsers,
   delCurrentUser,
 } = require('../database/api');
 
