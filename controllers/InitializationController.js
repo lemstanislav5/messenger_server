@@ -1,4 +1,4 @@
-const { databaseInitialization } = require('../database/api');
+const { databaseInitialization } = require('../services/api');
 
 class InitializationController {
   async initialization() {

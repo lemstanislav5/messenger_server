@@ -3,7 +3,7 @@ const {
   addManager, 
   findManager,
   getManager,
- } = require('../database/api');
+ } = require('../services/api');
 
 class ManagerController {
   async accest(id) {

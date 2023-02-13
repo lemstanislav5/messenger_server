@@ -5,7 +5,7 @@ const {
   setCurrentUser,
   getCurrentUser,
   delCurrentUser,
-} = require('../database/api');
+} = require('../services/api');
 
 
 

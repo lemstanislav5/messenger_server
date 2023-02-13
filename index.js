@@ -1,7 +1,6 @@
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
-const { nanoid } = require("nanoid");
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 
 const UsersController = require('./controllers/UserController');
@@ -25,13 +24,13 @@ io.on('connection', socket => {
     UsersController.setCurrent(chatId);
     // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
-    MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0); 
+    MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', read = 0); 
     const manager = await ManagerController.get(id);
     console.log('UsersController.get', manager)
     // Сообщаем пользователю об отсутствии менеджера
     if (manager.length === 0 || manager[0].accest === 0) 
       return io.to(socket.id).emit('new message', 'Менеджер offline!');
-    // Передаем сообщение боту
+    //! Передаем сообщение боту read = 1
     MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
 
   });
@@ -69,8 +68,8 @@ bot.on('message', async (message) => {
           if (!socketId) return MessegesController.sendBotNotification(bot, id, 'Адресат не найден в базе!');
           io.to(socketId).emit('new message', text);
           //! Проверка доставки сообщения 
-          let idNanoid = nanoid(10);
-          MessegesController.add(id, socketId, idNanoid, text, new Date().getTime(), 'from', delivered = 1, read = 0);
+          let idMessage = 9999999999 - Math.round(0 - 0.5 + Math.random() * (8999999999 - 0 + 1));
+          MessegesController.add(id, socketId, idMessage, text, new Date().getTime(), 'to', read = 0);
         }
       }
     }

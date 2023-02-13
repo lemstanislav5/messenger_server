@@ -4,13 +4,13 @@ const {
   findUser,
   getAllUsers,
   getMesseges,
-} = require('../database/api');
+} = require('../services/api');
 
 
 
 class MessegesController {
-  async add(chatId, socketId, messageId, text, time, type, delivered, read) {
-    await addMessage(chatId, socketId, messageId, text, time, type, delivered, read);
+  async add(chatId, socketId, messageId, text, time, type, read) {
+    await addMessage(chatId, socketId, messageId, text, time, type, read);
     console.log('Сообщение добавлено в базу.');
   }
   async sendMessegesToBot(bot, io, text, chatId, socket) {
