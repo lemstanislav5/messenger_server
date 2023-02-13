@@ -9,7 +9,7 @@ const {
 
 
 class MessegesController {
-  async add(chatId, socketId, messageId, text, time) {
+  async add(chatId, socketId, messageId, text, time, type, delivered, read) {
     await addMessage(chatId, socketId, messageId, text, time, type, delivered, read);
     console.log('Сообщение добавлено в базу.');
   }
