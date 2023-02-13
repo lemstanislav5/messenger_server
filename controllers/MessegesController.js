@@ -9,12 +9,11 @@ const {
 
 
 class MessegesController {
-  async add(chatId, socketId, messageId, text, time){
-    console.log(chatId, socketId, messageId, text, time)
-    await addMessage(chatId, socketId, messageId, text, time);
+  async add(chatId, socketId, messageId, text, time) {
+    await addMessage(chatId, socketId, messageId, text, time, type, delivered, read);
     console.log('Сообщение добавлено в базу.');
   }
-  async sendMessegesToBot(bot, io, text, chatId, socket){
+  async sendMessegesToBot(bot, io, text, chatId, socket) {
     const manager = await getIdManager();
     const userData = await findUser(chatId);
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : userData[0].name + '['+userData[0].id+']';
@@ -33,14 +32,13 @@ class MessegesController {
     bot.sendMessage(managerId, text);
   }
   async sendListMailsToBot(bot, id){
+    //! Желательно переделать на запрос к базе данных
     const users = await getAllUsers();
     const messages = await getMesseges();
     const arr = users.map(current => {
       let name = (current.name === null)? 'User['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'offline' : 'online';
-      console.log('start reduce')
       let userMesseges = messages.reduce((result, message) => {
-        console.log(message.chatId, current.chatId)
         if(message.chatId === current.chatId){
           return [...result, message];
         } else {

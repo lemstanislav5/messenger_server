@@ -24,8 +24,7 @@ io.on('connection', socket => {
     UsersController.setCurrent(chatId);
     // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
-    //! Добавляем сообщения пользователя в базу to/from нужно добавить
-    MessegesController.add(chatId, socket.id, id, text, new Date().getTime());
+    MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0); 
     const manager = await ManagerController.get(id);
     if(manager[0].accest === 1) {
       // Передаем сообщение боту
@@ -68,11 +67,26 @@ bot.on('message', async (message) => {
           const socketId = await UsersController.getSocketCurrentUser(currentUser[0].chatId);
           if (!socketId) return MessegesController.sendBotNotification(bot, id, 'Адресат не найден в базе!');
           io.to(socketId).emit('new message', text);
+          MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'to', delivered = 1, read = 0);
         }
       }
     }
   
   }
+});
+
+bot.on('callback_query', async msg => {
+  const data = msg.data;
+  const id = msg.message.chat.id;
+  console.log('data', data);
+  //! При выводе сообщений подьзователя обновляю данные сообщения как прочитанные
+  //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0); 
+  if (typeof data !== "undefined" || data !== null){
+    if (data === '/extreme materials') {
+      await bot.sendMessage(id, `"экстремистские материалы" \nДля поиска введите ключевые слова с учетом регистра (А/а):`);
+    } 
+  }
+
 });
 //! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
 //! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
