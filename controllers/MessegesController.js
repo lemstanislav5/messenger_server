@@ -45,7 +45,7 @@ class MessegesController {
         } else {
           return result;
         }
-      }, [])
+      }, []);
       let countMesseges = (userMesseges === undefined) ? 0 : userMesseges.length;
       return [{ text: name + ' ' + status + ': ' + countMesseges, callback_data: current.chatId }];
     })

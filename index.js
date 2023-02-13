@@ -57,6 +57,7 @@ bot.on('message', async (message) => {
         return MessegesController.sendBotNotification(bot, id, 'Введите пароль:');
       }
     } else if (manager[0].accest === 1) {
+      console.log(manager)
       if (text === '/start') {
         MessegesController.sendListMailsToBot(bot, id);
       } else {
