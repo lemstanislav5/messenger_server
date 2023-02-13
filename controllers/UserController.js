@@ -35,10 +35,11 @@ class UsersController {
     if(users.length === 0 || required === 1) {
       await setCurrentUser(chatId);
       console.log('Текущим пользователем выбран: ' + chatId);
-    } else {
-      await delCurrentUser(chatId);
-      console.log('Статус "текущий" у пользователя ' + chatId + ' удален в разъединением связи!');
-    }
+    } 
+  }
+  async delCurrent(chatId){
+    await delCurrentUser(chatId);
+    console.log('Статус "текущий" у пользователя ' + chatId + ' удален в разъединением связи!');
   }
   getCurrent(){
     return getCurrentUser();
