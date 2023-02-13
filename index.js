@@ -79,8 +79,7 @@ bot.on('message', async (message) => {
 
 bot.on('callback_query', async msg => {
   const data = msg.data;
-  const id = msg.message.chat.id;
-  console.log('data', msg);
+  console.log('data', data);
   //! При выводе сообщений подьзователя обновляю данные сообщения как прочитанные
   //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0); 
   if (typeof data !== "undefined" || data !== null){
