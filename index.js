@@ -65,7 +65,9 @@ bot.on('message', async (message) => {
         if (currentUser.length === 0) {
           return MessegesController.sendBotNotification(bot, id, 'Адресат вашего сообщения не выбран!');
         } else {
+          console.log(currentUser);
           const socketId = await UsersController.getSocketCurrentUser(currentUser[0].chatId);
+          console.log(socketId);
           if (!socketId) return MessegesController.sendBotNotification(bot, id, 'Адресат не найден в базе!');
           io.to(socketId).emit('new message', text);
           //! Проверка доставки сообщения 
