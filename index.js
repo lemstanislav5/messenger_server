@@ -1,7 +1,7 @@
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
-const { nanoid } = require('nanoid')
+const { nanoid } = require("nanoid");
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 
 const UsersController = require('./controllers/UserController');
