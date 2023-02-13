@@ -34,6 +34,7 @@ class MessegesController {
   async sendListMailsToBot(bot, id){
     //! Желательно переделать на запрос к базе данных
     const users = await getAllUsers();
+    if(users.length === 0) return bot.sendMessage(id, 'Посетителей нет!');
     const messages = await getMesseges();
     const arr = users.map(current => {
       let name = (current.name === null)? 'User['+current.id+']' : current.name + '['+current.id+']';
