@@ -78,16 +78,10 @@ bot.on('message', async (message) => {
 });
 
 bot.on('callback_query', async msg => {
-  const data = msg.data;
-  console.log('data', data);
+  const chatId = msg.data;
   //! При выводе сообщений подьзователя обновляю данные сообщения как прочитанные
   //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0); 
-  if (typeof data !== "undefined" || data !== null){
-    if (data === '/extreme materials') {
-      await bot.sendMessage(id, `"экстремистские материалы" \nДля поиска введите ключевые слова с учетом регистра (А/а):`);
-    } 
-  }
-
+  UsersController.setCurrent(chatId);
 });
 //! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
 //! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
