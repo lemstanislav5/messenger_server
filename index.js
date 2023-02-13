@@ -28,7 +28,7 @@ io.on('connection', socket => {
     const manager = await ManagerController.get(id);
     console.log('UsersController.get', manager)
     // Сообщаем пользователю об отсутствии менеджера
-    if (manager.length === 0 || manager[0].accest === 1) 
+    if (manager.length === 0 || manager[0].accest === 0) 
       return io.to(socket.id).emit('new message', 'Менеджер offline!');
     // Передаем сообщение боту
     MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
