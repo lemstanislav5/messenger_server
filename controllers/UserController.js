@@ -45,9 +45,10 @@ class UsersController {
   getCurrent(){
     return getCurrentUser();
   }
-  getSocketCurrentUser(chatId){
+  async getSocketCurrentUser(chatId){
     console.log('Получаем пользовтаеля!');
-    const user = findUser(chatId);
+    const user = await findUser(chatId);
+    console.log('getSocketCurrentUser', user);
     if (user.length === 0) return false;
     return user[0].socketId;
   }
