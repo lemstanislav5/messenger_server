@@ -1,6 +1,7 @@
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
+const { nanoid } = require('nanoid')
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 
 const UsersController = require('./controllers/UserController');
@@ -67,7 +68,9 @@ bot.on('message', async (message) => {
           const socketId = await UsersController.getSocketCurrentUser(currentUser[0].chatId);
           if (!socketId) return MessegesController.sendBotNotification(bot, id, 'Адресат не найден в базе!');
           io.to(socketId).emit('new message', text);
-          MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'to', delivered = 1, read = 0);
+          //! Проверка доставки сообщения 
+          let idNanoid = nanoid(10);
+          MessegesController.add(id, socketId, idNanoid, text, new Date().getTime(), 'from', delivered = 1, read = 0);
         }
       }
     }
