@@ -22,19 +22,14 @@ io.on('connection', socket => {
     const { id, text, chatId } = message;
     // Устаналиваем chatId текущего пользователя если он не выбран
     UsersController.setCurrent(chatId);
-    console.log('UsersController.setCurrent')
     // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
-    console.log('UsersController.addOrUpdateUser')
     MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0); 
-    console.log('UsersController.add')
     const manager = await ManagerController.get(id);
-    console.log('UsersController.get')
+    console.log('UsersController.get', manager)
     if(manager[0].accest === 1) {
       // Передаем сообщение боту
-      console.log('start')
       MessegesController.sendMessegesToBot(bot, io, text, chatId, socket); 
-      console.log('stop')
     } else {
       // Сообщаем пользователю об отсутствии менеджера
       io.to(socket.id).emit('new message', 'Менеджер offline!');
