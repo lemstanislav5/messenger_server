@@ -30,7 +30,6 @@ class MessegesController {
     }
   }
   sendBotNotification(bot, managerId, text){
-    console.log(managerId, text)
     bot.sendMessage(managerId, text);
   }
   async sendListMailsToBot(bot, id){
@@ -39,6 +38,7 @@ class MessegesController {
     const arr = users.map(current => {
       let name = (current.name === null)? 'User['+current.id+']' : current.name + '['+current.id+']';
       let status = (current.online === 0)? 'offline' : 'online';
+      console.log('start reduce')
       let userMesseges = messages.reduce((result, message) => {
         console.log(message.chatId, current.chatId)
         if(message.chatId === current.chatId){

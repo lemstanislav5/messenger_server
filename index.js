@@ -45,7 +45,6 @@ bot.on('message', async (message) => {
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
   const manager = await ManagerController.find(id);
-  console.log(manager[0])
   if (manager.length === 0) {
     // Менеджер добавляется один раз, при условии, что запись в базе отсутствует
     ManagerController.add(id);
