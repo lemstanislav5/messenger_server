@@ -1,10 +1,11 @@
-const { 
-  addUser, 
-  findUser, 
-  updateSocketId, 
+const {
+  addUser,
+  findUser,
+  updateSocketId,
   setCurrentUser,
   getCurrentUser,
   delCurrentUser,
+  updateCurrentUser,
 } = require('../services/api');
 
 
@@ -16,7 +17,7 @@ class UsersController {
       await addUser(chatId, socket.id);
       console.log('Пользователь добавлен.');
     } else if (user.length > 0 && user[0].socketId !== socket.id) {
-      await updateSocketId(chatId, socket.id); 
+      await updateSocketId(chatId, socket.id);
       console.log('Сокет обновлен.');
     } else {
       console.log('Сокет не нуждается в обновлении.');
@@ -24,10 +25,13 @@ class UsersController {
   }
   async setCurrent(chatId, required) {
     const users = await getCurrentUser();
-    if(users.length === 0 || required === 1) {
+    if(users.length === 0) {
       await setCurrentUser(chatId);
       console.log('Текущим пользователем выбран: ' + chatId);
-    } 
+    } else if(required === 1) {
+      await updateCurrentUser(chatId);
+      console.log('Текущим пользователем заменен на: ' + chatId);
+    }
   }
   async delCurrent() {
     const chatId = await getCurrentUser().chatId;
