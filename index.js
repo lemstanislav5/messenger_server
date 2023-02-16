@@ -82,6 +82,7 @@ bot.on('message', async (message) => {
 
 bot.on('callback_query', async msg => {
   const chatId = msg.data;
+  console.log(chatId)
   //! При выводе сообщений подьзователя обновляю данные сообщения как прочитанные
   //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0);
   UsersController.setCurrent(chatId, 1);
