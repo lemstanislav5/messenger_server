@@ -1,5 +1,5 @@
 const process = require('process');
-console.log(process.id);
+console.log(process.pid);
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
