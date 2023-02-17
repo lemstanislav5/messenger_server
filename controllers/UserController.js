@@ -19,7 +19,7 @@ class UsersController {
     } else if (user.length > 0 && user[0].socketId !== socket.id) {
       console.log('Сокет обновлен.', chatId, socket.id);
       await updateSocketId(chatId, socket.id);
-      console.log('Сокет обновлен.');
+      console.warn('Сокет обновлен на: ' + socket.id);
     } else {
       console.log('Сокет не нуждается в обновлении.');
     }
