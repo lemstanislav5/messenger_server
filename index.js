@@ -1,3 +1,5 @@
+const process = require('process');
+console.log(process.id);
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
@@ -65,11 +67,8 @@ bot.on('message', async (message) => {
         if (currentUser.length === 0) {
           return MessegesController.sendBotNotification(bot, id, 'Адресат вашего сообщения не выбран!');
         } else {
-          console.log('currentUser', currentUser);
           const socketId = await UsersController.getSocketCurrentUser(currentUser[0].chatId);
-          console.log('socketId', socketId);
           if (!socketId) return MessegesController.sendBotNotification(bot, id, 'Адресат не найден в базе!');
-          console.log('socketId', socketId,  text);
           io.to(socketId).emit('new message', text);
           //! Проверка доставки сообщения
           let idMessage = 9999999999 - Math.round(0 - 0.5 + Math.random() * (8999999999 - 0 + 1));
@@ -83,7 +82,6 @@ bot.on('message', async (message) => {
 
 bot.on('callback_query', async msg => {
   const chatId = msg.data;
-  console.log('callback_query', chatId)
   //! При выводе сообщений подьзователя обновляю данные сообщения как прочитанные
   //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0);
   UsersController.setCurrent(chatId, 1);
