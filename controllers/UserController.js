@@ -45,6 +45,7 @@ class UsersController {
   async getSocketCurrentUser(chatId) {
     console.log('Получаем socketId текущего пользовтаеля!');
     const user = await findUser(chatId);
+    console.log(user)
     if (user.length === 0) return false;
     return user[0].socketId;
   }
