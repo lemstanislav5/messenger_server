@@ -29,7 +29,7 @@ module.exports = {
     addMessage: (chatId, socketId, messageId, text, time, type, read) => (query('data.db3', 'run', 'INSERT INTO messeges (chatId, socketId, messageId, text, time, type, read) values ("' +
     chatId + '","' + socketId + '","' + messageId + '","' + text + '","' + time + '","' + type + '","' + read + '")', [])),
     findUser: (chatId) => (query('data.db3', 'all', 'SELECT * FROM users WHERE chatId = "' + chatId + '"', [])),
-    updateSocketId: (chatId, socketId) => (query('data.db3', 'run', 'UPDATE users SET socketId=? WHERE chatId=?', [chatId, socketId])),
+    updateSocketId: (chatId, socketId) => (query('data.db3', 'run', 'UPDATE users SET socketId=? WHERE chatId=?', [socketId, chatId])),
     addManager: (managerId, accest = 0) => (query('data.db3', 'run', 'INSERT INTO manager (managerId, accest) values ("' + managerId + '","' + accest + '")', [])),
     findManager: (managerId) => (query('data.db3', 'all', 'SELECT * FROM manager WHERE managerId = "' + managerId + '"', [])),
     getManager: () => (query('data.db3', 'all', 'SELECT * FROM manager', [])),

@@ -17,6 +17,7 @@ class UsersController {
       await addUser(chatId, socket.id);
       console.log('Пользователь добавлен.');
     } else if (user.length > 0 && user[0].socketId !== socket.id) {
+      console.log('Сокет обновлен.', chatId, socketId)
       await updateSocketId(chatId, socket.id);
       console.log('Сокет обновлен.');
     } else {
