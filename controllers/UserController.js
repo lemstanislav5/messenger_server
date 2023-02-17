@@ -12,7 +12,9 @@ const {
 
 class UsersController {
   async addOrUpdateUser(socket, chatId) {
+    console.log('addOrUpdateUser args: ', socket, chatId)
     const user = await findUser(chatId);
+    console.log('findUser: ', user)
     if (user.length === 0) {
       await addUser(chatId, socket.id);
       console.log('Пользователь добавлен.');
