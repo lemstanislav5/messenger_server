@@ -26,18 +26,17 @@ io.on('connection', socket => {
     UsersController.setCurrent(chatId);
     // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
+    //! Если добавление успещшно message: { add: true, send: false}
     MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', read = 0);
     const manager = await ManagerController.get(id);
     console.log('UsersController.get', manager);
     // Сообщаем пользователю об отсутствии менеджера
     if (manager.length === 0 || manager[0].accest === 0)
       return io.to(socket.id).emit('new message', 'Менеджер offline!');
-// Уведомляем клиента о получении сервером сообщения
-    //!io.to(socketId).emit('notification', JSON.stringify({id, type: "server get messag"});
-    //! Передаем сообщение боту read = 1
-// Возможен ли callback в боте
+    //! Если отправка успещшна message: { add: true, send: true}
     MessegesController.sendMessegesToBot(bot, io, text, chatId, socket);
     callback('error', 'message');
+    //! Если отправка успещшна message: { add: false, send: false}
   });
   socket.on('disconnect', () => {
     UsersController.delCurrent();
