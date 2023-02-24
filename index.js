@@ -20,7 +20,7 @@ InitializationController.initialization();
 
 io.on('connection', socket => {
   console.log('Пользователь подключился!');
-  socket.on('new message', async message => {
+  socket.on('new message', async (message, callback) => {
     const { id, text, chatId } = message;
     // Устаналиваем chatId текущего пользователя если он не выбран
     UsersController.setCurrent(chatId);
@@ -37,7 +37,7 @@ io.on('connection', socket => {
     //! Передаем сообщение боту read = 1
 // Возможен ли callback в боте
     MessegesController.sendMessegesToBot(bot, io, text, chatId, socket);
-
+    callback('error', 'message');
   });
   socket.on('disconnect', () => {
     UsersController.delCurrent();
