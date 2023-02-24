@@ -32,7 +32,10 @@ io.on('connection', socket => {
     // Сообщаем пользователю об отсутствии менеджера
     if (manager.length === 0 || manager[0].accest === 0)
       return io.to(socket.id).emit('new message', 'Менеджер offline!');
+// Уведомляем клиента о получении сервером сообщения
+    //!io.to(socketId).emit('notification', JSON.stringify({id, type: "server get messag"});
     //! Передаем сообщение боту read = 1
+// Возможен ли callback в боте
     MessegesController.sendMessegesToBot(bot, io, text, chatId, socket);
 
   });
