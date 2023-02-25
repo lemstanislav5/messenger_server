@@ -21,22 +21,34 @@ InitializationController.initialization();
 io.on('connection', socket => {
   console.log('Пользователь подключился!');
   socket.on('new message', async (message, callback) => {
+    const notification = {add: false, send: false}
     const { id, text, chatId } = message;
     // Устаналиваем chatId текущего пользователя если он не выбран
     UsersController.setCurrent(chatId);
     // В зависимости от результата поиска добовляем или обновляем socketId
     UsersController.addOrUpdateUser(socket, chatId);
     //! Если добавление успещшно message: { add: true, send: false}
-    MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', read = 0);
+    try {
+      MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', read = 0);
+      notification = {...nonotification, add: true};
+    } catch (err) {
+      console.error('MessegesController.add: ', err);
+      return callback(true, notification);
+    }
+
     const manager = await ManagerController.get(id);
-    console.log('UsersController.get', manager);
     // Сообщаем пользователю об отсутствии менеджера
     if (manager.length === 0 || manager[0].accest === 0)
       return io.to(socket.id).emit('new message', 'Менеджер offline!');
     //! Если отправка успещшна message: { add: true, send: true}
-    MessegesController.sendMessegesToBot(bot, io, text, chatId, socket);
-    callback('error', 'message');
-    //! Если отправка успещшна message: { add: false, send: false}
+    try {
+      MessegesController.sendMessegesToBot(bot, io, text, chatId, socket);
+      notification = {...nonotification, send: true};
+      return callback(false, notification);
+    } catch (err) {
+      console.error('MessegesController.sendMessegesToBot: ', err);
+      return callback(true, notification);
+    }
   });
   socket.on('disconnect', () => {
     UsersController.delCurrent();
