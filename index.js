@@ -21,7 +21,7 @@ InitializationController.initialization();
 io.on('connection', socket => {
   console.log('Пользователь подключился!');
   socket.on('new message', async (message, callback) => {
-    const notification = {add: false, send: false}
+    let notification = {add: false, send: false}
     const { id, text, chatId } = message;
     // Устаналиваем chatId текущего пользователя если он не выбран
     UsersController.setCurrent(chatId);
