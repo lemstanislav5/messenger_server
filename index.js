@@ -15,6 +15,10 @@ const express = require('express'),
       http = require('http').Server(app),
       io = require('socket.io')(http);
 
+app.get('/', function (req, res) {
+  res.send('Hello World');
+})
+
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
 
