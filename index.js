@@ -30,7 +30,7 @@ io.on('connection', socket => {
     //! Если добавление успещшно message: { add: true, send: false}
     try {
       MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', read = 0);
-      notification = {...nonotification, add: true};
+      notification = {...notification, add: true};
     } catch (err) {
       console.error('MessegesController.add: ', err);
       return callback(true, notification);
@@ -43,7 +43,7 @@ io.on('connection', socket => {
     //! Если отправка успещшна message: { add: true, send: true}
     try {
       MessegesController.sendMessegesToBot(bot, io, text, chatId, socket);
-      notification = {...nonotification, send: true};
+      notification = {...notification, send: true};
       return callback(false, notification);
     } catch (err) {
       console.error('MessegesController.sendMessegesToBot: ', err);
