@@ -42,5 +42,5 @@ module.exports = {
     //! Выбор число непрочитанных сообщений
     getMesseges: () => (query('data.db3', 'all', 'SELECT * FROM messeges', [])),
     updateCurrentUser: (chatId) => (query('data.db3', 'run', 'UPDATE currentUser SET chatId=?', [chatId])),
-    setUserNameAndEmail: (name, email, chatId) => (query('data.db3', 'run', 'UPDATE users SET name=? email=? WHERE chatId=?', [name, email, chatId])),
+    setUserNameAndEmail: (name, email, chatId) => (query('data.db3', 'run', 'UPDATE users SET name=?, email=? WHERE chatId=?', [name, email, chatId])),
 }
