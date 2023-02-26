@@ -6,6 +6,7 @@ const {
   getCurrentUser,
   delCurrentUser,
   updateCurrentUser,
+  setUserNameAndEmail,
 } = require('../services/api');
 
 
@@ -45,9 +46,12 @@ class UsersController {
   async getSocketCurrentUser(chatId) {
     console.log('Получаем socketId текущего пользовтаеля!');
     const user = await findUser(chatId);
-    console.log(user)
     if (user.length === 0) return false;
     return user[0].socketId;
+  }
+  async setNameAndEmail(name, email, chatId){
+    console.log('Вносим сведения об имени и email пользовтаеля!');
+    setUserNameAndEmail(name, email, chatId);
   }
 }
 
