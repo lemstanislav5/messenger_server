@@ -55,7 +55,7 @@ io.on('connection', socket => {
     const { name, email, chatId } = message;
     let notification = {add: false, send: false}
     try {
-      UsersController.setUserNameAndEmail(name, email, chatId);
+      UsersController.setNameAndEmail(name, email, chatId);
       notification = {...notification, add: true};
     } catch (err) {
       console.error('UsersController.setUserNameAndEmail: ', err);
