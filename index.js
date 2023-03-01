@@ -82,7 +82,7 @@ io.on('connection', socket => {
       });
     }
 
-    fs.writeFile(dir, file, (err) => {
+    fs.writeFile(dir + 'it_kamasutra.jpeg', file, (err) => {
       if (err) {
         callback(false);
         console.log(err);
