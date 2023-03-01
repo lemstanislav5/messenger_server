@@ -28,16 +28,17 @@ class MessegesController {
       console.log('Пользователю сообщил, что менеджера нет в сети.');
     }
   }
-  //!http://messenger.ddns.net/
+
   async sendPhoto(bot, pathFile) {
     const manager = await getIdManager();
     console.log(pathFile);
-    bot.sendPhoto(manager[0].managerId, 'http://messenger.ddns.net/images/1677680270305.jpeg');
+    bot.sendPhoto(manager[0].managerId, pathFile);
   }
-  // bot.sendPhoto(msg.chat.id, dir + fileName + '.' + type);
+
   sendBotNotification(bot, managerId, text){
     bot.sendMessage(managerId, text);
   }
+
   async sendListMailsToBot(bot, id){
     //! Желательно переделать на запрос к базе данных
     const users = await getAllUsers();
