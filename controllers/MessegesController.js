@@ -30,8 +30,8 @@ class MessegesController {
   }
   async sendPhoto(bot, pathFile) {
     const manager = await getIdManager();
-    console.log('https://' + pathFile)
-    bot.sendPhoto(manager[0].managerId, 'https://' + pathFile);
+    console.log(pathFile);
+    bot.sendPhoto(manager[0].managerId, pathFile);
   }
   // bot.sendPhoto(msg.chat.id, dir + fileName + '.' + type);
   sendBotNotification(bot, managerId, text){

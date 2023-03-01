@@ -89,7 +89,8 @@ io.on('connection', socket => {
         callback(false);
         console.log(err);
       }
-      MessegesController.sendPhoto(bot, URL + '/images/' + fileName + '.' + type);
+      //URL + '/images/'
+      MessegesController.sendPhoto(bot, /media/images/  + fileName + '.' + type);
       callback(true);
     });
   });
