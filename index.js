@@ -83,14 +83,15 @@ io.on('connection', socket => {
       });
     }
     const fileName = new Date().getTime();
-    console.log(dir + fileName + '.' + type);
+    const pathFile = 'http://messenger.ddns.net/images/' + fileName + '.' + type;
+    console.log(pathFile);
     fs.writeFile(dir + fileName + '.' + type, file, (err) => {
       if (err) {
         callback(false);
         console.log(err);
       }
       //!URL
-      MessegesController.sendPhoto(bot, 'http://messenger.ddns.net/images/' + fileName + '.' + type);
+      MessegesController.sendPhoto(bot, pathFile);
       callback(true);
     });
   });
