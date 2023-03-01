@@ -73,7 +73,6 @@ io.on('connection', socket => {
   });
 
   socket.on("upload", (file, type, callback) => {
-    console.log(type)
     let dir = __dirname + '/media/image/';
     if (!fs.existsSync(dir)){
       fs.mkdir(dir, { recursive: true }, err => {
@@ -81,8 +80,9 @@ io.on('connection', socket => {
         console.log('Все папки успешно созданы');
       });
     }
-
-    fs.writeFile(dir + new Date().getTime() + '.' + type, file, (err) => {
+    const fileName = new Date().getTime();
+    console.log(dir + fileName + '.' + type);
+    fs.writeFile(dir + fileName + '.' + type, file, (err) => {
       if (err) {
         callback(false);
         console.log(err);
