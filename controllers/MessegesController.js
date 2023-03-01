@@ -36,7 +36,7 @@ class MessegesController {
         if(data.from.is_bot) callback({ url: pathFile });
       })
       .catch((err) => {
-        console.log(err);
+        console.log('sendPhoto err: ', err);
         callback({ url: false });
       });
   }
