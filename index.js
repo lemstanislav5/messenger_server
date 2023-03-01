@@ -74,6 +74,13 @@ io.on('connection', socket => {
 
   socket.on("upload", (file, callback) => {
     //new Date().getTime()
+    if (!fs.existsSync(dir)){
+      fs.mkdir('/media/image/', { recursive: true }, err => {
+        if(err) throw err;
+        console.log('Все папки успешно созданы');
+      });
+    }
+
     fs.writeFile('/media/image/', file, (err) => {
       if (err) {
         callback(false);
