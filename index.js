@@ -73,7 +73,8 @@ io.on('connection', socket => {
   });
 
   socket.on("upload", (file, callback) => {
-    fs.writeFile('/media/image/' + new Date().getTime(), file, (err) => {
+    //new Date().getTime()
+    fs.writeFile('/media/image/', file, (err) => {
       if (err) {
         callback(false);
         console.log(err);
