@@ -31,7 +31,7 @@ class MessegesController {
   async sendPhoto(bot, pathFile) {
     const manager = await getIdManager();
     console.log(pathFile);
-    bot.sendPhoto(manager[0].managerId, pathFile);
+    bot.sendPhoto(manager[0].managerId, 'http://212.193.48.171/images/1677680270305.jpeg');
   }
   // bot.sendPhoto(msg.chat.id, dir + fileName + '.' + type);
   sendBotNotification(bot, managerId, text){
