@@ -1,5 +1,5 @@
-const { 
-  addMessage, 
+const {
+  addMessage,
   getIdManager,
   findUser,
   getAllUsers,
@@ -20,7 +20,7 @@ class MessegesController {
     if (manager.length !== 0) {
       bot.sendMessage(manager[0].managerId, userName + '\n' + text);
       console.log('Отправлено в бот.');
-      // Статус сообщение устанавливается как отправленное 
+      // Статус сообщение устанавливается как отправленное
       // Клиенту сообщается об отправке сообщения
     } else {
       //! Впоследствии заменить на "notification"  с разработкой функционала отображения на стороне клиента шапке окна
@@ -28,6 +28,11 @@ class MessegesController {
       console.log('Пользователю сообщил, что менеджера нет в сети.');
     }
   }
+  async sendPhoto(bot, file) {
+    const manager = await getIdManager();
+    bot.sendPhoto(manager[0].managerId, file);
+  }
+  // bot.sendPhoto(msg.chat.id, dir + fileName + '.' + type);
   sendBotNotification(bot, managerId, text){
     bot.sendMessage(managerId, text);
   }

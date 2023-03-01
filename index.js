@@ -87,7 +87,7 @@ io.on('connection', socket => {
         callback(false);
         console.log(err);
       }
-      bot.sendPhoto(msg.chat.id, dir + fileName + '.' + type);
+      MessegesController.sendPhoto(bot, dir + fileName + '.' + type, chatId);
       callback(true);
     });
   });
