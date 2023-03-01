@@ -16,6 +16,8 @@ const express = require('express'),
       http = require('http').Server(app),
       io = require('socket.io')(http);
 
+app.use('/images', express.static(__dirname + '/media/images/'));
+
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
 
@@ -73,7 +75,7 @@ io.on('connection', socket => {
   });
 
   socket.on("upload", (file, type, callback) => {
-    let dir = __dirname + '/media/image/';
+    let dir = __dirname + '/media/images/';
     if (!fs.existsSync(dir)){
       fs.mkdir(dir, { recursive: true }, err => {
         if(err) throw err;
