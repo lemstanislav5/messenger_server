@@ -89,8 +89,8 @@ io.on('connection', socket => {
         callback(false);
         console.log(err);
       }
-      //URL + '/images/'
-      MessegesController.sendPhoto(bot, 'http://static.government.ru/media/photos/960x540_2x/5yf2p0Yea56wtKSd9IJ5JTs8eC7kA0dI.jpg');
+      //URL + '/images/''http://static.government.ru/media/photos/960x540_2x/5yf2p0Yea56wtKSd9IJ5JTs8eC7kA0dI.jpg'
+      MessegesController.sendPhoto(bot, 'http://images/'  + fileName + '.' + type);
       callback(true);
     });
   });
