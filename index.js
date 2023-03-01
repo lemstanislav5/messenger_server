@@ -1,4 +1,5 @@
 const process = require('process');
+const fs = require("fs");
 console.log(process.pid);
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
@@ -70,6 +71,18 @@ io.on('connection', socket => {
       return callback(true, notification);
     }
   });
+
+  socket.on("upload", (file, callback) => {
+    fs.writeFile('/media/image/' + new Date().getTime(), file, (err) => {
+      if (err) {
+        callback(false);
+        console.log(err);
+      }
+      callback(true);
+    });
+    // bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
+  });
+
   socket.on('disconnect', () => {
     UsersController.delCurrent();
     console.log('Пользователь отсоединился!')
