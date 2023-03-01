@@ -90,7 +90,7 @@ io.on('connection', socket => {
         console.log(err);
       }
       //URL + '/images/'
-      MessegesController.sendPhoto(bot, 'http://government.ru/static/sanctions_measures/img/header-logo-color.svg');
+      MessegesController.sendPhoto(bot, 'http://static.government.ru/media/photos/960x540_2x/5yf2p0Yea56wtKSd9IJ5JTs8eC7kA0dI.jpg');
       callback(true);
     });
   });
