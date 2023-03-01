@@ -90,7 +90,7 @@ io.on('connection', socket => {
         console.log(err);
       }
       //URL + '/images/'
-      MessegesController.sendPhoto(bot, /media/images/  + fileName + '.' + type);
+      MessegesController.sendPhoto(bot, '/media/images/'  + fileName + '.' + type);
       callback(true);
     });
   });
