@@ -73,7 +73,6 @@ io.on('connection', socket => {
   });
 
   socket.on("upload", (file, type, callback) => {
-    //new Date().getTime()
     console.log(type)
     let dir = __dirname + '/media/image/';
     if (!fs.existsSync(dir)){
@@ -83,7 +82,7 @@ io.on('connection', socket => {
       });
     }
 
-    fs.writeFile(dir + 'it_kamasutra.jpeg', file, (err) => {
+    fs.writeFile(dir + new Date().getTime() + '.' + type, file, (err) => {
       if (err) {
         callback(false);
         console.log(err);
