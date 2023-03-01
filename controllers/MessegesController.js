@@ -28,9 +28,10 @@ class MessegesController {
       console.log('Пользователю сообщил, что менеджера нет в сети.');
     }
   }
-  async sendPhoto(bot, file) {
+  async sendPhoto(bot, pathFile) {
     const manager = await getIdManager();
-    bot.sendPhoto(manager[0].managerId, 'https://' + file);
+    console.log('https://' + pathFile)
+    bot.sendPhoto(manager[0].managerId, 'https://' + pathFile);
   }
   // bot.sendPhoto(msg.chat.id, dir + fileName + '.' + type);
   sendBotNotification(bot, managerId, text){
