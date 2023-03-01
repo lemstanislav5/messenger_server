@@ -74,7 +74,7 @@ io.on('connection', socket => {
 
   socket.on("upload", (file, callback) => {
     //new Date().getTime()
-    let dir = '/media/image/';
+    let dir = __dirname + '/media/image/';
     if (!fs.existsSync(dir)){
       fs.mkdir(dir, { recursive: true }, err => {
         if(err) throw err;
