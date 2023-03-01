@@ -90,7 +90,7 @@ io.on('connection', socket => {
         console.log(err);
       }
       //!URL
-      MessegesController.sendPhoto(bot, 'http://messenger.ddns.net/images/'  + fileName + '.' + type);
+      MessegesController.sendPhoto(bot, 'http://messenger.ddns.net/images/' + fileName + '.' + type);
       callback(true);
     });
   });
