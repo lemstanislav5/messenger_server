@@ -83,6 +83,7 @@ io.on('connection', socket => {
       });
     }
     const fileName = new Date().getTime();
+    //!URL
     const pathFile = 'http://messenger.ddns.net/images/' + fileName + '.' + type;
     console.log(pathFile);
     fs.writeFile(dir + fileName + '.' + type, file, (err) => {
@@ -90,7 +91,6 @@ io.on('connection', socket => {
         callback(false);
         console.log(err);
       }
-      //!URL
       MessegesController.sendPhoto(bot, pathFile);
       callback(true);
     });

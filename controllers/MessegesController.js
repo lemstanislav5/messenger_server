@@ -31,8 +31,10 @@ class MessegesController {
 
   async sendPhoto(bot, pathFile) {
     const manager = await getIdManager();
-    console.log(pathFile);
-    bot.sendPhoto(manager[0].managerId, pathFile);
+    bot.sendPhoto(manager[0].managerId, pathFile)
+      .then((data) => {
+        console.log(data);
+      });
   }
 
   sendBotNotification(bot, managerId, text){
