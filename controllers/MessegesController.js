@@ -29,11 +29,15 @@ class MessegesController {
     }
   }
 
-  async sendPhoto(bot, pathFile) {
+  async sendPhoto(bot, pathFile, callback) {
     const manager = await getIdManager();
     bot.sendPhoto(manager[0].managerId, pathFile)
       .then((data) => {
-        console.log(data);
+        if(data.from.is_bot) callback({ url: pathFile });
+      })
+      .catch((err) => {
+        console.log(err);
+        callback({ url: false });
       });
   }
 
