@@ -35,21 +35,21 @@ class MessegesController {
     const manager = await getIdManager();
     let send;
     if (section === 'images') {
-      bot.sendPhoto(manager[0].managerId, pathFile)
-        .then((data) => {
-          if(data.from.is_bot) callback({ url: pathFile });
-        })
-        .catch((err) => {
-          console.log('sendPhoto err: ', err);
-          callback({ url: false });
-        });
+       send = bot.sendPhoto(manager[0].managerId, pathFile)
     } else if (section === 'documents') {
-      send = bot.sendDocument;
+      send = bot.sendDocument(manager[0].managerId, pathFile);
     } else if (section === 'audio') {
-      send = bot.sendAudio;
+      send = bot.sendAudio(manager[0].managerId, pathFile);
     } else if (section === 'video') {
-      send = bot.sendVideo;
+      send = bot.sendVideo(manager[0].managerId, pathFile);
     }
+    send.then((data) => {
+      if(data.from.is_bot) callback({ url: pathFile });
+    })
+    .catch((err) => {
+      console.log('sendPhoto err: ', err);
+      callback({ url: false });
+    });
     // console.log(manager[0].managerId, pathFile)
     // send(manager[0].managerId, pathFile)
     //   .then((data) => {
