@@ -35,7 +35,14 @@ class MessegesController {
     const manager = await getIdManager();
     let send;
     if (section === 'images') {
-      send = bot.sendPhoto;
+      bot.sendPhoto(manager[0].managerId, pathFile)
+        .then((data) => {
+          if(data.from.is_bot) callback({ url: pathFile });
+        })
+        .catch((err) => {
+          console.log('sendPhoto err: ', err);
+          callback({ url: false });
+        });
     } else if (section === 'documents') {
       send = bot.sendDocument;
     } else if (section === 'audio') {
