@@ -84,9 +84,9 @@ io.on('connection', socket => {
     } else if (type === 'pdf' || type === 'doc' || type === 'docx' || type === 'txt') {
       section =  'documents';
     } else if (type === 'mp3' || type === 'mpeg') {
-      dir = __dirname + 'audio';
+      dir = 'audio';
     } else if (type === 'mp4' || type ===  'wav') {
-      dir = __dirname + 'video';
+      dir = 'video';
     }
     let dir = __dirname + '/media/' + section;
     console.log(dir);
