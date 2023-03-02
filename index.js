@@ -16,7 +16,10 @@ const express = require('express'),
       http = require('http').Server(app),
       io = require('socket.io')(http);
 
-app.use('/images', express.static(__dirname + '/media/images/'));
+app.use('/media/images/', express.static(__dirname + '/media/images/'));
+app.use('/media/images/', express.static(__dirname + '/media/images/'));
+app.use('/media/images/', express.static(__dirname + '/media/images/'));
+app.use('/media/images/', express.static(__dirname + '/media/images/'));
 
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
@@ -75,22 +78,32 @@ io.on('connection', socket => {
   });
 
   socket.on("upload", (file, type, callback) => {
-    let dir = __dirname + '/media/images/';
+    let section;
+    if (type === 'jpeg' || type === 'jpg' || type === 'png') {
+      section = 'images';
+    } else if (type === 'pdf' || type === 'doc' || type === 'docx' || type === 'txt') {
+      section =  'documents';
+    } else if (type === 'mp3') {
+      dir = __dirname + 'audio';
+    } else if (type === 'mp4' || type ===  'wav') {
+      dir = __dirname + 'video';
+    }
+    let dir = __dirname + '/media/' + section;
     if (!fs.existsSync(dir)){
       fs.mkdir(dir, { recursive: true }, err => {
         if(err) throw err;
-        console.log('Все папки успешно созданы');
+        console.log('Все папки успешно созданы!');
       });
     }
     const fileName = new Date().getTime();
-    const pathFile = 'http://' + URL + '/images/' + fileName + '.' + type;
+    const pathFile = 'http://' + URL + dir + '/' + fileName + '.' + type;
     console.log(pathFile);
     fs.writeFile(dir + fileName + '.' + type, file, (err) => {
       if (err) {
         callback({url: false});
         console.log(err);
       }
-      MessegesController.sendPhoto(bot, pathFile, callback);
+      MessegesController.sendFile(bot, pathFile, section, callback);
     });
   });
 
@@ -144,5 +157,3 @@ bot.on('callback_query', async msg => {
   //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0);
   UsersController.setCurrent(chatId, 1);
 });
-//! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
-//! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');

@@ -25,14 +25,24 @@ class MessegesController {
       // Клиенту сообщается об отправке сообщения
     } else {
       //! Впоследствии заменить на "notification"  с разработкой функционала отображения на стороне клиента шапке окна
-      io.to(socket.id).emit('new message', 'Менеджер offline!');
+      io.to(socket.id).emit('newMessage', 'Менеджер offline!');
       console.log('Пользователю сообщил, что менеджера нет в сети.');
     }
   }
 
-  async sendPhoto(bot, pathFile, callback) {
+  async sendFile(bot, pathFile, section, callback) {
     const manager = await getIdManager();
-    bot.sendPhoto(manager[0].managerId, pathFile)
+    let send;
+    if (section === 'images') {
+      send = bot.sendPhoto;
+    } else if (section === 'documents') {
+      send = bot.sendDocument;
+    } else if (section === 'audio') {
+      send = bot.sendAudio;
+    } else if (section === 'video') {
+      send = bot.sendVideo;
+    }
+    send(manager[0].managerId, pathFile)
       .then((data) => {
         if(data.from.is_bot) callback({ url: pathFile });
       })
@@ -42,6 +52,10 @@ class MessegesController {
       });
   }
 
+
+  // bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
+  // bot.sendVideo(chatId, "h.mp3");
+  // bot.sendDocument(msg.chat.id, "http://kmmc.in/wp-content/uploads/2014/01/lesson2.pdf");
   sendBotNotification(bot, managerId, text){
     bot.sendMessage(managerId, text);
   }

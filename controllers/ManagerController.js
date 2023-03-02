@@ -1,6 +1,6 @@
 const { 
-  updateManagerAccest, 
-  addManager, 
+  updateManagerAccest,
+  addManager,
   findManager,
   getManager,
  } = require('../services/api');
