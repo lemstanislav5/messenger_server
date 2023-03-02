@@ -17,9 +17,9 @@ const express = require('express'),
       io = require('socket.io')(http);
 
 app.use('/media/images/', express.static(__dirname + '/media/images/'));
-app.use('/media/images/', express.static(__dirname + '/media/images/'));
-app.use('/media/images/', express.static(__dirname + '/media/images/'));
-app.use('/media/images/', express.static(__dirname + '/media/images/'));
+app.use('/media/documents/', express.static(__dirname + '/media/documents/'));
+app.use('/media/audio/', express.static(__dirname + '/media/audio/'));
+app.use('/media/video/', express.static(__dirname + '/media/video/'));
 
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
