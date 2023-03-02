@@ -85,9 +85,11 @@ io.on('connection', socket => {
       section =  'documents';
     } else if (type === 'mp3' || type === 'mpeg') {
       section = 'audio';
+      type = type === 'mpeg' &&  'mp4';
     } else if (type === 'mp4' || type ===  'wav') {
       section = 'video';
     }
+    console.log(type);
     let dir = __dirname + '/media/' + section;
     console.log(dir);
     if (!fs.existsSync(dir)){
