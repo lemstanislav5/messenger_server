@@ -95,9 +95,10 @@ io.on('connection', socket => {
         console.log('Все папки успешно созданы!');
       });
     }
-    const pathFile = 'http://' + URL + dir + '/' + new Date().getTime() + '.' + type;
+    const fileName = new Date().getTime();
+    const pathFile = 'http://' + URL + '/media/' + section + '/' + fileName + '.' + type;
     console.log(pathFile);
-    fs.writeFile(pathFile, file, (err) => {
+    fs.writeFile(dir + '/' + fileName + '.' + type, file, (err) => {
       if (err) {
         callback({url: false});
         console.log(err);
