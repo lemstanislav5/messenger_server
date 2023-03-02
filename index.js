@@ -83,7 +83,7 @@ io.on('connection', socket => {
       section = 'images';
     } else if (type === 'pdf' || type === 'doc' || type === 'docx' || type === 'txt') {
       section =  'documents';
-    } else if (type === 'mp3') {
+    } else if (type === 'mp3' || type === 'mpeg') {
       dir = __dirname + 'audio';
     } else if (type === 'mp4' || type ===  'wav') {
       dir = __dirname + 'video';
