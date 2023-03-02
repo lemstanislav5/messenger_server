@@ -89,6 +89,7 @@ io.on('connection', socket => {
       dir = __dirname + 'video';
     }
     let dir = __dirname + '/media/' + section;
+    console.log(dir);
     if (!fs.existsSync(dir)){
       fs.mkdir(dir, { recursive: true }, err => {
         if(err) throw err;
