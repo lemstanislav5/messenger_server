@@ -31,7 +31,7 @@ class MessegesController {
   }
 
   async sendFile(bot, pathFile, section, callback) {
-    cosnole.log(section)
+    console.log(section)
     const manager = await getIdManager();
     let send;
     if (section === 'images') {
