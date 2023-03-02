@@ -43,6 +43,7 @@ class MessegesController {
     } else if (section === 'video') {
       send = bot.sendVideo;
     }
+    console.log(manager[0].managerId, pathFile)
     send(manager[0].managerId, pathFile)
       .then((data) => {
         if(data.from.is_bot) callback({ url: pathFile });
