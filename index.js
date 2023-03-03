@@ -34,12 +34,11 @@ const upload = multer({
 app.post('/send',
   upload.fields([{name: 'fileEmailTo'}, {name: 'fileMessageTo'}]),
   (req, res) => {
+    res.header("Access-Control-Allow-Origin", "*");
     console.log(req.body);
     res.status(204).json({});
   }
 );
-
-
 
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
