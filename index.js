@@ -13,7 +13,7 @@ const ManagerController = require('./controllers/ManagerController');
 const express = require('express'),
       app = express(),
       http = require('http').Server(app),
-      io = require('socket.io')(http);
+      io = require('socket.io')(http, { maxHttpBufferSize: 1e8, pingTimeout: 60000 });
 
 app.use('/media/images/', express.static(__dirname + '/media/images/'));
 app.use('/media/documents/', express.static(__dirname + '/media/documents/'));
