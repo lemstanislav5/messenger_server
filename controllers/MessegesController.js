@@ -1,12 +1,4 @@
-const {
-  addMessage,
-  getIdManager,
-  findUser,
-  getAllUsers,
-  getMesseges,
-} = require('../services/api');
-
-
+const { addMessage, getIdManager, findUser, getAllUsers, getMesseges } = require('../services/api');
 
 class MessegesController {
   async add(chatId, socketId, messageId, text, time, type, read) {
@@ -15,8 +7,8 @@ class MessegesController {
   }
   async sendMessegesToBot(bot, io, text, chatId, socket) {
     const manager = await getIdManager();
+    if (manager.length === 0) return io.to(socket.id).emit('newMessage', 'Менеджер offline!');
     const userData = await findUser(chatId);
-    console.log(userData);
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : userData[0].name + '['+userData[0].id+']';
     if (manager.length !== 0) {
       bot.sendMessage(manager[0].managerId, userName + '\n' + text);
@@ -31,8 +23,8 @@ class MessegesController {
   }
 
   async sendFile(bot, pathFile, section, callback) {
-    console.log(section)
     const manager = await getIdManager();
+    if (manager.length === 0) return io.to(socket.id).emit('newMessage', 'Менеджер offline!');
     let send;
     if (section === 'images') {
        send = bot.sendPhoto(manager[0].managerId, pathFile)
@@ -50,21 +42,10 @@ class MessegesController {
       console.log('sendPhoto err: ', err);
       callback({ url: false });
     });
-    // console.log(manager[0].managerId, pathFile)
-    // send(manager[0].managerId, pathFile)
-    //   .then((data) => {
-    //     if(data.from.is_bot) callback({ url: pathFile });
-    //   })
-    //   .catch((err) => {
-    //     console.log('sendPhoto err: ', err);
-    //     callback({ url: false });
-    //   });
   }
 
 
   // bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
-  // bot.sendVideo(chatId, "h.mp3");
-  // bot.sendDocument(msg.chat.id, "http://kmmc.in/wp-content/uploads/2014/01/lesson2.pdf");
   sendBotNotification(bot, managerId, text){
     bot.sendMessage(managerId, text);
   }
