@@ -1,6 +1,8 @@
 const process = require('process');
 const fs = require("fs");
+const path = require('path');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 console.log(process.pid);
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
