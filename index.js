@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const cors = require("cors");
 console.log(process.pid);
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
@@ -18,7 +19,7 @@ const express = require('express'),
       app = express(),
       http = require('http').Server(app),
       io = require('socket.io')(http);
-
+app.use(cors());
 app.use('/media/images/', express.static(__dirname + '/media/images/'));
 app.use('/media/documents/', express.static(__dirname + '/media/documents/'));
 app.use('/media/audio/', express.static(__dirname + '/media/audio/'));
@@ -34,7 +35,6 @@ const upload = multer({
 app.post('/send',
   upload.fields([{name: 'fileEmailTo'}, {name: 'fileMessageTo'}]),
   (req, res) => {
-    res.header("Access-Control-Allow-Origin", "*");
     console.log(req.body);
     res.status(204).json({});
   }
