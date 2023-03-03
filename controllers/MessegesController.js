@@ -7,7 +7,7 @@ class MessegesController {
   }
   async sendMessegesToBot(bot, io, text, chatId, socket) {
     const manager = await getIdManager();
-    if (manager.length === 0) return io.to(socket.id).emit('newMessage', 'Менеджер offline!');
+    if (manager.length === 0) return io.to(socket.id).emit('notification', 'Менеджер offline!');
     const userData = await findUser(chatId);
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : userData[0].name + '['+userData[0].id+']';
     if (manager.length !== 0) {
@@ -24,7 +24,7 @@ class MessegesController {
 
   async sendFile(bot, io, pathFile, section, callback, socket) {
     const manager = await getIdManager();
-    if (manager.length === 0) return io.to(socket.id).emit('newMessage', 'Менеджер offline!');
+    if (manager.length === 0) return io.to(socket.id).emit('notification', 'Менеджер offline!');
     let send;
     if (section === 'images') {
        send = bot.sendPhoto(manager[0].managerId, pathFile)
