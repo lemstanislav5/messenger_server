@@ -103,7 +103,7 @@ io.on('connection', socket => {
         callback({url: false});
         console.log(err);
       }
-      MessegesController.sendFile(bot, pathFile, section, callback);
+      MessegesController.sendFile(bot, io, pathFile, section, callback, socket);
     });
   });
 

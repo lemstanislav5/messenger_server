@@ -22,7 +22,7 @@ class MessegesController {
     }
   }
 
-  async sendFile(bot, pathFile, section, callback) {
+  async sendFile(bot, io, pathFile, section, callback, socket) {
     const manager = await getIdManager();
     if (manager.length === 0) return io.to(socket.id).emit('newMessage', 'Менеджер offline!');
     let send;
