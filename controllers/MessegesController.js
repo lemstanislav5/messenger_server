@@ -1,12 +1,4 @@
-const { 
-  addMessage, 
-  getIdManager,
-  findUser,
-  getAllUsers,
-  getMesseges,
-} = require('../services/api');
-
-
+const { addMessage, getIdManager, findUser, getAllUsers, getMesseges } = require('../services/api');
 
 class MessegesController {
   async add(chatId, socketId, messageId, text, time, type, read) {
@@ -15,22 +7,49 @@ class MessegesController {
   }
   async sendMessegesToBot(bot, io, text, chatId, socket) {
     const manager = await getIdManager();
+    if (manager.length === 0) return io.to(socket.id).emit('notification', 'Менеджер offline!');
     const userData = await findUser(chatId);
     const userName = (userData[0].name === null)? 'user['+userData[0].id+']' : userData[0].name + '['+userData[0].id+']';
     if (manager.length !== 0) {
       bot.sendMessage(manager[0].managerId, userName + '\n' + text);
       console.log('Отправлено в бот.');
-      // Статус сообщение устанавливается как отправленное 
+      // Статус сообщение устанавливается как отправленное
       // Клиенту сообщается об отправке сообщения
     } else {
       //! Впоследствии заменить на "notification"  с разработкой функционала отображения на стороне клиента шапке окна
-      io.to(socket.id).emit('new message', 'Менеджер offline!');
+      io.to(socket.id).emit('newMessage', 'Менеджер offline!');
       console.log('Пользователю сообщил, что менеджера нет в сети.');
     }
   }
+
+  async sendFile(bot, io, pathFile, section, callback, socket) {
+    const manager = await getIdManager();
+    if (manager.length === 0) return io.to(socket.id).emit('notification', 'Менеджер offline!');
+    let send;
+    if (section === 'images') {
+       send = bot.sendPhoto(manager[0].managerId, pathFile)
+    } else if (section === 'documents') {
+      send = bot.sendDocument(manager[0].managerId, pathFile);
+    } else if (section === 'audio') {
+      send = bot.sendAudio(manager[0].managerId, pathFile);
+    } else if (section === 'video') {
+      send = bot.sendVideo(manager[0].managerId, pathFile);
+    }
+    send.then((data) => {
+      if(data.from.is_bot) callback({ url: pathFile });
+    })
+    .catch((err) => {
+      console.log('sendPhoto err: ', err);
+      callback({ url: false });
+    });
+  }
+
+
+  // bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
   sendBotNotification(bot, managerId, text){
     bot.sendMessage(managerId, text);
   }
+
   async sendListMailsToBot(bot, id){
     //! Желательно переделать на запрос к базе данных
     const users = await getAllUsers();

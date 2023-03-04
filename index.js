@@ -1,5 +1,5 @@
 const process = require('process');
-console.log(process.pid);
+const fs = require("fs");
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
 const TelegramBot = require('node-telegram-bot-api');
 const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
@@ -13,18 +13,19 @@ const ManagerController = require('./controllers/ManagerController');
 const express = require('express'),
       app = express(),
       http = require('http').Server(app),
-      io = require('socket.io')(http);
+      io = require('socket.io')(http, { maxHttpBufferSize: 1e8, pingTimeout: 60000 });
 
-app.get('/', function (req, res) {
-  res.send('Hello World');
-})
+app.use('/media/images/', express.static(__dirname + '/media/images/'));
+app.use('/media/documents/', express.static(__dirname + '/media/documents/'));
+app.use('/media/audio/', express.static(__dirname + '/media/audio/'));
+app.use('/media/video/', express.static(__dirname + '/media/video/'));
 
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
 
 io.on('connection', socket => {
   console.log('Пользователь подключился!');
-  socket.on('new message', async (message, callback) => {
+  socket.on('newMessage', async (message, callback) => {
     let notification = {add: false, send: false}
     const { id, text, chatId } = message;
     // Устаналиваем chatId текущего пользователя если он не выбран
@@ -43,17 +44,69 @@ io.on('connection', socket => {
     const manager = await ManagerController.get(id);
     // Сообщаем пользователю об отсутствии менеджера
     if (manager.length === 0 || manager[0].accest === 0)
-      return io.to(socket.id).emit('new message', 'Менеджер offline!');
+      return io.to(socket.id).emit('notification', 'Менеджер offline!');
     //! Если отправка успещшна message: { add: true, send: true}
     try {
       MessegesController.sendMessegesToBot(bot, io, text, chatId, socket);
       notification = {...notification, send: true};
       return callback(false, notification);
     } catch (err) {
-      console.error('MessegesController.sendMessegesToBot: ', err);
+      console.error('newMessage -> MessegesController.sendMessegesToBot: ', err);
       return callback(true, notification);
     }
   });
+
+  socket.on('newNameAndEmail', async (message, callback) => {
+    const { name, email, chatId } = message;
+    let notification = {add: false, send: false}
+    try {
+      UsersController.setNameAndEmail(name, email, chatId);
+      notification = {...notification, add: true};
+    } catch (err) {
+      console.error('UsersController.setUserNameAndEmail: ', err);
+      return callback(true, notification);
+    }
+    try {
+      MessegesController.sendMessegesToBot(bot, io, `Пользователь представился как: ${name} ${email}`, chatId, socket);
+      notification = {...notification, send: true};
+      return callback(false, notification);
+    } catch (err) {
+      console.error('newNameAndEmail -> MessegesController.sendMessegesToBot: ', err);
+      return callback(true, notification);
+    }
+  });
+
+  socket.on("upload", (file, type, callback) => {
+    let section;
+    if (type === 'jpeg' || type === 'jpg' || type === 'png') {
+      section = 'images';
+    } else if (type === 'pdf' || type === 'doc' || type === 'docx' || type === 'txt') {
+      section =  'documents';
+    } else if (type === 'mp3' || type === 'mpeg') {
+      section = 'audio';
+      type = type === 'mpeg' &&  'mp4';
+    } else if (type === 'mp4' || type ===  'wav') {
+      section = 'video';
+    }
+    let dir = __dirname + '/media/' + section;
+    if (!fs.existsSync(dir)){
+      fs.mkdir(dir, { recursive: true }, err => {
+        if(err) throw err;
+        console.log('Все папки успешно созданы!');
+      });
+    }
+    const fileName = new Date().getTime();
+    const pathFile = 'http://' + URL + '/media/' + section + '/' + fileName + '.' + type;
+    console.log(pathFile);
+    fs.writeFile(dir + '/' + fileName + '.' + type, file, (err) => {
+      if (err) {
+        callback({url: false});
+        console.log(err);
+      }
+      MessegesController.sendFile(bot, io, pathFile, section, callback, socket);
+    });
+  });
+
   socket.on('disconnect', () => {
     UsersController.delCurrent();
     console.log('Пользователь отсоединился!')
@@ -87,7 +140,7 @@ bot.on('message', async (message) => {
         } else {
           const socketId = await UsersController.getSocketCurrentUser(currentUser[0].chatId);
           if (!socketId) return MessegesController.sendBotNotification(bot, id, 'Адресат не найден в базе!');
-          io.to(socketId).emit('new message', text);
+          io.to(socketId).emit('newMessage', text);
           //! Проверка доставки сообщения
           let idMessage = 9999999999 - Math.round(0 - 0.5 + Math.random() * (8999999999 - 0 + 1));
           MessegesController.add(id, socketId, idMessage, text, new Date().getTime(), 'to', read = 0);
@@ -104,5 +157,3 @@ bot.on('callback_query', async msg => {
   //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0);
   UsersController.setCurrent(chatId, 1);
 });
-//! bot.sendPhoto(msg.chat.id,"https://www.somesite.com/image.jpg" );
-//! bot.sendAudio(msg.chat.id, 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Example.ogg');
