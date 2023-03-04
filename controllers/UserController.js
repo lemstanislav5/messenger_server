@@ -7,7 +7,7 @@ const {
   delCurrentUser,
   updateCurrentUser,
   setUserNameAndEmail,
-} = require('../services/api');
+} = require('../services/dataBaseSqlite3');
 
 
 

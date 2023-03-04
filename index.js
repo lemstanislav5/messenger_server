@@ -1,9 +1,10 @@
 const process = require('process');
 const fs = require("fs");
 const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
-const TelegramBot = require('node-telegram-bot-api');
-const bot = new TelegramBot(TELEGRAM_API_TOKEN, {polling: true});
+const bot = require('./services/telegramBot'); 
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
+//connector
+
 
 const UsersController = require('./controllers/UserController');
 const MessegesController = require('./controllers/MessegesController');

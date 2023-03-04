@@ -3,7 +3,7 @@ const {
   addManager,
   findManager,
   getManager,
- } = require('../services/api');
+ } = require('../services/dataBaseSqlite3');
 
 class ManagerController {
   async accest(id) {

@@ -1,4 +1,4 @@
-const { databaseInitialization } = require('../services/api');
+const { databaseInitialization } = require('../services/dataBaseSqlite3');
 
 class InitializationController {
   async initialization() {
