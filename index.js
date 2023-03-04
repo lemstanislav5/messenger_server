@@ -1,6 +1,6 @@
 const process = require('process');
 const fs = require("fs");
-const {URL, TELEGRAM_API_TOKEN, PASSWORD, PORT} = require('../config.js');
+const {URL, PASSWORD, PORT} = require('../config.js');
 const bot = require('./services/telegramBot'); 
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 //connector
