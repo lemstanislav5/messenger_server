@@ -1,7 +1,7 @@
 const process = require('process');
 const fs = require("fs");
 const {URL, PASSWORD, PORT} = require('../config.js');
-const bot = require('./services/telegramBot'); 
+const bot = require('./services/telegramBot');
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
 //connector
 
@@ -78,6 +78,7 @@ io.on('connection', socket => {
   });
 
   socket.on("upload", (file, type, callback) => {
+    console.log(type);
     let section;
     if (type === 'jpeg' || type === 'jpg' || type === 'png') {
       section = 'images';
