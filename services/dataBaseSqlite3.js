@@ -13,6 +13,10 @@ const query = (file, req, sql, params = []) => {
         db.close((err) => {
             if (err) return console.error(err.message);
         });
+    })
+    .then((data) => (data))
+    .catch((err) => {
+      console.log(err);
     });
 }
 
