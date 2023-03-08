@@ -34,7 +34,7 @@ app.get('/media*', (req, res) => {
     } else {
       return res
         .status(200)
-        .send({ data: req.users[req.query.id] });
+        .send({ ok: false });
     }
   } catch(err) {
     console.error(err);
