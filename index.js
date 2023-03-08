@@ -34,7 +34,6 @@ app.get('/media*', (req, res) => {
     } else {
       return res
         .status(200)
-        .setHeader('FILE MISSING')
         .send({ message: 'Bad request' });
     }
   } catch(err) {
