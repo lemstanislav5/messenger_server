@@ -28,6 +28,13 @@ app.use((req, res, next) => {
 app.get('/media*', (req, res) => {
   // console.log(path.join(__dirname, '.'))
   console.log(req.originalUrl);
+  try {
+    if (fs.existsSync(path.join(__dirname, req.originalUrl))) {
+      console.log('file exists')
+    }
+  } catch(err) {
+    console.error(err)
+  }
   // res.sendFile(path.join(__dirname, '/index.html'));
 });
 
