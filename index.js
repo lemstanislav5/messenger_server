@@ -34,7 +34,7 @@ app.get('/media*', (req, res) => {
     } else {
       console.log(res)
       return res
-        .status(409)
+        .status(202)
         .send({ message: 'Bad request' });
     }
   } catch(err) {
