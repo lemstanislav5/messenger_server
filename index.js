@@ -1,5 +1,6 @@
 const process = require('process');
 const fs = require("fs");
+const path = require('path');
 const {URL, PASSWORD, PORT} = require('../config.js');
 const bot = require('./services/telegramBot');
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
@@ -16,12 +17,18 @@ const express = require('express'),
       http = require('http').Server(app),
       io = require('socket.io')(http, { maxHttpBufferSize: 1e8, pingTimeout: 60000 });
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  next();
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+//   next();
+// });
+
+app.get('/', (req, res) => {
+  // console.log(path.join(__dirname, '.'))
+  console.log(req);
+  // res.sendFile(path.join(__dirname, '/index.html'));
 });
 
 app.use('/media/images/', express.static(__dirname + '/media/images/'));
