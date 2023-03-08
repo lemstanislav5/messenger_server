@@ -31,6 +31,8 @@ app.get('/media*', (req, res) => {
   try {
     if (fs.existsSync(path.join(__dirname, req.originalUrl))) {
       console.log('file exists')
+    } else {
+      console.log('file no exists')
     }
   } catch(err) {
     console.error(err)
