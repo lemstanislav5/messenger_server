@@ -17,13 +17,13 @@ const express = require('express'),
       http = require('http').Server(app),
       io = require('socket.io')(http, { maxHttpBufferSize: 1e8, pingTimeout: 60000 });
 
-// app.use((req, res, next) => {
-//   res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-//   next();
-// });
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  next();
+});
 
 app.get('/', (req, res) => {
   // console.log(path.join(__dirname, '.'))
@@ -31,10 +31,10 @@ app.get('/', (req, res) => {
   // res.sendFile(path.join(__dirname, '/index.html'));
 });
 
-app.use('/media/images/', express.static(__dirname + '/media/images/'));
-app.use('/media/documents/', express.static(__dirname + '/media/documents/'));
-app.use('/media/audio/', express.static(__dirname + '/media/audio/'));
-app.use('/media/video/', express.static(__dirname + '/media/video/'));
+// app.use('/media/images/', express.static(__dirname + '/media/images/'));
+// app.use('/media/documents/', express.static(__dirname + '/media/documents/'));
+// app.use('/media/audio/', express.static(__dirname + '/media/audio/'));
+// app.use('/media/video/', express.static(__dirname + '/media/video/'));
 
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
