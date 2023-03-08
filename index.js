@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/media*', (req, res) => {
+app.post('/media*', (req, res) => {
   try {
     if (fs.existsSync(path.join(__dirname, req.originalUrl))) {
       return res
