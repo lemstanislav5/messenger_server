@@ -1,5 +1,6 @@
 const process = require('process');
 const fs = require("fs");
+const cors = require('cors')
 const {URL, PASSWORD, PORT} = require('../config.js');
 const bot = require('./services/telegramBot');
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
@@ -16,6 +17,7 @@ const express = require('express'),
       http = require('http').Server(app),
       io = require('socket.io')(http, { maxHttpBufferSize: 1e8, pingTimeout: 60000 });
 
+app.options('*', cors());
 app.use('/media/images/', express.static(__dirname + '/media/images/'));
 app.use('/media/documents/', express.static(__dirname + '/media/documents/'));
 app.use('/media/audio/', express.static(__dirname + '/media/audio/'));
