@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 
 app.get('/media*', (req, res) => {
   // console.log(path.join(__dirname, '.'))
-  console.log(req);
+  console.log(req.query);
   // res.sendFile(path.join(__dirname, '/index.html'));
 });
 
