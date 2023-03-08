@@ -30,7 +30,8 @@ app.post('/media*', (req, res) => {
     if (fs.existsSync(path.join(__dirname, req.originalUrl))) {
       return res
         .status(200)
-        .sendFile(path.join(__dirname, req.originalUrl));
+        .send({ message: 'Good request' });
+        //.sendFile(path.join(__dirname, req.originalUrl));
     } else {
       console.log(res)
       return res
