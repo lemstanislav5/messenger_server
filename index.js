@@ -33,7 +33,7 @@ app.get('/media*', (req, res) => {
         .sendFile(path.join(__dirname, req.originalUrl));
     } else {
       return res
-        .status(200)
+        .status(100)
         .send({ message: 'Bad request' })
     }
   } catch(err) {
