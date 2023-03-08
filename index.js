@@ -26,18 +26,19 @@ app.use((req, res, next) => {
 });
 
 app.get('/media*', (req, res) => {
-  // console.log(path.join(__dirname, '.'))
-  console.log(req.originalUrl);
   try {
     if (fs.existsSync(path.join(__dirname, req.originalUrl))) {
-      console.log('file exists')
+      return res
+        .status(200)
+        .sendFile(path.join(__dirname, req.originalUrl));
     } else {
-      console.log('file no exists')
+      return res
+        .status(200)
+        .send({ data: req.users[req.query.id] });
     }
   } catch(err) {
-    console.error(err)
+    console.error(err);
   }
-  // res.sendFile(path.join(__dirname, '/index.html'));
 });
 
 // app.use('/media/images/', express.static(__dirname + '/media/images/'));
