@@ -33,8 +33,9 @@ app.get('/media*', (req, res) => {
         .sendFile(path.join(__dirname, req.originalUrl));
     } else {
       return res
-        .status(100)
-        .send({ message: 'Bad request' })
+        .status(200)
+        .setHeader('FILE MISSING')
+        .send({ message: 'Bad request' });
     }
   } catch(err) {
     console.error(err);
