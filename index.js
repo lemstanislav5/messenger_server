@@ -128,10 +128,7 @@ io.on('connection', socket => {
 })
 
 bot.on('message', async (message) => {
-  if (message.photo && message.photo[0]) {
-    const image = await bot.getFile({ file_id: message.photo[0].file_id });
-    console.log(image);
-  } 
+  console.log(message)
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
   const manager = await ManagerController.find(id);
