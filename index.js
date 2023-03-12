@@ -1,5 +1,7 @@
 const process = require('process');
 const fs = require("fs");
+const { createWriteStream } = require('fs');
+const util = require('./utilities/utilities');
 const path = require('path');
 const {URL, PASSWORD, PORT} = require('../config.js');
 const bot = require('./services/telegramBot');
@@ -9,6 +11,7 @@ const UsersController = require('./controllers/UserController');
 const MessegesController = require('./controllers/MessegesController');
 const InitializationController = require('./controllers/InitializationController');
 const ManagerController = require('./controllers/ManagerController');
+
 
 const express = require('express'),
       app = express(),
@@ -103,12 +106,7 @@ io.on('connection', socket => {
       section = 'video';
     }
     let dir = __dirname + '/media/' + section;
-    if (!fs.existsSync(dir)){
-      fs.mkdir(dir, { recursive: true }, err => {
-        if(err) throw err;
-        console.log('Все папки успешно созданы!');
-      });
-    }
+    checkDirectory(dir); //await
     const fileName = new Date().getTime();
     const pathFile = 'http://' + URL + '/media/' + section + '/' + fileName + '.' + type;
     console.log(pathFile);
@@ -128,13 +126,45 @@ io.on('connection', socket => {
 })
 
 bot.on('message', async (message) => {
-  if (message.photo && message.photo[0]) {
-    const fileLink= await bot.getFile(message.photo[0].file_id);
-    console.log(fileLink)
+  const {chat, date, text, photo, document, video, audio} = message;
+  let type = false;
+  let dir = false;
+  let data = false;
+  if (photo !== undefined) {
+    data = await bot.getFile(photo[0].file_id);
+    type = util.ext(file_path);
+    if ('jpeg' || type === 'jpg' || type === 'png') dir = __dirname + '/media/images/';
+  }
+  if(video !== undefined) {
+    data = await bot.getFile(video[0].file_id);
+    type = util.ext(video.file_name);
+    if (type === 'mp4' || type ===  'wav') dir = __dirname + '/media/video/';
+  }
+  if(document !== undefined) {
+    console.log(document)
+    data = await bot.getFile(document.file_id);
+    type = util.ext(document.file_name);
+    if (type === 'pdf' || type === 'doc' || type === 'docx' || type === 'txt') dir = __dirname + '/media/documents/';
+  }
+  if(audio !== undefined) {
+    data = await bot.getFile(audio[0].file_id);
+    type = util.ext(audio.file_name);
+    if (type === 'mp3' || type === 'mpeg') dir = __dirname + '/media/audio/';
+  }
+  if(type && dir && data) {
+    const { file_id } = data;
+    console.log(type, dir, file_id);
+    if (await util.checkDirectory(dir, fs)) {
+      const stream = await bot.getFileStream(file_id);
+      stream.pipe(createWriteStream(dir + util.fileName(type)));
+      stream.on('finish', () => {
+        console.log('dane');
+      });
+    } else {
+      console.log('no dir')
+    }
   }
 
-  
-  const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
   const manager = await ManagerController.find(id);
   if (manager.length === 0) {
@@ -177,3 +207,4 @@ bot.on('callback_query', async msg => {
   //! MessegesController.add(chatId, socket.id, id, text, new Date().getTime(), 'from', delivered = 1, read = 0);
   UsersController.setCurrent(chatId, 1);
 });
+
