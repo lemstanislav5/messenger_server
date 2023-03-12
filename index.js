@@ -132,6 +132,8 @@ bot.on('message', async (message) => {
     const fileLink= await bot.getFile(message.photo[0].file_id);
     console.log(fileLink)
   }
+
+  
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
   const manager = await ManagerController.find(id);
