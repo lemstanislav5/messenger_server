@@ -4,8 +4,6 @@ const path = require('path');
 const {URL, PASSWORD, PORT} = require('../config.js');
 const bot = require('./services/telegramBot');
 bot.setMyCommands([ { command: '/start', description: 'Старт(меню)' }]);
-//connector
-
 
 const UsersController = require('./controllers/UserController');
 const MessegesController = require('./controllers/MessegesController');
@@ -35,11 +33,6 @@ app.get('/media*', (req, res) => {
     console.error(err);
   }
 });
-
-// app.use('/media/images/', express.static(__dirname + '/media/images/'));
-// app.use('/media/documents/', express.static(__dirname + '/media/documents/'));
-// app.use('/media/audio/', express.static(__dirname + '/media/audio/'));
-// app.use('/media/video/', express.static(__dirname + '/media/video/'));
 
 http.listen(PORT, () => console.log('listening on *:' + PORT));
 InitializationController.initialization();
@@ -135,6 +128,7 @@ io.on('connection', socket => {
 })
 
 bot.on('message', async (message) => {
+  console.log(message)
   const {chat, date, text} = message;
   const {id, first_name, last_name, username}  = chat;
   const manager = await ManagerController.find(id);
