@@ -128,8 +128,8 @@ io.on('connection', socket => {
 })
 
 bot.on('message', async (message) => {
-  if (msg.photo && msg.photo[0]) {
-    const image = await bot.getFile({ file_id: msg.photo[0].file_id });
+  if (message.photo && message.photo[0]) {
+    const image = await bot.getFile({ file_id: message.photo[0].file_id });
     console.log(image);
   } 
   const {chat, date, text} = message;
